@@ -1,59 +1,84 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
-// Un element care determină costul, pe pagina de investiție.
+import type { FactorCost } from "@/content/comparatie";
+
+// Cardul mare al paginii /investitia, pe gramatica REF-V a sectiunii de preturi: trei carduri
+// pe ceata, cel din mijloc INCHIS, cu litera alba.
 //
-// FORMA: listă tipografică mare, fără cifre. Pagina nu are voie să conțină prețuri, nici
-// intervale, deci singurul lucru pe care îl poate da omului care citește e SCARA: în ce
-// condiții urcă suma și în ce condiții coboară. De aceea titlul elementului urcă la
-// litera de afiș, iar cele două direcții stau dedesubt, ca două rânduri egale, fiecare cu
-// eticheta ei de mono.
+// ADAPTAREA, si e singura de fond. In referinta locul acesta poarta pretul: cifra mare, cifra
+// barata, butonul, apoi lista cu bife. Noi nu publicam preturi si nu publicam intervale -
+// decizia e a owner-ului si /investitia o explica in acordeonul de la finalul paginii. Ce
+// punem in locul cifrei e singurul lucru pe care il putem da cinstit: SCARA. Fiecare element
+// de cost isi scrie cele doua directii, „creste cand" si „scade cand", asa incat cititorul
+// isi aseze singur fondul undeva intre ele.
 //
-// Numărul elementului a fost SCOS. Forma veche scria „Elementul 4" într-o coloană de
-// margine, unde nu spunea nimic: elementele nu sunt o ordine, sunt o listă, iar un număr
-// care nu se citește e ornament. Ordinea o dă `ol`-ul din pagină, pentru cine navighează
-// cu cititor de ecran.
+// DE CE TREI CARDURI SI NU SAPTE RANDURI. Forma dinainte era o lista tipografica de sapte
+// randuri, cu titlul fiecarui element urcat la litera de afis: 3368 px la 1280, adica 4,21
+// ecrane si 561 de cuvinte sub un singur titlu. Gruparea in trei o aduce la ritmul REF-V, iar
+// cele trei grupe sunt scrise in `src/content/interior-investitia.ts`, cu indicii care acopera
+// multimea de sapte exact o data.
 //
-// Cele două direcții rămân o listă de definiții, nu două paragrafe: sunt perechi
-// termen-explicație, și așa se anunță și într-un cititor de ecran. Linia de aramă stă pe
-// „crește", singura din pereche care merită accentul - două linii de aramă alăturate ar
-// fi spus că amândouă sunt la fel de importante.
+// CULORILE PE CARDUL INCHIS nu sunt alese dupa gust: pe `noapte-v` albul da 18,95:1 si
+// `violet-clar` 7,61:1, singurele doua permise de directie. Pe cardul alb, `cerneala` da
+// 17,73:1 si `cerneala-2` 7,06:1. Linia dintre elemente e `linie` pe alb si `violet-adanc` pe
+// inchis, ca in banda de incredere.
+//
+// FARA UMBRA. Cardul se desparte de sectiunea de ceata prin culoarea lui de fundal, ca in
+// `Card.tsx`; o umbra pe card static e chiar tiparul pe care directia il refuza.
 
 type Props = {
+  eticheta: string;
   titlu: string;
-  text: string;
-  creste: string;
-  scade: string;
+  lead: string;
+  elemente: FactorCost[];
+  inchis?: boolean;
 };
 
-export default function InvestitiaFactor({ titlu, text, creste, scade }: Props) {
-  return (
-    <li className="border-t border-linie py-10 last:border-b md:py-14">
-      <h3 className="font-afis max-w-[26ch] text-[clamp(1.5rem,2.8vw,2.25rem)] font-semibold tracking-[-0.01em]  text-cerneala">
-        {titlu}
-      </h3>
-      <p className="mt-4 max-w-[60ch] text-[17px] leading-[1.6] text-cerneala-2">{text}</p>
+export default function InvestitiaFactor({
+  eticheta,
+  titlu,
+  lead,
+  elemente,
+  inchis = false,
+}: Props) {
+  const cutie = inchis ? "bg-noapte-v" : "bg-alb";
+  const pastila = inchis ? "bg-violet text-alb" : "bg-violet-pal text-violet";
+  const titluCard = inchis ? "text-alb" : "text-cerneala";
+  const corp = inchis ? "text-violet-clar" : "text-cerneala-2";
+  const separator = inchis ? "border-violet-adanc" : "border-linie";
+  const numeElement = inchis ? "text-alb" : "text-cerneala";
+  const etichetaCreste = inchis ? "text-alb" : "text-violet";
+  const etichetaScade = inchis ? "text-violet-clar" : "text-cerneala-2";
 
-      <dl className="mt-7 grid gap-6 sm:grid-cols-2 sm:gap-10">
-        <div className="border-l-2 border-violet pl-5">
-          <dt className="m-0 font-mono text-[11px]  text-violet">
-            Crește când
-          </dt>
-          <dd className="m-0 mt-2 max-w-[42ch] text-[15.5px] leading-[1.5] text-cerneala-2">
-            {creste}
-          </dd>
-        </div>
-        <div className="border-l-2 border-linie pl-5">
-          <dt className="m-0 font-mono text-[11px]  text-cerneala-2">
-            Scade când
-          </dt>
-          <dd className="m-0 mt-2 max-w-[42ch] text-[15.5px] leading-[1.5] text-cerneala-2">
-            {scade}
-          </dd>
-        </div>
-      </dl>
+  return (
+    <li className={"h-full rounded-card-mare p-8 " + cutie}>
+      <span
+        className={
+          "inline-block rounded-pastila px-3 py-1 text-nota font-semibold " + pastila
+        }
+      >
+        {eticheta}
+      </span>
+      <h3 className={"mt-5 max-w-[18ch] text-titlu-4 " + titluCard}>{titlu}</h3>
+      <p className={"mt-3 text-nota " + corp}>{lead}</p>
+
+      <ul className="m-0 mt-8 list-none p-0">
+        {elemente.map((e) => (
+          <li key={e.titlu} className={"border-t py-6 first:pt-0 " + separator}>
+            <h4 className={"text-corp font-semibold " + numeElement}>{e.titlu}</h4>
+            <p className={"mt-2 text-nota " + corp}>{e.text}</p>
+
+            {/* Cele doua directii raman o lista de definitii, nu doua paragrafe: sunt
+                perechi termen-explicatie, si asa se anunta si intr-un cititor de ecran. */}
+            <dl className="m-0 mt-4">
+              <dt className={"m-0 text-nota font-semibold " + etichetaCreste}>Crește când</dt>
+              <dd className={"m-0 mt-1 text-nota " + corp}>{e.creste}</dd>
+              <dt className={"m-0 mt-3 text-nota font-semibold " + etichetaScade}>
+                Scade când
+              </dt>
+              <dd className={"m-0 mt-1 text-nota " + corp}>{e.scade}</dd>
+            </dl>
+          </li>
+        ))}
+      </ul>
     </li>
   );
 }

@@ -1,81 +1,85 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
-// Registrul drumurilor de contact: fiecare drum pe un rând, cu valoarea lui sau cu motivul
-// pentru care nu are încă una.
+import type { IconitaDrum } from "@/content/interior-investitia";
+
+// Cele trei drumuri de contact, ca trei carduri cu iconita, pe gramatica REF-V: card alb pe
+// sectiune de ceata, raza 12 px, iconita intr-un patrat `violet-pal`, fara umbra.
 //
-// DE CE UN RÂND CU VALOARE LIPSĂ, ȘI NU RÂNDUL ȘTERS. Un site care nu afișează telefonul
-// lasă vizitatorul să creadă că l-a ratat el, și îl trimite să caute prin subsol. Un rând
-// care spune „nu există încă, iată de ce” închide întrebarea din prima citire și rezervă
-// locul în care numărul intră când firma îl are.
+// DE CE UN CARD CU VALOARE LIPSA, SI NU CARDUL STERS. Un site care nu afiseaza telefonul lasa
+// vizitatorul sa creada ca l-a ratat el, si il trimite sa caute prin subsol. Un card care
+// spune „nu exista inca, iata de ce" inchide intrebarea din prima citire si rezerva locul in
+// care numarul intra cand firma il are.
 //
-// De ce marcajul de lipsă nu este o liniuță: o liniuță se citește ca „necompletat din
-// neatenție”. Cuvintele spun că absența este o stare cunoscută, nu o scăpare, iar nota de
-// alături spune de ce.
+// De ce marcajul de lipsa nu este o liniuta: o liniuta se citeste ca „necompletat din
+// neatentie". Cuvintele spun ca absenta este o stare cunoscuta, nu o scapare, iar nota de
+// dedesubt spune de ce.
 //
-// VALOAREA CARE EXISTĂ E O ȘTAMPILĂ MONO, cu linie de aramă în stânga - același obiect cu
-// citarea din răspunsuri. Nu e ornament: pe pagina asta, singurul lucru care se copiază
-// dintr-o privire este adresa, iar mono este litera în care o cifră sau o adresă se citește
-// caracter cu caracter. Rândul fără valoare primește aceeași ștampilă în cenușiu, deci
-// absența ocupă exact locul pe care îl va ocupa valoarea.
+// VALOAREA CARE EXISTA E CHIAR TITLUL CARDULUI, nu o stampila separata. Pe pagina asta
+// singurul lucru care se copiaza dintr-o privire este adresa, deci ea sta pe treapta cea mai
+// mare a cardului, in violet cand e legatura. Cand valoarea lipseste, in locul ei sta o
+// pastila cenusie: absenta ocupa exact locul pe care il va ocupa valoarea.
+//
+// ICONITELE sunt desenate aici, cu linie de 1,5 px, si sunt `aria-hidden`: informatia sta in
+// eticheta si in nota, niciodata in desen.
 
 export type Drum = {
-  /** Numele drumului, așa cum îl caută cineva: „Telefon”, „Poștă electronică”. */
+  /** Numele drumului, asa cum il cauta cineva: „Telefon", „Posta electronica". */
   eticheta: string;
-  /** Valoarea, când există. `null` înseamnă că nu există încă, și atunci se scrie de ce. */
+  /** Valoarea, cand exista. `null` inseamna ca nu exista inca, si atunci se scrie de ce. */
   valoare: string | null;
-  /** Unde duce valoarea, dacă este o legătură. Fără el, valoarea se scrie ca text. */
+  /** Unde duce valoarea, daca este o legatura. Fara el, valoarea se scrie ca text. */
   href?: string;
-  /** Ce se întâmplă pe drumul acesta, sau de ce nu există încă. */
+  /** Ce se intampla pe drumul acesta, sau de ce nu exista inca. */
   nota: string;
+  /** Care desen sta in patratul de deasupra. */
+  iconita: IconitaDrum;
 };
 
-const STAMPILA =
-  "inline-block border-l-2 px-3 py-1.5 font-mono text-[14px] break-words";
+const CAI: Record<IconitaDrum, string> = {
+  posta: "M2.5 5.5 h15 v11 h-15 Z M2.5 6 L10 11.5 L17.5 6",
+  telefon:
+    "M6.2 2.8 h3 l1.2 3 -1.8 1.4 c0.9 1.9 2.5 3.5 4.4 4.4 l1.4 -1.8 3 1.2 v3 c0 0.6 -0.5 1.1 -1.1 1.1 C9.6 15.1 4.9 10.4 4.1 3.9 c0 -0.6 0.5 -1.1 1.1 -1.1 Z",
+  sediu: "M3 17.5 V6.5 L10 2.5 L17 6.5 V17.5 M8 17.5 V11.5 h4 v6",
+};
 
 export default function ContactDrumuri({ drumuri }: { drumuri: Drum[] }) {
   return (
-    <div className="border-t border-linie">
+    <ul className="m-0 grid list-none gap-6 p-0 md:grid-cols-3">
       {drumuri.map((d) => (
-        <div
-          key={d.eticheta}
-          className="grid gap-3 border-b border-linie py-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.2fr)] lg:gap-10"
-        >
-          <h3 className="font-afis text-[clamp(1.2rem,2vw,1.6rem)] font-semibold  text-cerneala">
-            {d.eticheta}
-          </h3>
-          <div>
-            {d.valoare === null ? (
-              <span
-                className={
-                  STAMPILA + " border-linie bg-ceata  text-cerneala-2"
-                }
-              >
-                Nu există încă
-              </span>
-            ) : d.href ? (
-              <a
-                href={d.href}
-                className={
-                  STAMPILA +
-                  " border-violet bg-alb text-violet underline underline-offset-[3px]"
-                }
-              >
-                {d.valoare}
-              </a>
-            ) : (
-              <span className={STAMPILA + " border-violet bg-alb text-violet"}>
-                {d.valoare}
-              </span>
-            )}
-            <p className="mt-3 max-w-[62ch] text-[16px] leading-[1.55] text-cerneala-2">
-              {d.nota}
-            </p>
-          </div>
-        </div>
+        <li key={d.eticheta} className="h-full rounded-card bg-alb p-6">
+          <span className="flex h-10 w-10 items-center justify-center rounded-card bg-violet-pal text-violet">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path
+                d={CAI[d.iconita]}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+
+          <h3 className="mt-5 text-subtitlu text-cerneala">{d.eticheta}</h3>
+
+          {d.valoare === null ? (
+            <span className="mt-3 inline-block rounded-pastila bg-ceata px-3 py-1 text-nota font-semibold text-cerneala-2">
+              Nu există încă
+            </span>
+          ) : d.href ? (
+            <a
+              href={d.href}
+              className="mt-3 block text-corp font-semibold break-words text-violet underline decoration-violet-2 underline-offset-[5px] hover:text-cerneala"
+            >
+              {d.valoare}
+            </a>
+          ) : (
+            <span className="mt-3 block text-corp font-semibold break-words text-cerneala">
+              {d.valoare}
+            </span>
+          )}
+
+          <p className="mt-4 text-nota text-cerneala-2">{d.nota}</p>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
