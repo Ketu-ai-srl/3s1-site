@@ -17,9 +17,9 @@ import { CONTACT_INTERIOR as CT } from "@/content/interior-investitia";
 // CE S-A SCHIMBAT LA FORMA. Drumurile stateau intr-un registru de randuri, cu valoarea intr-o
 // stampila de mono cu linie in stanga. Litera de mono nu mai exista pe site - toate cele trei
 // jetoane de familie arata catre aceeasi familie de cand fundatia REF-V a aterizat - deci
-// stampila nu mai era o stampila, era un chenar. Acum valoarea e chiar titlul cardului, adica
-// treapta cea mai mare de pe el: pe pagina asta singurul lucru care se copiaza dintr-o privire
-// este adresa.
+// stampila nu mai era o stampila, era un chenar. Acum valoarea sta in `h3`, adica pe treapta
+// cea mai mare a cardului, iar numele drumului sta deasupra ei ca eticheta de nota: pe pagina
+// asta singurul lucru care se copiaza dintr-o privire este adresa.
 //
 // NU EXISTA NICIUN FORMULAR PE SITE, nici aici, nici pe pagina de start, si asta nu e o
 // omisiune. Un camp in care se scrie o cerere trebuie sa aiba un destinatar, iar 3S nu are inca
@@ -51,6 +51,7 @@ const DRUMURI: Drum[] = [
     iconita: "posta",
     valoare: ARE_EMAIL ? entitate.email : null,
     href: ARE_EMAIL ? CATRE : undefined,
+    lipsa: "Nu există încă o adresă",
     nota: ARE_EMAIL
       ? "Drumul care funcționează azi, și singurul. Scrieți de la adresa la care vreți să primiți răspunsul, ca discuția să rămână într-un singur fir."
       : "Adresa se scrie aici din configurarea firmei. Cât timp lipsește de acolo, nu punem alta în loc.",
@@ -59,17 +60,19 @@ const DRUMURI: Drum[] = [
     eticheta: "Telefon",
     iconita: "telefon",
     valoare: campLipsa(entitate.telefon) ? null : entitate.telefon,
+    lipsa: "Nu există încă un număr",
     nota: "3S nu are încă număr propriu. Numărul ADRIEI nu îl punem în loc: ar suna la altă firmă decât cea cu care discutați, iar cine răspunde nu ar avea de unde să știe despre ce este vorba. Cardul acesta se completează la înmatriculare.",
   },
   {
-    // Eticheta ramane „Sediu", nu „Vizita la depozit", si diferenta nu e de gust: locul de sub
-    // eticheta poarta VALOAREA, iar valoarea care lipseste aici e sediul declarat. Un card
-    // numit „Vizita la depozit" cu „Nu exista inca" dedesubt ar spune ceva FALS - vizitele cu
-    // programare exista, si nota de dedesubt le descrie. Cardul isi poarta valoarea in titlu,
-    // deci titlul trebuie sa numeasca chiar valoarea.
+    // Eticheta ramane „Sediu", nu „Vizita la depozit", si diferenta nu e de gust: titlul
+    // cardului poarta VALOAREA, iar valoarea care lipseste aici e sediul declarat. Un card
+    // numit „Vizita la depozit" al carui titlu spune ca nu exista inca ar spune ceva FALS -
+    // vizitele cu programare exista, si nota de dedesubt le descrie. Eticheta numeste campul
+    // care se completeaza la inmatriculare, iar titlul spune ce scrie azi in el.
     eticheta: "Sediu",
     iconita: "sediu",
     valoare: campLipsa(entitate.sediu) ? null : entitate.sediu,
+    lipsa: "Nu există încă un sediu declarat",
     nota: "Sediul se declară la înmatriculare și abia atunci se scrie. Depozitul în care ajunge hârtia este cel al ADRIEI, la Golești, județul Argeș, și poate fi vizitat cu programare înainte să semnați ceva.",
   },
 ];

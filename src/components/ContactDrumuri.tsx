@@ -12,10 +12,16 @@ import type { IconitaDrum } from "@/content/interior-investitia";
 // neatentie". Cuvintele spun ca absenta este o stare cunoscuta, nu o scapare, iar nota de
 // dedesubt spune de ce.
 //
-// VALOAREA CARE EXISTA E CHIAR TITLUL CARDULUI, nu o stampila separata. Pe pagina asta
-// singurul lucru care se copiaza dintr-o privire este adresa, deci ea sta pe treapta cea mai
-// mare a cardului, in violet cand e legatura. Cand valoarea lipseste, in locul ei sta o
-// pastila cenusie: absenta ocupa exact locul pe care il va ocupa valoarea.
+// VALOAREA CARE EXISTA E CHIAR TITLUL CARDULUI, nu un rand de sub el. Pe pagina asta singurul
+// lucru care se copiaza dintr-o privire este adresa, deci ea sta in `h3`, pe treapta cea mai
+// mare a cardului, in violet cand e legatura. Eticheta merge deasupra, la marimea de nota:
+// numele drumului se citeste o data, valoarea se cauta cu ochii.
+//
+// CAND VALOAREA LIPSESTE, tot `h3` o spune, in cenusiu: absenta ocupa exact locul si exact
+// marimea pe care le va ocupa valoarea. Textul de lipsa il scrie pagina, prin `lipsa`, si e
+// specific drumului - doua carduri cu acelasi titlu „Nu exista inca" ar da doua trepte de
+// titlu care nu spun despre ce e vorba, iar cine navigheaza din titlu in titlu s-ar opri la
+// un rand gol de inteles.
 //
 // ICONITELE sunt desenate aici, cu linie de 1,5 px, si sunt `aria-hidden`: informatia sta in
 // eticheta si in nota, niciodata in desen.
@@ -25,6 +31,8 @@ export type Drum = {
   eticheta: string;
   /** Valoarea, cand exista. `null` inseamna ca nu exista inca, si atunci se scrie de ce. */
   valoare: string | null;
+  /** Ce sta in titlu cand valoarea lipseste. Se scrie in pagina, ca sa numeasca chiar drumul. */
+  lipsa?: string;
   /** Unde duce valoarea, daca este o legatura. Fara el, valoarea se scrie ca text. */
   href?: string;
   /** Ce se intampla pe drumul acesta, sau de ce nu exista inca. */
@@ -58,24 +66,22 @@ export default function ContactDrumuri({ drumuri }: { drumuri: Drum[] }) {
             </svg>
           </span>
 
-          <h3 className="mt-5 text-subtitlu text-cerneala">{d.eticheta}</h3>
+          <p className="mt-5 text-nota font-semibold text-cerneala-2">{d.eticheta}</p>
 
-          {d.valoare === null ? (
-            <span className="mt-3 inline-block rounded-pastila bg-ceata px-3 py-1 text-nota font-semibold text-cerneala-2">
-              Nu există încă
-            </span>
-          ) : d.href ? (
-            <a
-              href={d.href}
-              className="mt-3 block text-corp font-semibold break-words text-violet underline decoration-violet-2 underline-offset-[5px] hover:text-cerneala"
-            >
-              {d.valoare}
-            </a>
-          ) : (
-            <span className="mt-3 block text-corp font-semibold break-words text-cerneala">
-              {d.valoare}
-            </span>
-          )}
+          <h3 className="mt-1 text-subtitlu break-words">
+            {d.valoare === null ? (
+              <span className="text-cerneala-2">{d.lipsa ?? "Nu există încă"}</span>
+            ) : d.href ? (
+              <a
+                href={d.href}
+                className="text-violet underline decoration-violet-2 underline-offset-[5px] hover:text-cerneala"
+              >
+                {d.valoare}
+              </a>
+            ) : (
+              <span className="text-cerneala">{d.valoare}</span>
+            )}
+          </h3>
 
           <p className="mt-4 text-nota text-cerneala-2">{d.nota}</p>
         </li>
