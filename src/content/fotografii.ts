@@ -18,6 +18,16 @@
 // 2026-09-06 s-au schimbat toate, cu cheile NEATINSE: cheile sunt contractul cu paginile,
 // fisierele sunt ale acestui site. Nimic din `public/img/` nu se copiaza de la alt site.
 //
+// RUNDA A DOUA, tot pe 2026-09-06, dupa ce cadrele au fost privite pe planse: trei din cele
+// sapte s-au schimbat inca o data, fiindca ce era in ele contrazicea povestea paginii. Vechiul
+// `cutii` era o scena de curierat (plicuri si cutii de transport, nu arhiva), vechiul
+// `dulapuri` un dulap de atelier cu granulatii de slefuit scrise cu creta, iar vechiul
+// `legatura` bibliorafturi noi cu eticheta de magazin si cod EAN pe cotor - marfa, nu depozit
+// in operare. Al patrulea cadru pe care omul l-a marcat, `dosare` (cel mai intunecat al
+// setului), a RAMAS cel vechi: inlocuitorul propus s-a dovedit la privire un teanc de manuale
+// tiparite, cu un numar de telefon si o insemnare comerciala lizibile la 1:1, deci ar fi mutat
+// defectul, nu l-ar fi reparat. Motivul e scris si in `public/img/LICENTA.md`.
+//
 // `pozitie` e ancora decupajului, si e o masuratoare, nu o preferinta. Cardul antetului are
 // ~555x340 px la 1440 (proportie 1,63), iar fisierul de 1920 e in general 3:2 (1,50), deci
 // acolo se taie doar ~8% pe verticala. Sub 768 px se serveste fisierul de 960, care e PORTRET
@@ -48,7 +58,18 @@ export const FOTOGRAFII = {
   },
   cutii: {
     nume: "cutii",
-    alt: "Cutii de carton stivuite pe un raft metalic, cu etichete de manipulare, fotografie ilustrativă",
+    alt: "Mapă cu separatoare de carton, plină cu acte, într-o cutie bleu deschisă pe un birou de lemn, fotografie ilustrativă",
+    // 50% e masurat, nu implicit: evantaiul de separatoare umple fisierul de 960 de la 0% la
+    // 88,9% din inaltime (banda cu abaterea standard peste 45% din maxim, pe randuri de 10
+    // px), cu centrul la 44,5%. Fereastra de 46,6% de pe 390 px cade la 26,7-73,3%, adica in
+    // plin subiect indiferent de capat; nicio valoare nu castiga nimic masurabil, deci ramane
+    // cea care nu cere explicatie.
+    //
+    // MASURAT, ca sa nu se remasoare: cutia bleu din alt sta la 0-21,1% (capacul) si
+    // 73,6-91,0% (peretele din fata) din inaltimea fisierului de 960, adica in AFARA ferestrei
+    // de pe 390 px. S-a incercat 65%, care aduce 7,7 puncte de perete bleu in coltul de jos:
+    // privit, cadrul iese mai prost - taie varful evantaiului de separatoare, care e subiectul,
+    // ca sa castige o dunga. Alt-ul descrie FOTOGRAFIA, nu decupajul de telefon, si asa ramane.
     pozitie: "center 50%",
   },
   dosare: {
@@ -58,13 +79,16 @@ export const FOTOGRAFII = {
   },
   dulapuri: {
     nume: "dulapuri",
-    alt: "Sertare de lemn cu etichete scrise de mână pe bandă neagră, fotografie ilustrativă",
-    // 30%, nu 50%: pe 390 px cardul arata numai 45% din inaltimea fisierului portret, iar la
-    // 50% fereastra incepea la 27,6% - adica exact sub eticheta „cutter" (la 22-26%), deci
-    // ramanea o fata de sertar goala. La 30% fereastra e 16,6-61,3% si prinde si eticheta de
-    // sus, si manerul, si eticheta „60". Pe 1440 fisierul acopera 92% din inaltimea cardului,
-    // deci mutarea aproape nu se vede acolo.
-    pozitie: "center 30%",
+    alt: "Front de fișete metalice gri-bej, cu uși numerotate și cartonașe galbene prinse în colțare metalice pe fiecare ușă, fotografie ilustrativă",
+    // 40%, nu 50%: pe 390 px (innerWidth citit din pagina, /investitia) cardul e 343x240 si
+    // arata o fereastra de 46,6% din inaltimea fisierului portret. La 50% fereastra e
+    // 26,7-73,3%, iar eticheta numerotata de sus sta la 22,8-24,3% (masurata pe fisier,
+    // banda de pixeli deschisi) - adica exact deasupra taieturii, si pe telefon ar fi ramas
+    // doar cartonasul galben, fara nicio cifra. Alt-ul spune „usi numerotate", deci numarul
+    // trebuie sa se si vada. La 40% fereastra e 21,4-68,0%: prinde eticheta cu 1,4 puncte de
+    // margine si cartonasul galben intreg (45,3-57,1%). Pe 1440 se serveste fisierul de 1920,
+    // care acopera 93% din inaltimea cardului, deci mutarea aproape nu se vede acolo.
+    pozitie: "center 40%",
   },
   sertare: {
     nume: "sertare",
@@ -83,13 +107,11 @@ export const FOTOGRAFII = {
   },
   legatura: {
     nume: "legatura",
-    // Alt-ul spunea „etichete de cotă" - marcaj de arhiva - dar ce se vede in fisier, citit la
-    // 1:1, e eticheta COMERCIALA a bibliorafturilor: „Code: 7290", „7280" si codul de bare EAN
-    // 8699433929716, adica bibliorafturi noi, cu ambalajul de magazin inca pe cotor. Textul
-    // afirma un depozit in operare acolo unde fotografia arata marfa, exact registrul pe care
-    // regula de adevar il apara, si tocmai cititorul cu cititor de ecran primea afirmatia in
-    // locul imaginii. Descrie acum ce e in cadru.
-    alt: "Cotoare de bibliorafturi roșii noi, aliniate pe un raft, cu inele metalice pentru degete și eticheta comercială încă în buzunarul de pe cotor, fotografie ilustrativă",
+    alt: "Teanc de documente legate cu spirală albă, cu cotoare colorate, pe un birou de lemn deschis, fotografie ilustrativă",
+    // 50% e masurat: teancul ocupa 14,6-86,1% din inaltimea fisierului de 960 (aceeasi banda
+    // a abaterii standard), cu centrul la 50,4%. Fereastra de 46,6% de pe 390 px (masurat pe
+    // /comparatie) cade la 26,7-73,3%, adica simetric pe teanc; peretele crem de sus si
+    // biroul de jos raman amandoua afara, ceea ce e si scopul.
     pozitie: "center 50%",
   },
 } as const satisfies Record<string, Fotografie>;

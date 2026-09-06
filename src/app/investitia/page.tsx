@@ -57,9 +57,9 @@ export default function Investitia() {
         adresa="/investitia"
         // Cadrul e `dulapuri` dintr-un motiv masurat, nu de gust: /accesibilitate deschidea cu
         // `dosare` pe aceeasi ancora, si cele doua benzi ieseau identice la octet. Cadrul
-        // `dulapuri` arata sertare de fisier cu etichete de interval (vezi `alt`-ul lui in
-        // fotografii.ts; `sertare` e alt cadru, peretele numerotat de pe /contact), si ele spun
-        // oricum mai bine ce masoara pagina asta.
+        // `dulapuri` arata un front de fisete cu usi numerotate (vezi `alt`-ul lui in
+        // fotografii.ts; `sertare` e alt cadru, mainile care trag un sertar), si el spune
+        // oricum mai bine ce masoara pagina asta: un fond impartit in unitati numarabile.
         imagine={FOTOGRAFII.dulapuri}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Investiția" }]}
         eticheta={I.eticheta}

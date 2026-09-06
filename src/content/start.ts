@@ -54,7 +54,7 @@ export const CARDURI_EROU: CardImagine[] = [
   },
   {
     nume: "cutii",
-    alt: "Cutii de carton stivuite pe un raft metalic, cu etichete de manipulare, fotografie ilustrativă",
+    alt: "Mapă cu separatoare de carton, plină cu acte, într-o cutie bleu deschisă pe un birou de lemn, fotografie ilustrativă",
     eticheta: "Preluare",
   },
   {
@@ -121,7 +121,7 @@ export const ETAPE = {
       legatura: { href: "/arhivare-fizica", text: "Arhivare fizică" },
       imagine: {
         nume: "cutii",
-        alt: "Cutii de carton stivuite pe un raft metalic, cu etichete de manipulare, fotografie ilustrativă",
+        alt: "Mapă cu separatoare de carton, plină cu acte, într-o cutie bleu deschisă pe un birou de lemn, fotografie ilustrativă",
         pozitie: "center 45%",
       },
     },
