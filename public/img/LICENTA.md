@@ -50,7 +50,9 @@ alternative din `src/content/fotografii.ts`.
 
 Fiecare fotografie are o variantă de 1920 px lățime, pentru ecran lat, și una de 960 px, servită
 sub 768 px. Cea de 1920 păstrează proporția originalului descărcat de pe Pexels și nu e niciodată
-mărită: fiecare sursă avea cel puțin 4342 px lățime.
+mărită. Cea mai mică sursă are 3967 px lățime - `cutii`, singurul cadru portret al setului -,
+restul între 4342 px (`dulapuri`) și 6000 px (`legatura`); re-descărcate de pe Pexels și măsurate
+cu Pillow pe 2026-09-06.
 
 Variantele de 960 sunt toate PORTRET, 960x1440 (2:3), fiindcă un peisaj întins cu `object-cover` pe
 un telefon ținut vertical se mărește de peste o dată și un sfert și se înmoaie. Toate sunt decupaje
