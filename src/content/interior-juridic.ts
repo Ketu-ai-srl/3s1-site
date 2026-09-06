@@ -24,7 +24,7 @@ export const CUPRINS = {
 /** Randul de ancore de pe instrumentul de termene, deasupra fiselor. */
 export const ANCORE_TERMENE = {
   eticheta: "Săriți la o categorie",
-  /** Rezumatul tabelului, pentru cititorul de ecran. */
+  /** Rezumatul listei de ancore, pentru cititorul de ecran. Nu e tabel: vezi `TermeneCuprins`. */
   descriere:
     "Cele opt categorii de documente din pagina aceasta, fiecare cu termenul și cu actul normativ din care vine. Numele categoriei duce la fișa ei întreagă.",
 };
