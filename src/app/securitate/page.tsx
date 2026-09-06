@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/securitate" },
 };
 
-const LEGATURA = "text-cerneala-accent underline underline-offset-[3px]";
+const LEGATURA = "text-violet underline underline-offset-[3px]";
 
 export default function Securitate() {
   return (

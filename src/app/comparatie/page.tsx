@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/comparatie" },
 };
 
-const LEGATURA = "text-cerneala-accent underline underline-offset-[3px]";
+const LEGATURA = "text-violet underline underline-offset-[3px]";
 
 export default function Comparatie() {
   return (

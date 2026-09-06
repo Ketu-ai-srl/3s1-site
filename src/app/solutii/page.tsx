@@ -171,7 +171,7 @@ export default function Solutii() {
           Scrieți-ne și direct, dacă preferați:{" "}
           <a
             href="mailto:contact@3s.ro"
-            className="text-cerneala-accent underline underline-offset-[3px]"
+            className="text-violet underline underline-offset-[3px]"
           >
             contact@3s.ro
           </a>
