@@ -1,50 +1,51 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AntetPagina from "@/components/AntetPagina";
+import BandaCTA from "@/components/BandaCTA";
 import BlocDovada from "@/components/BlocDovada";
-import Buton from "@/components/Buton";
 import ListaBifa from "@/components/ListaBifa";
 import MecanismEtapa from "@/components/MecanismEtapa";
-import MecanismRandFisa from "@/components/MecanismRandFisa";
-import SectiuneRegistru from "@/components/SectiuneRegistru";
 import SecuritateIntrebare from "@/components/SecuritateIntrebare";
-import { SECURITATE as S } from "@/content/securitate";
+import SegmentAncore from "@/components/SegmentAncore";
+import SegmentBandaDovezi from "@/components/SegmentBandaDovezi";
+import SegmentGrila from "@/components/SegmentGrila";
+import SegmentIncredere from "@/components/SegmentIncredere";
+import SegmentRandTextImagine from "@/components/SegmentRandTextImagine";
+import SegmentSectiune from "@/components/SegmentSectiune";
 import { FOTOGRAFII } from "@/content/fotografii";
+import { NOTA_CONTACT, SECURITATE_INTERIOR as I } from "@/content/interior-solutii";
+import { SECURITATE as S } from "@/content/securitate";
+import { INDIFERENT_DE_DOMENIU } from "@/content/segmente";
 
 // Pagina de securitate. Ordinea sectiunilor e argumentul ei, deci nu se rearanjeaza fara
-// motiv: depozit, drum, acces, iesire - adica tot lantul pe hartie - si abia la sfarsit
-// partea digitala, imparita in ce am masurat si ce nu putem sustine.
+// motiv: depozit, drum, acces, iesire - adica tot lantul pe hartie - si abia la sfarsit partea
+// digitala, impartita in ce am masurat si ce nu putem sustine.
 //
-// De ce asa. Un furnizor de software isi scrie pagina de securitate numai despre biti.
-// Aici documentul e un obiect: se pierde printr-o cutie asezata gresit, o predare fara
-// proces-verbal, o eliminare fara aviz. Lantul de hartie e partea pe care o cunoastem si
-// pe care o poate vedea oricine vine in vizita; partea digitala ruleaza pe o platforma
-// care nu e scrisa de noi si despre care nu avem inca raspunsuri in scris. Daca ordinea
-// s-ar inversa, pagina ar incepe cu ce stim cel mai putin.
+// De ce asa. Un furnizor de software isi scrie pagina de securitate numai despre biti. Aici
+// documentul e un obiect: se pierde printr-o cutie asezata gresit, o predare fara
+// proces-verbal, o eliminare fara aviz. Lantul de hartie e partea pe care o cunoastem si pe
+// care o poate vedea oricine vine in vizita; partea digitala ruleaza pe o platforma care nu e
+// scrisa de noi si despre care nu avem inca raspunsuri in scris. Daca ordinea s-ar inversa,
+// pagina ar incepe cu ce stim cel mai putin. Valul S1-b a schimbat ASEZAREA, nu ordinea.
 //
-// CELE SASE INTREBARI DESCHISE RAMAN RANDURI DISTINCTE, fiecare cu linia ei deasupra si cu
-// starea in margine. Sunt argumentul paginii, nu subsolul ei: stranse intr-o lista cu
-// bulina s-ar fi citit ca o rezerva politicoasa la sfarsit, iar cine numara ce nu stim ar
-// fi trebuit sa citeasca tot blocul ca sa ajunga la cifra.
+// CELE SASE INTREBARI DESCHISE au trecut in acordeon, si ce se castiga si ce se pierde e scris
+// in `SecuritateIntrebare.tsx`. Ce ramane neschimbat: sunt argumentul paginii, nu subsolul ei,
+// si numarul lor e in titlul sectiunii, unde se vede fara sa deschida nimeni nimic.
 //
 // Continutul sta in `src/content/securitate.ts`; aici e numai forma paginii.
-//
-// Canonical auto-referential: fara el, pagina ar mosteni canonical-ul layout-ului si ar
-// arata spre pagina de start, ceea ce o scoate din index.
 export const metadata: Metadata = {
   title: S.titluMeta,
   description: S.descriereMeta,
   alternates: { canonical: "/securitate" },
 };
 
-const LEGATURA = "text-violet underline underline-offset-[3px]";
+const LEGATURA = "text-violet underline decoration-violet-2 underline-offset-[3px]";
 
 export default function Securitate() {
   return (
     <main id="continut">
       <AntetPagina
         adresa="/securitate"
-        forma="banda"
         imagine={FOTOGRAFII.rafturi}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Securitate" }]}
         eticheta={S.eticheta}
@@ -54,42 +55,43 @@ export default function Securitate() {
         secundar={{ href: "/arhivare-fizica", text: "Vedeți depozitul și inventarul" }}
       />
 
-      <SectiuneRegistru
+      <SegmentIncredere fapte={INDIFERENT_DE_DOMENIU} />
+
+      <SegmentAncore ancore={I.navigare} eticheta="Secțiunile paginii" />
+
+      <SegmentSectiune
         id="depozit"
-        cota="I"
-        eticheta="Depozitul"
-        titlu="Unde stă hârtia și cine ajunge la ea."
-        lead="Riscul care mută un dosar din locul lui rareori vine dintr-o rețea. Vine dintr-un raft greșit, dintr-o cutie deschisă fără fișă și dintr-o cheie care circulă. Sunt lucruri care se văd la o vizită anunțată din timp."
+        ton="alb"
+        eticheta={I.depozit.eticheta}
+        titlu={I.depozit.titlu}
+        lead={I.depozit.lead}
       >
-        {S.depozit.map((f) => (
-          <MecanismRandFisa key={f.titlu} titlu={f.titlu}>
-            {f.text}
-          </MecanismRandFisa>
-        ))}
+        <SegmentGrila elemente={S.depozit} fundal="alb" />
 
-        <BlocDovada fel="limite" eticheta="Ce nu publicăm, dinadins" className="mt-12">
-          {S.notaDepozit}
-        </BlocDovada>
+        <div className="mx-auto mt-12 max-w-[46rem]">
+          <BlocDovada fel="limite" eticheta={I.etichetaNotaDepozit}>
+            {S.notaDepozit}
+          </BlocDovada>
+        </div>
 
-        <p className="mt-8 max-w-[62ch] text-[17px] leading-[1.6] text-cerneala-2">
-          Cum arată depozitul, cum se măsoară un fond în metri liniari și ce înseamnă cota
-          unei unități arhivistice sunt scrise pe{" "}
-          <Link href="/arhivare-fizica" className={LEGATURA}>
-            pagina de arhivare fizică
-          </Link>
-          .
-        </p>
-      </SectiuneRegistru>
+        <div className="mt-16 md:mt-20">
+          <SegmentRandTextImagine
+            titlu={I.spreFizica.titlu}
+            text={I.spreFizica.text}
+            legatura={I.spreFizica.legatura}
+            imagine={FOTOGRAFII.sertare}
+          />
+        </div>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
+      <SegmentSectiune
         id="drum"
-        ton="inchis"
-        cota="II"
-        eticheta="Drumul"
-        titlu="Mutarea este momentul în care se pierde arhiva, nu depozitul."
-        lead="Un lot împărțit între două curse, o cutie nenumărată, o predare fără hârtie: de aici vin discuțiile de peste un an despre un dosar care lipsește. Fiecare pas se închide cu un document semnat, iar documentul rămâne la dumneavoastră."
+        ton="ceata"
+        eticheta={I.drum.eticheta}
+        titlu={I.drum.titlu}
+        lead={I.drum.lead}
       >
-        <ol className="m-0 grid list-none gap-0 p-0">
+        <ol className="m-0 grid list-none gap-5 p-0 md:grid-cols-2">
           {S.drum.map((e, i) => (
             <MecanismEtapa
               key={e.titlu}
@@ -97,57 +99,48 @@ export default function Securitate() {
               titlu={e.titlu}
               text={e.text}
               urma={e.urma}
+              fundal="ceata"
             />
           ))}
         </ol>
-      </SectiuneRegistru>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
+      <SegmentSectiune
         id="acces"
-        cota="III"
-        eticheta="Accesul"
-        titlu="Cine vede ce document, și pe ce bază."
-        lead="Un depozit bine păzit din care oricine poate cere orice dosar nu păzește nimic. Regula de acces se scrie nominal, se schimbă în scris și se aplică la fel personalului nostru."
+        ton="alb"
+        eticheta={I.acces.eticheta}
+        titlu={I.acces.titlu}
+        lead={I.acces.lead}
       >
-        {S.acces.map((f) => (
-          <MecanismRandFisa key={f.titlu} titlu={f.titlu}>
-            {f.text}
-          </MecanismRandFisa>
-        ))}
-      </SectiuneRegistru>
+        <SegmentGrila elemente={S.acces} fundal="alb" />
+      </SegmentSectiune>
 
-      <SectiuneRegistru
+      <SegmentSectiune
         id="iesire"
-        ton="inchis"
-        cota="IV"
-        eticheta="Ieșirea"
-        titlu="Ce se întâmplă când plecați, și când un document nu mai trebuie păstrat."
-        lead="Sunt cele două momente în care un fond poate dispărea legal, deci exact cele două care se scriu înainte, nu la nevoie. Unul ține de contract, celălalt de o comisie și de un aviz care nu sunt ale noastre."
+        ton="ceata"
+        eticheta={I.iesire.eticheta}
+        titlu={I.iesire.titlu}
+        lead={I.iesire.lead}
       >
-        {S.iesire.map((f) => (
-          <MecanismRandFisa key={f.titlu} titlu={f.titlu}>
-            {f.text}
-          </MecanismRandFisa>
-        ))}
+        <SegmentGrila elemente={S.iesire} fundal="ceata" />
 
-        <BlocDovada eticheta="Temeiul" className="mt-12">
-          {S.notaIesire}
-        </BlocDovada>
-      </SectiuneRegistru>
+        <div className="mx-auto mt-12 max-w-[46rem]">
+          <BlocDovada eticheta={I.etichetaNotaIesire}>{S.notaIesire}</BlocDovada>
+        </div>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
+      <SegmentSectiune
         id="digital"
-        cota="V"
-        eticheta="Partea digitală"
-        titlu="Ce am măsurat pe site, și ce nu scriem despre noi."
-        lead="Prima listă se măsoară automat înainte de fiecare publicare, iar dacă o verificare se înroșește, versiunea aceea nu ajunge la dumneavoastră. A doua este lista afirmațiilor care lipsesc de pe site fiindcă nu le putem dovedi."
+        ton="alb"
+        eticheta={I.digital.eticheta}
+        titlu={I.digital.titlu}
+        lead={I.digital.lead}
       >
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <ListaBifa titlu="Ce se măsoară la fiecare publicare" elemente={S.masurat} />
-          <ListaBifa titlu="Ce nu scriem despre noi" elemente={S.nuDetinem} />
+        <div className="mx-auto max-w-[52rem] rounded-card-mare bg-ceata p-8 md:p-10">
+          <ListaBifa titlu={I.listaMasurat} elemente={S.masurat} />
         </div>
 
-        <p className="mt-10 max-w-[62ch] text-[17px] leading-[1.6] text-cerneala-2">
+        <p className="mx-auto mt-10 max-w-[62ch] text-corp text-cerneala-2">
           Prima coloană este descrisă pe larg în{" "}
           <Link href="/cookies" className={LEGATURA}>
             pagina despre ce stocăm în browser
@@ -158,59 +151,65 @@ export default function Securitate() {
           </Link>
           .
         </p>
-      </SectiuneRegistru>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
+      {/* Liniuta, nu bifa: randurile de mai jos sunt lucruri care LIPSESC. */}
+      <SegmentBandaDovezi
+        eticheta={I.bandaNuDetinem.eticheta}
+        titlu={I.bandaNuDetinem.titlu}
+        elemente={S.nuDetinem}
+        semn="liniuta"
+      />
+
+      <SegmentSectiune
         id="intrebari"
-        ton="inchis"
-        cota="VI"
-        eticheta="Ce nu putem susține încă"
-        titlu="Șase întrebări la care încă nu avem răspuns în scris."
-        lead="Căutarea în documente rulează pe o platformă care nu este scrisă de noi. Despre infrastructura altcuiva nu afirmăm nimic pe baza a ce s-a spus într-o discuție, deci întrebările stau aici, formulate așa cum le pune un serviciu juridic, cu miza fiecăreia lângă ea."
+        ton="ceata"
+        eticheta={I.intrebari.eticheta}
+        titlu={I.intrebari.titlu}
+        lead={I.intrebari.lead}
       >
-        {S.intrebariDeschise.map((i) => (
+        <div className="mx-auto max-w-[52rem]">
           <SecuritateIntrebare
-            key={i.intrebare}
-            intrebare={i.intrebare}
-            deCeConteaza={i.deCeConteaza}
-            stare={i.stare}
+            intrebari={S.intrebariDeschise}
+            etichetaStare={I.etichetaStare}
           />
-        ))}
 
-        <BlocDovada eticheta="De ce sunt scrise ca întrebări" className="mt-12">
-          {S.notaDigital}
-        </BlocDovada>
-      </SectiuneRegistru>
+          <div className="mt-12">
+            <BlocDovada eticheta={I.etichetaNotaDigital}>{S.notaDigital}</BlocDovada>
+          </div>
 
-      <SectiuneRegistru
-        id="discutie"
-        cota="VII"
-        eticheta="Pasul următor"
-        titlu={S.incheiere.titlu}
-        lead={S.incheiere.text}
-      >
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-          <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
-            Discuție de 30 de minute
-          </Buton>
-          <Buton href="/cum-functioneaza" fel="text" marime="mare">
-            Vedeți mecanismul cap la cap
-          </Buton>
+          <p className="mt-10 text-corp text-cerneala-2">
+            Dacă întrebarea dumneavoastră este despre felul în care se citește site-ul, nu
+            despre documente, răspunsul stă în{" "}
+            <Link href="/accesibilitate" className={LEGATURA}>
+              declarația de accesibilitate
+            </Link>
+            . Pe ce drum ajunge un mesaj la noi scrie pe{" "}
+            <Link href="/contact" className={LEGATURA}>
+              pagina de contact
+            </Link>
+            .
+          </p>
         </div>
+      </SegmentSectiune>
 
-        <p className="mt-8 max-w-[62ch] text-[15.5px] leading-[1.55] text-cerneala-3">
-          Dacă întrebarea dumneavoastră este despre felul în care se citește site-ul, nu
-          despre documente, răspunsul stă în{" "}
-          <Link href="/accesibilitate" className={LEGATURA}>
-            declarația de accesibilitate
-          </Link>
-          . Pe ce drum ajunge un mesaj la noi scrie pe{" "}
-          <Link href="/contact" className={LEGATURA}>
-            pagina de contact
-          </Link>
-          .
-        </p>
-      </SectiuneRegistru>
+      <BandaCTA
+        titlu={S.incheiere.titlu}
+        text={S.incheiere.text}
+        actiune={{ href: "/#discutie", text: I.butonCta }}
+        nota={
+          <>
+            {NOTA_CONTACT.inainte}
+            <a
+              href={"mailto:" + NOTA_CONTACT.adresa}
+              className="text-alb underline underline-offset-[3px]"
+            >
+              {NOTA_CONTACT.adresa}
+            </a>
+            {NOTA_CONTACT.dupa}
+          </>
+        }
+      />
     </main>
   );
 }

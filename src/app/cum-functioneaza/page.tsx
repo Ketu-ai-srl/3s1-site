@@ -1,74 +1,60 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Acordeon from "@/components/Acordeon";
 import AntetPagina from "@/components/AntetPagina";
+import BandaCTA from "@/components/BandaCTA";
 import BlocDovada from "@/components/BlocDovada";
-import Buton from "@/components/Buton";
 import ListaBifa from "@/components/ListaBifa";
 import MecanismEtapa from "@/components/MecanismEtapa";
 import MecanismLant from "@/components/MecanismLant";
-import MecanismRandFisa from "@/components/MecanismRandFisa";
-import SectiuneRegistru from "@/components/SectiuneRegistru";
-import { CUM_FUNCTIONEAZA as C } from "@/content/mecanism";
+import SegmentAncore from "@/components/SegmentAncore";
+import SegmentBandaDovezi from "@/components/SegmentBandaDovezi";
+import SegmentIncredere from "@/components/SegmentIncredere";
+import SegmentListaLipsa from "@/components/SegmentListaLipsa";
+import SegmentRandTextImagine from "@/components/SegmentRandTextImagine";
+import SegmentSectiune from "@/components/SegmentSectiune";
 import { FOTOGRAFII } from "@/content/fotografii";
+import { MECANISM_INTERIOR as M, NOTA_CONTACT } from "@/content/interior-solutii";
+import { CUM_FUNCTIONEAZA as C } from "@/content/mecanism";
+import { INDIFERENT_DE_DOMENIU } from "@/content/segmente";
 
-// Pagina de mecanism. Aici ajunge butonul secundar de pe fisele de domeniu si de pe
-// hub, deci sarcina ei e sa raspunda o singura data, complet, la intrebarea pe care o
-// pune oricine preda o arhiva: ce se intampla cu ea, in ce ordine, si ce hartie imi
-// ramane dupa fiecare pas.
+// Pagina de mecanism. Aici ajunge butonul secundar de pe fisele de domeniu si de pe hub, deci
+// sarcina ei e sa raspunda o singura data, complet, la intrebarea pe care o pune oricine preda
+// o arhiva: ce se intampla cu ea, in ce ordine, si ce hartie imi ramane dupa fiecare pas.
 //
-// CE S-A REASEZAT IN DIRECTIA NOUA, si ce NU s-a pierdut. Ecranul de deschidere primea
-// inainte tot programul paginii: 60 de cuvinte, sase randuri de text sub un titlu de trei
-// randuri. Acum poarta o singura linie, iar restul frazei - „ce primiti in ziua in care va
-// opriti" si „unde un pas depinde de un aviz care nu e al nostru, scriem asta pe fata" -
-// s-a mutat in linia sectiunii I si in etapa a sasea, unde omul e deja hotarat sa citeasca.
-// Nicio afirmatie nu a fost scoasa, deci registrul din `src/content/afirmatii/mecanism.json`
-// ramane neatins.
+// CE S-A SCHIMBAT LA VALUL S1-b. Cele sase etape stateau in DOUA sectiuni de registru, taiate
+// la mijlocul drumului (1-3 pleaca, 4-6 se intorc), fiindca intr-un singur bloc faceau 3494 px
+// la 1280 px, adica 4,37 ecrane. In grila REF-V de doua coloane incap toate sase intr-o
+// singura sectiune, ceva mai lunga de un ecran, si taietura nu mai e nevoie: numerotarea
+// continua 1..6 se vede dintr-o privire, asa cum promite h1-ul. Textul e neatins - continutul
+// sta in `src/content/mecanism.ts`, inghetat in valul asta.
 //
-// Cele sase etape sunt acum sase ecrane scurte, fiecare cu stampila „Ramane scris" sub el:
-// documentul care ramane dupa etapa e jumatate din argument, iar in forma veche statea
-// intr-un rand de 15 px, sub o linie punctata.
+// Cele cinci verigi ale cautarii NU au trecut in grila, si asta e o alegere de forma, nu o
+// scapare: sunt un lant, iar o grila care se citeste in Z ii rupe ordinea. Motivul intreg,
+// in `MecanismLant.tsx`.
 //
-// Continutul sta in `src/content/mecanism.ts`; aici e numai forma paginii.
-//
-// Canonical auto-referential: fara el, pagina ar mosteni canonical-ul layout-ului si ar
-// arata spre pagina de start, ceea ce o scoate din index.
+// Canonical auto-referential: fara el, pagina ar mosteni canonical-ul layout-ului si ar arata
+// spre pagina de start, ceea ce o scoate din index.
 export const metadata: Metadata = {
   title: C.titluMeta,
   description: C.descriereMeta,
   alternates: { canonical: "/cum-functioneaza" },
 };
 
-const LEGATURA = "text-violet underline underline-offset-[3px]";
+const LEGATURA = "text-violet underline decoration-violet-2 underline-offset-[3px]";
 
 export default function CumFunctioneaza() {
   return (
     <main id="continut">
       <AntetPagina
         adresa="/cum-functioneaza"
-        // Ancora decupajului e scrisa AICI, nu in registru, si are cifre in spate.
-        // `maini-1920.webp` e portret, 1920x2880. La 1280x800 se vede o banda de 1200 de
-        // randuri din sursa, iar cu ancora implicita a registrului (50%) banda incepe la
-        // randul 840 - mana, adica subiectul cadrului, sta intre randurile 432 si 1008 si
-        // iese aproape complet din vedere. Ramanea un fundal maro: luminanta medie 0,027
-        // in cadranul liber (x 700-1260, y 70-300), cel mai intunecat dintre ecranele
-        // paginilor mele si de 6,4 ori sub cel al paginii aprobate.
-        //
-        // Ancora s-a ales prin masurare, nu din ochi, fiindca cele doua cifre trag in
-        // sensuri opuse: cu cat urca fotografia, cu atat se vede mai bine mana SI cu atat
-        // scade contrastul etichetei de 12 px, care sta peste ea. Baleiat 0-50%, media
-        // fundalului de sub litere contra `arama-clar`:
-        //   0%  cadran 0,101  eticheta 4,26   <- sub pragul de 4,5 pentru text mic
-        //   12% cadran 0,105  eticheta 4,54   <- trece, dar fara rezerva
-        //   20% cadran 0,071  eticheta 5,51   <- ales
-        //   30% cadran 0,027  eticheta 6,14   <- mana iese iar din cadru
-        // 20% e punctul in care mana se vede (de 2,6 ori mai multa lumina decat la 50%) si
-        // eticheta pastreaza un metru de rezerva peste prag.
-        //
-        // Registrul pastreaza fisierul si textul alternativ; ancora ramane a paginii,
-        // fiindca acelasi cadru deschide si /solutii/notari, cu alt titlu si alt bloc de
-        // text dedesubt, deci cu alt voal peste aceiasi pixeli. Sub 768 px nu se schimba
-        // nimic: acolo `maini-960` (960x1440) se decupeaza pe LATIME, fiindca cei 844 px
-        // de inaltime depasesc cei 585 la care ar ajunge scalarea pe latime.
+        // Ancora de decupaj ramane la 20%, dar din motivul care a supravietuit directiei
+        // vechi, nu din cel care a murit odata cu ea. Baleiat atunci pe `maini-1920.webp`
+        // (portret, 1920x2880): la ancora implicita de 50% mana - subiectul cadrului - iese
+        // aproape complet din banda vazuta, iar la 20% se vede cu de 2,6 ori mai multa lumina
+        // in cadranul liber. ATAT ramane valabil. Cealalta jumatate a masuratorii de atunci -
+        // contrastul etichetei de 12 px asezate PESTE fotografie - nu mai are obiect: in
+        // REF-V fotografia sta intr-un card la dreapta si nu poarta niciun text peste ea.
         imagine={{ ...FOTOGRAFII.maini, pozitie: "center 20%" }}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Cum funcționează" }]}
         eticheta={C.eticheta}
@@ -78,162 +64,139 @@ export default function CumFunctioneaza() {
         secundar={{ href: "/arhivare-fizica", text: "Vedeți partea fizică" }}
       />
 
-      {/* Cele sase etape stau in DOUA sectiuni, nu in una. Motivul e masurat: intr-un
-          singur bloc, sectiunea avea 3494 px la 1280, adica 4,37 ecrane si 524 de cuvinte
-          sub un singur titlu, cu sase randuri de aceeasi forma unul dupa altul. Regula
-          directiei e un lucru per ecran, iar pagina aprobata sta la 1,04 ecrane pe
-          sectiune. Taietura nu e la jumatatea numarului, ci acolo unde se schimba SENSUL
-          drumului: 1-3 sunt hartia care pleaca de la dumneavoastra, 4-6 sunt ce se
-          intoarce. Numerotarea ramane continua, 1..6, fiindca h1-ul promite sase etape:
-          a doua lista porneste de la `i + 4`. */}
-      <SectiuneRegistru
+      <SegmentIncredere fapte={INDIFERENT_DE_DOMENIU} />
+
+      <SegmentAncore ancore={M.navigare} eticheta="Secțiunile paginii" />
+
+      <SegmentSectiune
         id="etape"
-        cota="I"
-        eticheta="Etapele 1-3"
-        titlu="Hârtia care pleacă de la dumneavoastră."
-        lead="Nu vă cerem încredere între etape. Fiecare se închide cu o hârtie care spune ce s-a mutat, ce s-a numărat și cine răspunde de fondul dumneavoastră. Unde un pas depinde de un aviz care nu este al nostru, scriem asta pe față."
+        ton="alb"
+        eticheta={M.etape.eticheta}
+        titlu={M.etape.titlu}
+        lead={M.etape.lead}
       >
-        <ol className="m-0 grid list-none gap-0 p-0">
-          {C.etape.slice(0, 3).map((e, i) => (
+        <ol className="m-0 grid list-none gap-5 p-0 md:grid-cols-2">
+          {C.etape.map((e, i) => (
             <MecanismEtapa
               key={e.titlu}
               numar={i + 1}
               titlu={e.titlu}
               text={e.text}
               urma={e.urma}
+              fundal="alb"
             />
           ))}
         </ol>
 
-        <p className="mt-10 max-w-[62ch] text-[17px] leading-[1.6] text-cerneala-2">
-          Prima etapă și a doua se fac cu rafturi, cutii și mașină. Cum arată depozitul, cum
-          se măsoară un fond și cum se elimină legal ce nu mai trebuie păstrat sunt scrise pe{" "}
-          <Link href="/arhivare-fizica" className={LEGATURA}>
-            pagina de arhivare fizică
-          </Link>
-          .
-        </p>
-      </SectiuneRegistru>
+        <div className="mt-16 md:mt-20">
+          <SegmentRandTextImagine
+            titlu={M.spreFizica.titlu}
+            text={M.spreFizica.text}
+            legatura={M.spreFizica.legatura}
+            imagine={FOTOGRAFII.cutii}
+          />
+        </div>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
-        id="intoarcerea"
-        cota="II"
-        eticheta="Etapele 4-6"
-        titlu="Ce se întoarce la dumneavoastră."
-        lead="Ultimele trei etape merg în sens invers. Întrebarea primește documentul și pagina, originalul iese din raft atunci când vi se cere hârtia semnată, iar la încheierea contractului pleacă tot fondul, și cel fizic, și cel digital."
-      >
-        <ol className="m-0 grid list-none gap-0 p-0">
-          {C.etape.slice(3).map((e, i) => (
-            <MecanismEtapa
-              key={e.titlu}
-              numar={i + 4}
-              titlu={e.titlu}
-              text={e.text}
-              urma={e.urma}
-            />
-          ))}
-        </ol>
-      </SectiuneRegistru>
-
-      <SectiuneRegistru
+      <SegmentSectiune
         id="digitizare"
-        ton="inchis"
-        cota="III"
-        eticheta="Ce se scanează"
-        titlu="Se digitizează ce se caută, în ordinea în care se caută."
-        lead="Împărțirea de mai jos este punctul de plecare al discuției, nu o regulă fixă. Lista finală o hotărâți dumneavoastră, iar ea intră în contract înainte să se deschidă prima cutie."
+        ton="ceata"
+        eticheta={M.digitizare.eticheta}
+        titlu={M.digitizare.titlu}
+        lead={M.digitizare.lead}
       >
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <ListaBifa titlu="Ce intră la scanat, de obicei" elemente={C.digitizat} />
-          <ListaBifa titlu="Ce rămâne pe hârtie, cel puțin la început" elemente={C.peHartie} />
+        {/* Amandoua listele poarta bifa, si asta e corect aici: nu e „ce avem" contra „ce nu
+            avem", ci doua drumuri legitime, alese impreuna. Lista cu liniuta e rezervata
+            lucrurilor care LIPSESC. */}
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-card-mare bg-alb p-8">
+            <ListaBifa titlu={M.listaDigitizat} elemente={C.digitizat} />
+          </div>
+          <div className="rounded-card-mare bg-alb p-8">
+            <ListaBifa titlu={M.listaPeHartie} elemente={C.peHartie} />
+          </div>
         </div>
 
-        <BlocDovada fel="limite" eticheta="Ce nu propunem din start" className="mt-12">
-          {C.notaDigitizare}
-        </BlocDovada>
-      </SectiuneRegistru>
+        <div className="mx-auto mt-12 max-w-[46rem]">
+          <BlocDovada eticheta={M.etichetaNotaDigitizare}>{C.notaDigitizare}</BlocDovada>
+        </div>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
+      <SegmentSectiune
         id="cautare"
-        cota="IV"
-        eticheta="Căutarea"
-        titlu="De la întrebarea pusă în română până la pagina pe care o citiți singur."
-        lead="Cinci verigi, în ordine. Dacă una lipsește, lanțul se oprește acolo și nu vedeți un răspuns pe care nu îl putem susține cu un document."
+        ton="alb"
+        eticheta={M.cautare.eticheta}
+        titlu={M.cautare.titlu}
+        lead={M.cautare.lead}
       >
         <MecanismLant verigi={C.lant} />
 
-        <div className="mt-14">
-          <ListaBifa titlu="Ce nu face căutarea" elemente={C.nuFace} />
+        <div className="mx-auto mt-14 max-w-[46rem] rounded-card-mare bg-ceata p-8 md:p-10">
+          <SegmentListaLipsa titlu={M.listaNuFace} elemente={C.nuFace} />
         </div>
-      </SectiuneRegistru>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
-        id="hartia"
-        ton="inchis"
-        cota="V"
-        eticheta="Hârtia"
-        titlu="Întrebările care apar când documentul iese din mâna dumneavoastră."
-        lead="Sunt întrebările pe care le pune un serviciu juridic sau un auditor intern. Le punem noi primii, cu răspunsul scris, ca să nu pierdeți o săptămână pe corespondență."
-      >
-        {C.hartie.map((f) => (
-          <MecanismRandFisa key={f.titlu} titlu={f.titlu}>
-            {f.text}
-          </MecanismRandFisa>
-        ))}
-
-        <p className="mt-10 max-w-[62ch] text-[17px] leading-[1.6] text-cerneala-2">
-          Termenele de păstrare, cu actul normativ din care vin, stau în{" "}
-          <Link href="/instrumente/termene-de-pastrare" className={LEGATURA}>
-            verificatorul de termene
-          </Link>
-          . Ce diferă de la un domeniu la altul se citește pe{" "}
-          <Link href="/solutii" className={LEGATURA}>
-            fișele de domeniu
-          </Link>
-          .
-        </p>
-      </SectiuneRegistru>
-
-      <SectiuneRegistru
+      <SegmentSectiune
         id="dovada"
-        cota="VI"
-        eticheta="Dovada"
-        titlu="Ce puteți verifica, și ce nu putem susține încă."
-        lead="Prima listă se poate vedea înainte de semnătură. Pe a doua o scriem tot noi, primii, fiindcă o afirmație nesusținută costă mai mult decât tăcerea."
+        ton="ceata"
+        eticheta={M.dovada.eticheta}
+        titlu={M.dovada.titlu}
+        lead={M.dovada.lead}
       >
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <ListaBifa titlu="Ce vă arătăm înainte de semnătură" elemente={C.aratam} />
-          <ListaBifa titlu="Ce nu putem susține încă" elemente={C.deschise} />
+        <div className="mx-auto max-w-[46rem] rounded-card-mare bg-alb p-8 md:p-10">
+          <SegmentListaLipsa titlu={M.listaDeschise} elemente={C.deschise} />
         </div>
-      </SectiuneRegistru>
+      </SegmentSectiune>
 
-      <SectiuneRegistru
-        id="discutie"
-        ton="inchis"
-        cota="VII"
-        eticheta="Pasul următor"
+      <SegmentBandaDovezi
+        eticheta={M.bandaAratam.eticheta}
+        titlu={M.bandaAratam.titlu}
+        elemente={C.aratam}
+      />
+
+      <SegmentSectiune
+        id="hartia"
+        ton="alb"
+        eticheta={M.hartia.eticheta}
+        titlu={M.hartia.titlu}
+        lead={M.hartia.lead}
+      >
+        <div className="mx-auto max-w-[52rem]">
+          <Acordeon
+            elemente={C.hartie.map((f) => ({ intrebare: f.titlu, raspuns: f.text }))}
+          />
+
+          <p className="mt-10 text-corp text-cerneala-2">
+            Termenele de păstrare, cu actul normativ din care vin, stau în{" "}
+            <Link href="/instrumente/termene-de-pastrare" className={LEGATURA}>
+              verificatorul de termene
+            </Link>
+            . Ce diferă de la un domeniu la altul se citește pe{" "}
+            <Link href="/solutii" className={LEGATURA}>
+              fișele de domeniu
+            </Link>
+            .
+          </p>
+        </div>
+      </SegmentSectiune>
+
+      <BandaCTA
         titlu={C.incheiere.titlu}
-        lead={C.incheiere.text}
-      >
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-          <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
-            Discuție de 30 de minute
-          </Buton>
-          <Buton href="/arhivare-fizica" fel="text" marime="mare">
-            Vedeți partea fizică
-          </Buton>
-        </div>
-
-        <p className="mt-8 max-w-[60ch] text-[15.5px] leading-[1.55] text-cerneala-3">
-          Scrieți-ne și direct, dacă preferați:{" "}
-          <a href="mailto:contact@3s.ro" className={LEGATURA}>
-            contact@3s.ro
-          </a>
-          . Nu afișăm număr de telefon: solicitările intră prin formular sau prin poștă
-          electronică, ca să rămână o urmă scrisă a cererii dumneavoastră și a răspunsului
-          nostru.
-        </p>
-      </SectiuneRegistru>
+        text={C.incheiere.text}
+        actiune={{ href: "/#discutie", text: M.butonCta }}
+        nota={
+          <>
+            {NOTA_CONTACT.inainte}
+            <a
+              href={"mailto:" + NOTA_CONTACT.adresa}
+              className="text-alb underline underline-offset-[3px]"
+            >
+              {NOTA_CONTACT.adresa}
+            </a>
+            {NOTA_CONTACT.dupa}
+          </>
+        }
+      />
     </main>
   );
 }
