@@ -69,3 +69,13 @@ export const NEGASITA = {
  * jos e masurata la fel, pe pagina randata.
  */
 export const MASURA_ACT = "max-w-[540px]";
+
+/**
+ * Eticheta butonului primar de pe actele juridice si de pe instrumentul de termene. Aceeasi
+ * cu a fiselor de domeniu (`interior-solutii.ts`), si scurta dintr-un motiv masurat, nu de
+ * gust: „Programați o discuție de 30 de minute" se rupea pe doua randuri la 390 si dadea un
+ * buton de 72 px pe /termeni, /confidentialitate si /cookies (de doua ori pe fiecare), fata
+ * de 48 px cat are butonul peste tot in rest. Masurat la reconcilierea lotului S1-b, dupa ce
+ * un raport spusese 48 px „pe toate cele 7 pagini".
+ */
+export const BUTON_DISCUTIE = "Discuție de 30 de minute";

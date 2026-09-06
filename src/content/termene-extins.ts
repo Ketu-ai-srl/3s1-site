@@ -99,13 +99,10 @@ export const PAGINA_TERMENE = {
       "Opt categorii de documente, fiecare cu termenul, cu momentul din care începe să curgă și cu actul din care provine. Acoperim România. Unde nu putem arăta articolul, rândul rămâne gol și scriem de ce.",
       "Actul normativ stă pe rând, sub numele categoriei, la orice lățime de ecran. Categoria duce la fișa întreagă, cu momentul din care curge termenul și cu nota lui.",
     ],
-    // ORFANE de cand tabelul a devenit rand de ancore: cele trei antete de coloana nu mai
-    // sunt citite de nicio componenta (grep peste `src/` si `tests/` le gaseste doar aici).
-    // Raman scrise fiindca sunt CHEI de continut inghetat, iar stergerea lor e treaba valului
-    // de continut, nu a unei reparatii de asezare.
-    antetDocument: "Categoria de documente",
-    antetTermen: "Termen",
-    antetTemei: "Actul normativ",
+    // Cele trei antete de coloana ale tabelului (categoria / termen / actul normativ) au
+    // iesit odata cu tabelul, la reconcilierea lotului S1-b: DIRECTIA cere ca ce se taie din
+    // pagina sa se taie si din registrul ei, iar grep peste `src/` si `tests/` nu le mai gasea
+    // citite de nimeni.
     fara: "Rând gol",
     faraTemei: "Nu îl putem cita",
   },

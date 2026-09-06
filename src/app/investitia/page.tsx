@@ -56,8 +56,10 @@ export default function Investitia() {
       <AntetPagina
         adresa="/investitia"
         // Cadrul e `dulapuri` dintr-un motiv masurat, nu de gust: /accesibilitate deschidea cu
-        // `dosare` pe aceeasi ancora, si cele doua benzi ieseau identice la octet. Sertarele cu
-        // etichete de interval spun oricum mai bine ce masoara pagina asta.
+        // `dosare` pe aceeasi ancora, si cele doua benzi ieseau identice la octet. Cadrul
+        // `dulapuri` arata sertare de fisier cu etichete de interval (vezi `alt`-ul lui in
+        // fotografii.ts; `sertare` e alt cadru, peretele numerotat de pe /contact), si ele spun
+        // oricum mai bine ce masoara pagina asta.
         imagine={FOTOGRAFII.dulapuri}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Investiția" }]}
         eticheta={I.eticheta}

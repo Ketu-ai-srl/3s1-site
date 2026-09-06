@@ -25,6 +25,12 @@ import { describe, expect, it } from 'vitest'
 
 const RADACINA = join(__dirname, '..')
 const COMPONENTE = join(RADACINA, 'src', 'components')
+// Domeniul probelor de clase: TOT `src` (pagini, componente, continut). Pana la valul S1-b
+// se masurau doar fisierele feliei 1, ca sa nu se inroseasca pe pagini pe care nimeni nu avea
+// voie sa le atinga; S1-b a rescris si ultimele 21 de pagini interioare, deci nu mai exista
+// nicio exceptie legitima. Sirurile de clase din `src/content` intra si ele: `termene.ts`
+// purta 6 clase moarte exact acolo.
+const SURSA = join(RADACINA, 'src')
 const CSS = readFileSync(join(RADACINA, 'src', 'app', 'globals.css'), 'utf8')
 const DIRECTIA = readFileSync(join(RADACINA, 'docs', 'design', 'DIRECTIA.md'), 'utf8')
 
@@ -110,15 +116,11 @@ describe('paleta REF-V', () => {
 
   it('nicio componenta si nicio pagina nu mai scrie o clasa din paleta veche', () => {
     const abateri: string[] = []
-    for (const cale of [
-      ...fisiereTsx(COMPONENTE),
-      join(RADACINA, 'src', 'app', 'page.tsx'),
-      join(RADACINA, 'src', 'app', 'layout.tsx'),
-    ]) {
+    for (const cale of fisiereTsx(SURSA)) {
       const cod = faraComentarii(readFileSync(cale, 'utf8'))
       for (const m of cod.matchAll(CLASE_VECHI)) abateri.push(relativa(cale) + ': ' + m[0])
     }
-    expect(abateri, 'clase din paleta veche in fisierele feliei 1').toEqual([])
+    expect(abateri, 'clase din paleta veche in src/').toEqual([])
     // Control pozitiv: tiparul trebuie sa prinda forma pe care o vaneaza, inclusiv variantele.
     const martor = 'className="bg-noapte text-hartie-veche-2 hover:text-arama-clar"'
     expect([...martor.matchAll(CLASE_VECHI)].length, 'tiparul de clase vechi nu prinde martorul').toBe(3)
@@ -169,15 +171,9 @@ describe('paleta REF-V', () => {
     // `violet-2` da 4,05:1 pe alb: sub pragul de 4,5:1 pentru text mic, si proba de mai sus
     // afirma explicit ca inca e asa. E contur, hover si subliniere, nu litera.
     //
-    // Se masoara FISIERELE FELIEI 1, nu tot `src`: paginile altor felii se rescriu la valul
-    // urmator, iar o proba care ar cere si acolo s-ar inrosi pe munca pe care nimeni nu are
-    // voie sa o atinga acum.
+    // Se masoara tot `src` (vezi SURSA): de la S1-b nu mai exista pagini nerescrise.
     const gasite: string[] = []
-    for (const cale of [
-      ...fisiereTsx(COMPONENTE),
-      join(RADACINA, 'src', 'app', 'page.tsx'),
-      join(RADACINA, 'src', 'app', 'layout.tsx'),
-    ]) {
+    for (const cale of fisiereTsx(SURSA)) {
       const cod = faraComentarii(readFileSync(cale, 'utf8'))
       for (const m of cod.matchAll(/\btext-violet-2\b/g)) {
         gasite.push(relativa(cale) + ': ' + m[0])
@@ -233,13 +229,13 @@ describe('litera si scara', () => {
     expect(baza, 'nu gasesc regula de baza h1..h4').not.toBeNull()
     expect(baza![1], 'titlurile nu sunt la greutatea 400').toMatch(/font-weight:\s*400\s*;/)
     expect(baza![1], 'titlurile nu declara text-transform: none').toMatch(/text-transform:\s*none\s*;/)
-    // Si `uppercase` nu se mai scrie pe niciun titlu din fisierele feliei.
+    // Si `uppercase` nu se mai scrie nicaieri in `src`.
     const cuMajuscule: string[] = []
-    for (const cale of [...fisiereTsx(COMPONENTE), join(RADACINA, 'src', 'app', 'page.tsx')]) {
+    for (const cale of fisiereTsx(SURSA)) {
       const cod = faraComentarii(readFileSync(cale, 'utf8'))
       if (/\buppercase\b/.test(cod)) cuMajuscule.push(relativa(cale))
     }
-    expect(cuMajuscule, 'clase `uppercase` ramase in fisierele feliei 1').toEqual([])
+    expect(cuMajuscule, 'clase `uppercase` ramase in src/').toEqual([])
   })
 
   it('scara e cea masurata pe REF-V: 72, 48, 36, 24, 20, 16, 14', () => {

@@ -3,11 +3,14 @@ import type { Fapt } from "@/content/segmente";
 // Banda inchisa `noapte-v` a hub-ului de domenii: regulile care nu se schimba de la un
 // domeniu la altul, cu titlul si explicatia fiecareia.
 //
-// DE CE NU `BandaIncredere`. Aceea aseaza elementele pe patru coloane (`lg:grid-cols-4`) si e
-// INGHETATA. Lista pe care o poarta banda asta - `INDIFERENT_DE_DOMENIU` - are TREI intrari,
-// deci pe patru coloane al patrulea traseu ramanea gol: masurat la 1440, grila se termina la
-// x=1321 iar ultimul card la x=1012, adica 308 px de banda goala. Nu se repara nici prin
-// inventarea unui al patrulea fapt - ar fi o afirmatie noua scrisa ca sa umple un gol.
+// DE CE NU `BandaIncredere`. In valul S1-b aceea aseza elementele pe patru coloane fixe
+// (`lg:grid-cols-4`) si era INGHETATA. Lista pe care o poarta banda asta - `INDIFERENT_DE_DOMENIU`
+// - are TREI intrari, deci pe patru coloane al patrulea traseu ramanea gol: masurat la 1440,
+// grila se termina la x=1321 iar ultimul card la x=1012, adica 308 px de banda goala. Nu se
+// repara nici prin inventarea unui al patrulea fapt - ar fi o afirmatie noua scrisa ca sa umple
+// un gol. La reconcilierea lotului `BandaIncredere` a primit coloane dupa numarul de elemente;
+// componenta asta ramane fiindca forma ei e alta - cap de sectiune in stanga, lista in dreapta,
+// ca la `SegmentBandaDovezi` de pe fisele de domeniu - si hub-ul o tine in aceeasi familie cu ele.
 //
 // DE CE NU `SegmentBandaDovezi`. Aceea primeste siruri simple si le pune una sub alta cu o
 // bifa in fata. Faptele de aici sunt perechi titlu / text: taiate la un singur sir, ori pierd

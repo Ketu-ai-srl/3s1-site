@@ -247,18 +247,29 @@ vede nici el atunci când elementul rămâne lizibil din alt motiv (o legătură
 satisface 1.4.1 chiar dacă și-a pierdut culoarea). Degradarea e tăcută, deci inventarul se
 face cu o comandă, nu din memorie.
 
-Lista se reface din **diferența** dintre culorile de pe `main` și cele de acum, nu dintr-o
-listă scrisă de mână:
+Lista se reface din **diferența** dintre culorile paletei vechi și cele de acum, nu dintr-o
+listă scrisă de mână. Baza de comparație este `be2893c`, ultimul commit cu paleta veche
+(părintele lui `b47d24a`, „Fundația vizuală REF-V"), scrisă explicit: prima versiune a
+comenzii compara cu `main`, iar din clipa în care `main` a primit paleta nouă (lotul
+`s1-a`, 06.09) diferența ieșea goală, alternarea din regex devenea `-()` și expresia
+potrivea orice `text-`/`bg-` - trei agenți au raportat, independent, 97-110 „apariții"
+false. De aceea comanda refuză să continue cu o listă goală:
 
 ```bash
-git show main:src/app/globals.css | grep -oP '^\s*--color-\K[a-z0-9-]+' | sort -u > /tmp/culori_main
+git show be2893c:src/app/globals.css | grep -oP '^\s*--color-\K[a-z0-9-]+' | sort -u > /tmp/culori_vechi
 grep -oP '^\s*--color-\K[a-z0-9-]+' src/app/globals.css | sort -u > /tmp/culori_head
-ALT=$(comm -23 /tmp/culori_main /tmp/culori_head | paste -sd'|')
+ALT=$(comm -23 /tmp/culori_vechi /tmp/culori_head | paste -sd'|')
+test -n "$ALT" || { echo "lista de roluri dispărute e goală: baza e greșită"; exit 1; }
 grep -rnoP "\b(bg|text|border|from|to|via|ring|fill|stroke|decoration|outline|divide|placeholder|caret|accent)-($ALT)(?![-a-zA-Z0-9])" src/
 ```
 
-**Măsurat pe acest commit:** 28 de roluri de culoare dispărute, **52 de apariții** în `src/`,
-din care **44 în cod viu** și 8 în comentarii.
+**Măsurat la reconcilierea lotului `s1-b` (06.09):** 28 de roluri dispărute, **0 apariții**
+în `src/`, cu control pozitiv fabricat la rulare (un șir cu `text-hartie-veche-2` și
+`border-linie-suprafata`: 2 prinse) și controlul negativ de mai jos (`bg-noapte-v`: 0).
+Proba `tests/directia.test.ts` ține cifra la 0 pe tot `src/` de la același lot.
+
+**Măsurat la felia 1** (starea de plecare a paginilor interioare): 28 de roluri de culoare
+dispărute, **52 de apariții** în `src/`, din care **44 în cod viu** și 8 în comentarii.
 
 | Fișier | Clase vii |
 |---|---|

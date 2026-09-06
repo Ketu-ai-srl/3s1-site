@@ -9,7 +9,7 @@ import TermeneCuprins from "@/components/TermeneCuprins";
 import TermeneFisa from "@/components/TermeneFisa";
 import TermeneRegula from "@/components/TermeneRegula";
 import { FOTOGRAFII } from "@/content/fotografii";
-import { ANCORE_TERMENE } from "@/content/interior-juridic";
+import { ANCORE_TERMENE, BUTON_DISCUTIE } from "@/content/interior-juridic";
 import { PAGINA_TERMENE as P, TERMENE_ROMANIA } from "@/content/termene-extins";
 
 // Verificatorul de termene, ca document de sine statator.
@@ -204,7 +204,7 @@ export default function TermeneDePastrare() {
         <BandaCTA
           titlu={P.incheiere.titlu}
           text={P.incheiere.text}
-          actiune={{ href: "/contact", text: "Programați o discuție de 30 de minute" }}
+          actiune={{ href: "/contact", text: BUTON_DISCUTIE }}
         />
       </div>
     </main>

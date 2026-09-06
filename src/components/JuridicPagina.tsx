@@ -4,7 +4,7 @@ import Buton from "./Buton";
 import JuridicBlocuri from "./JuridicBlocuri";
 import JuridicCuprins from "./JuridicCuprins";
 import { FOTOGRAFII, type CheieFotografie } from "@/content/fotografii";
-import { MASURA_ACT } from "@/content/interior-juridic";
+import { BUTON_DISCUTIE, MASURA_ACT } from "@/content/interior-juridic";
 import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/juridic";
 
 // Forma unei pagini juridice, o singura data pentru toate trei, pe gramatica paginii
@@ -89,7 +89,7 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
           de text, nu butoane. */}
       <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
         <Buton href="/#discutie" sageata className="max-sm:w-full">
-          Programați o discuție de 30 de minute
+          {BUTON_DISCUTIE}
         </Buton>
         {celelalte.map((p) => (
           <Buton key={p.cale} href={p.cale} fel="text">
@@ -133,7 +133,7 @@ export default function JuridicPagina({ pagina }: { pagina: PaginaJuridica }) {
         eticheta={pagina.eticheta}
         titlu={pagina.h1}
         lead={pagina.lead}
-        actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
+        actiune={{ href: "/#discutie", text: BUTON_DISCUTIE }}
         secundar={pagina.secundar}
       />
 
