@@ -1,247 +1,193 @@
 # Direcția vizuală 3S
 
-Aprobată de owner pe pagina de start, septembrie 2026. Standardul dat: spacex.com.
+Fundal alb și ceață, un singur violet care duce acțiunea, o singură familie de literă,
+titluri cu literă obișnuită și punct la final, fotografia în card cu colțuri. Un ecran spune
+un singur lucru și are un singur buton principal.
 
-Un ecran spune un singur lucru. Fundal de noapte, hârtie veche pe literă, un singur accent
-de aramă, titluri condensate cu majuscule, fotografie pe tot ecranul, un buton. Tot ce nu
-încape în titlu + o linie + un buton nu e pentru ecranul de deschidere, ci pentru secțiunile
-de dedesubt, unde omul ajunge fiindcă vrea detaliul.
+Regulile de mai jos sunt cele mecanizate: `tests/directia.test.ts` le măsoară pe sursă, în
+sub o secundă, iar porțile de browser le măsoară pe pagina construită. Nu sunt preferințe.
 
-Regulile de mai jos sunt cele mecanizate. Poarta le măsoară; nu sunt preferințe.
+## Paleta
 
-## Jetoanele
+Paleta are paisprezece roluri. Lista e închisă: o culoare în plus înseamnă un rol pe care nu
+l-a numit nimeni, iar rolurile nenumite se aleg după gust, nu după măsurătoare. Proba refuză
+un jeton `--color-*` care nu e în listă.
 
-**Suprafețe.** `noapte` (#0b0b0c) e fundalul implicit al site-ului, pus pe `body`. `noapte-2`
-(#141416) e treapta pentru un ecran fără fotografie și pentru fișe; `noapte-3` (#1e1e21) e
-treapta pentru blocuri așezate peste ele. Negrul nu e #000: e cu un fir mai cald, ca hârtia
-să nu pară ecran.
+| Rol | Valoare | Unde se folosește |
+|---|---|---|
+| `violet` | `#673de6` | acțiunea principală, banda CTA, accentul din titluri |
+| `violet-2` | `#7b66ff` | contur de buton, hover, capătul deschis al gradientului |
+| `violet-clar` | `#9d99ff` | literă mică pe fundal închis, iconițe |
+| `violet-pal` | `#e6e8ff` | pastile, suprafața la trecerea cu mausul |
+| `violet-adanc` | `#251951` | capătul de sus al gradientului eroului |
+| `noapte-v` | `#110c29` | banda de încredere, capătul de jos al gradientului |
+| `cerneala` | `#18181a` | titluri și text principal |
+| `cerneala-2` | `#58585e` | text secundar, legături de subsol |
+| `cerneala-3` | `#6c6c72` | note și etichete mici |
+| `alb` | `#ffffff` | fundalul implicit al site-ului |
+| `ceata` | `#f5f5f6` | secțiunile alternative, subsolul, cardurile pe alb |
+| `ceata-2` | `#f8f9fa` | cardul așezat pe o secțiune de ceață |
+| `linie` | `#e9e9ec` | separatoare și chenare |
+| `succes` | `#009e5b` | bifa din liste (icoană, nu literă) |
 
-**Literă.** `hartie-veche` (#f2f0eb) pentru text principal, `hartie-veche-2` (#a8a49c) pentru
-text secundar, `hartie-veche-3` (#8a877f) pentru etichete mici. Contrastul, măsurat pe
-raportul de luminanță WCAG, ca să nu se remăsoare:
+**Contrastul, calculat din valorile de mai sus** cu raportul de luminanță WCAG. Scriptul e la
+finalul acestui document; cifrele sunt scrise aici ca să nu se remăsoare la fiecare
+componentă.
 
-    hartie-veche    pe noapte 17,27:1   pe noapte-3 14,60:1
-    hartie-veche-2  pe noapte  7,92:1   pe noapte-3  6,70:1
-    hartie-veche-3  pe noapte  5,48:1   pe noapte-3  4,63:1   (limita pentru text mic)
-    arama-clar      pe noapte  6,76:1   pe noapte-3  5,72:1
+    cerneala    pe alb 17,73:1   pe ceata 16,27:1
+    cerneala-2  pe alb  7,06:1   pe ceata  6,48:1   pe ceata-2 6,70:1
+    cerneala-3  pe alb  5,22:1   pe ceata  4,79:1   pe ceata-2 4,95:1
+    violet      pe alb  6,20:1   pe ceata  5,69:1   pe violet-pal 5,12:1
+    violet-2    pe alb  4,05:1
+    alb         pe violet 6,20:1   pe violet-adanc 15,71:1   pe noapte-v 18,95:1
+    violet-clar pe violet-adanc 6,31:1   pe noapte-v 7,61:1
+    succes      pe alb  3,48:1
 
-**Accent.** `arama-clar` (#c98a4b), unul singur pe ecran: eticheta de deasupra titlului, sau
-linia din stânga unui bloc, sau săgeata butonului. Nu toate trei.
+Regulile care decurg, și fiecare are o probă:
 
-**Linii.** `linie-noapte` (#2a2a2e) pentru chenare și despărțitoare pe fundal de noapte.
+- toate cele trei cerneli trec pragul pe toate cele trei suprafețe deschise, iar proba nu o
+  ia pe încredere: citește valorile din `globals.css` și calculează raportul;
+- `violet-2` nu scrie literă pe deschis: 4,05:1 e sub pragul de 4,5:1;
+- pe gradientul eroului se scrie `alb` sau `violet-clar`, și nimic altceva;
+- `succes` desenează bifa, nu poartă informație: 3,48:1 nu e culoare de text.
 
-Text pe `noapte` și treptele lui se scrie NUMAI cu aceste patru culori de literă. Peste
-fotografie cifrele de mai sus nu se aplică: acolo contrastul îl dă voalul din `Ecran`, iar
-`axe` nu evaluează contrastul peste imagini - îl marchează „needs review" și îl lasă în afara
-verdictului. O fotografie nouă se măsoară pe captură, nu se presupune.
+**`cerneala-3` e mai închisă decât în referință, și e o abatere măsurată.** Referința o dă la
+`#797980` și o leagă de o condiție: numai pe alb, și numai de la 18,66 px în sus sau la
+greutatea 600. Condiția nu se poate impune aici, fiindcă șapte pagini din `src/app` o scriu
+la 15,5 px și sunt ale valului următor. Măsurat cu `axe` pe arborele construit, la 1280 px:
+4,32:1, adică `serious` pe /accesibilitate, /arhivare-fizica, /comparatie, /cum-functioneaza,
+/investitia, /securitate și /solutii - șapte pagini roșii dintr-o singură culoare. Reparația
+îngustă e valoarea, nu regula scrisă în proză și nu poarta: `#6c6c72` dă 5,22 pe alb și 4,79
+pe ceață. **O regulă care spune „doar peste 18,66 px" nu se aplică singură; o valoare care
+trece se aplică singură peste tot.**
 
-## Cerneala urmează suprafața
+### Contrastul pe gradient se măsoară pe captură
 
-O primitivă partajată ajunge azi și pe noapte, și pe o bandă deschisă rămasă dintr-o pagină
-pe care încă n-a rescris-o felia ei. Dacă ar scrie `text-hartie-veche` ar fi albă pe alb
-acolo; dacă ar scrie cerneala veche, ar fi neagră pe negru aici.
+Gradientul eroului nu e o culoare, deci tabelul de mai sus nu îl acoperă. Se măsoară pe
+captură, cu litera făcută **transparentă**, ca pixelii citiți să fie fundalul, nu amestecul
+lui cu litera. Dreptunghiurile sunt cele strânse pe text, luate din pagina randată, iar
+culoarea literei vine din stilul calculat.
 
-De aceea primitivele scriu `text-cerneala`, `text-cerneala-2`, `text-cerneala-3`,
-`text-cerneala-accent` și `border-linie-suprafata`, iar suprafața de deasupra spune ce
-înseamnă. Clasa de fundal e cea care decide: `bg-noapte` și treptele lui dau cerneală
-deschisă, `bg-hartie`, `bg-hartie-2` și `bg-arama-moale` dau cerneală închisă. Suprafața duce
-cu ea și culoarea moștenită, nu doar variabilele, deci un titlu fără nicio clasă de culoare
-se așază corect singur.
+Măsurat pe pagina de start, la 1440 și la 390 px (`innerWidth` citit din pagină: 1440 și
+390), minimul pe pixeli:
 
-Paleta veche e legată la aceleași variabile, ca alias. Paginile nerescrise încă rămân lizibile
-pe negru fără să fie atinse, iar o bandă deschisă pe care o pune o pagină rămâne lizibilă cum
-era. Nu scrieți cod nou cu ea.
+    eticheta 14 px / 600, violet-clar    1440: mediu 5,89  minim 5,37
+                                          390: mediu 5,94  minim 5,36
+    titlu 72 / 36 px, alb                1440: mediu 16,36 minim 13,88
+                                          390: mediu 15,91 minim 13,91
+    paragraf 16 px, alb                  1440: mediu 17,95 minim 17,65
+    rândul de garanție 14 px, violet-clar 1440: mediu 7,43 minim 7,38
+    legăturile barei 14 px, alb          1440: mediu 14,04 minim 13,73
 
-`bg-suprafata` NU mai e o suprafață deschisă: jetonul `--color-suprafata` a trecut de la
-#ffffff pe noapte, fiindcă era gaura prin care direcția veche supraviețuia tăcut - patru
-fișiere îl scriau și primeau un document alb pe un site de noapte, iar mecanismul de cerneală
-îl ținea peste 4,5:1, deci nicio poartă de contrast nu se înroșea. **Un mecanism de contrast
-măsoară contrastul, nu coerența.** Coerența se măsoară pe suprafață: procentul de pixeli
-deschiși din pagină. /termeni avea 80% la 1280 px, /confidentialitate 83%, /cookies 74%,
-restul site-ului 0%. Astăzi nicio pagină nu trece de 3%, iar acel rest sunt literele însele și
-cele trei pastile de stare din verificatorul de termene.
+**Măsurătoarea are nevoie de un control, și aici a fost nevoie de două.** Prima rulare a dat
+1,59 minim pe legăturile barei, adică un defect grav pe o bară care stă pe violet-adânc.
+Cauza: legăturile au `transition-colors duration-200`, deci captura luată imediat după ce
+litera a fost făcută transparentă a prins glifa încă aproape albă și a măsurat-o drept
+fundal. Se opresc tranzițiile și animațiile în același bloc de stil, și se așteaptă 400 ms.
+A doua oară, toate blocurile au ieșit exact 21,00 - valoarea martorului - fiindcă serverul
+care servea capturile era pornit înaintea reconstruirii și livra o pagină fără foaia de
+stil: numele fișierului CSS se schimbase. Semnul care a dat-o de gol: culoarea legăturilor
+era `rgb(0, 0, 238)`, albastrul implicit al browserului. **Serverul se repornește după
+fiecare build, iar culoarea calculată se citește, nu se presupune.**
 
-## Tipografie
+O fotografie nouă, un titlu mai înalt sau o mutare a luminii din gradient cer remăsurarea.
+Lumina radială din erou stă la 0,22 opacitate tocmai din măsurătoare: la 0,38 eticheta de
+14 px cobora la 4,50 minim, adică fix pe pragul de 4,5:1. Un prag așezat pe punctul de eșec
+e necrolog, nu avertisment.
 
-`font-afis` (Barlow Condensed 700) pentru titluri, MAJUSCULE, `tracking-[-0.01em]`.
-`font-vitrina` (Barlow) pentru text. `font-mono` (IBM Plex Mono) mic, cu tracking larg, pentru
-cote, citări și etichete.
+## Litera
 
-Scara titlurilor e una singură pe tot site-ul, și e o scară, nu o mărime:
+O singură familie: **DM Sans**, încărcată prin `next/font/google`, cu greutățile **400 și
+600**. 700 nu se încarcă: titlurile nu sunt bold. Jetoanele moștenite `font-afis`,
+`font-vitrina` și `font-mono` arată toate către aceeași variabilă, deci un nume vechi rămas
+într-o componentă nu poate strecura o a doua familie.
 
-- `text-titlu-1` = `clamp(2.5rem, 6.5vw, 6rem)`. Doar `h1`: ecranul de deschidere al
-  paginii. Măsurat la 1280 px: 83,2 px.
-- `text-titlu-2` = `clamp(2rem, 4.2vw, 3.5rem)`. `h2`: ecranele următoare și titlurile de
-  secțiune. Măsurat la 1280 px: 53,8 px.
-- antetul-bandă = `clamp(2.25rem, 5vw, 4.25rem)`, 64 px la 1280. Treapta paginilor care sunt
-  documente sau unelte, ca titlul lor să rămână peste titlurile de secțiune fără să ocupe
-  ecranul întreg.
+Scara, măsurată pe referință, la 1440 și la 390:
 
-**Înălțimea de rând este 1,1 la toate trei**, și la titlurile fără clasă de scară. E o cifră
-măsurată, nu o preferință. Pe fontul real, la 83,2 px: virgula lui Ș coboară 15 px sub linia
-de bază (0,180 em), iar cea mai înaltă capitală românească, Â/Î, urcă 74 px (0,889 em). Pasul
-de rând trebuie deci să fie de cel puțin 1,070 em, plus o rezervă de 0,03 em ca marcajele să
-se vadă separate.
+| Rol | 1440 | 390 | Jeton |
+|---|---|---|---|
+| titlu erou (h1) | 72 / 80 px | 36 / 44 px | `text-titlu-1` |
+| titlu de secțiune | 48 / 56 px | 24 / 32 px | `text-titlu-2` |
+| titlu de bloc | 36 / 44 px | 28 px | `text-titlu-3` |
+| titlu de card | 24 / 32 px | - | `text-titlu-4` |
+| subtitlu de card | 20 / 28 px | - | `text-subtitlu` |
+| corp | 16 / 24 px | 16 / 24 px | `text-corp` |
+| notă, etichetă, rând juridic | 14 / 20 px | 14 / 20 px | `text-nota` |
 
-Direcția a pornit de la 0,92, și 0,92 nu încape: rămâneau 2,54 px până la o capitală obișnuită
-și MINUS 12,46 px când urma Â/Î, adică suprapunere. Se citea ca accent pe litera greșită -
-„ȘASE" peste „SUBSOL" dădea „ȘUBSOL", „AȘTEAPTĂ" peste „REGISTRUL" dădea „REGÍSTRUL".
-Numărate pe cele 22 de pagini, la 1280 și la 390 px: 175 de perechi Ș/Ț peste o capitală aveau
-sub 2 px de spațiu. Pagina de start scăpa din întâmplarea formulării, fiindcă titlul ei nu are
-ș/ț înainte de ultimul rând.
+Titlurile stau la greutatea 400, cu `letter-spacing: -0.005em`, literă obișnuită și punct la
+final. Înălțimea de rând e cel puțin **1,069 em** pe toate treptele, și e un prag măsurat, nu
+un gust: pe fontul real, virgula lui Ș coboară 0,180 em sub linia de bază, iar Â/Î urcă
+0,889 em. Pragul se păstrează deși titlurile nu mai sunt cu majuscule - nu costă nimic, iar o
+regulă relaxată fiindcă „azi nu mai avem majuscule" se strică la primul titlu cu majuscule.
 
-Un `h1` pe pagină, fără sărituri de nivel. Subsolul are `h2`.
+Titlul se rupe unde vrea autorul, cu o rupere de rând explicită. Un `h1` pe pagină, fără
+sărituri de nivel. O etichetă de deasupra titlului nu e paragraf: se scrie `span`, niciodată
+`p` - poarta S-17 compară textul randat cu cel citit fără JavaScript și cântărește
+paragrafele adevărate.
 
-Titlul se rupe unde vrea autorul, cu o rupere de rând explicită. Nu puneți o lățime maximă
-strâmtă peste el: o limită de 14 caractere rupea titlurile PESTE ruperea autorului și lăsa
-orfani pe rândul patru. Lățimea de acum e largă tocmai ca ruperea scrisă să rămână singura.
+## Forme
 
-O etichetă de deasupra titlului nu e paragraf: se scrie `span` sau `div`, niciodată `p`. Are
-majuscule din CSS, iar transformarea se vede în textul randat și nu în cel din sursă, deci un
-paragraf cu majuscule sparge poarta S-17 pe unele pagini și nu pe altele. Nota lungă e în
-`src/components/Ecran.tsx`.
+Raze: **8 px** butoane, **12 px** carduri mici și casete de intrare, **16 px** carduri mari
+și imagini în card, **24 px** cardurile mari de erou, **999 px** pastile (file, etichete de
+stare, butonul din bară).
 
-## Ritm
+**Umbre: aproape deloc.** Cardurile se despart prin culoare de fundal - ceață pe alb, alb pe
+ceață - nu prin umbră. Singurele două umbre definite sunt conturul butonului secundar, care e
+umbră tocmai ca să nu miște așezarea cu un pixel față de butonul plin de lângă el, și
+elementul plutitor. Pe card static nu se scrie `shadow-`, iar proba o refuză.
 
-Fiecare pagină se deschide cu un ecran plin: `Ecran` cu nivel `h1`, o etichetă mono, titlul
-uriaș, O linie sub 40 de cuvinte, UN buton. Conținutul trebuie să încapă, cu buton cu tot,
-într-un ecran de 800 px - butonul nu are voie să cadă sub margine. Se măsoară, nu se presupune:
-poziția marginii de jos a butonului, pe fiecare pagină, la 1280x800 și la 390x844.
+Containerul de conținut e **1265 px** într-o fereastră de 1440. Coloana îngustă a
+secțiunilor de text curat e `--container-registru`; paginile care sunt ACTE păstrează
+`--container-act` (720 px), unde jgheabul cifrei plus coloana de 492 px dau un rând de 68 de
+caractere în medie.
 
-**Excepția: documentele și uneltele.** /termeni, /confidentialitate, /cookies,
-/instrumente/termene-de-pastrare, /securitate, /accesibilitate, /investitia și /comparatie
-deschid cu `Ecran forma="banda"` - un antet de 478-549 px la 1280, cu titlul în stânga și
-linia plus butonul în dreapta. Acolo omul a venit după o clauză, după un termen sau după o
-cifră, iar un afiș de film de 800 px îl ține departe de răspuns. Pe pagina care ESTE o
-unealtă, acțiunea principală a antetului duce la unealtă, nu la o întâlnire, iar prima
-secțiune e `dens`: măsurat, primul rând din tabelul de termene a urcat de la 1800 px (2,25
-ecrane) la 773 px (0,97 ecrane) la 1280.
+Butoanele au patru feluri, și fiecare răspunde la altă întrebare:
 
-Cele patru pagini-document au trecut pe bandă pe 6 sep 2026, și nu din gust. Cu ecranul plin
-pe fiecare pagină, șapte cadre trebuie să deschidă 22 de pagini, iar rezultatul a fost
-măsurat, la octet: hash sha256 al stratului de fotografie, cu voalul și textul ascunse, pe
-toate cele 22. Ieșeau 14 amprente distincte și șase repetări, dintre care două perfecte pe
-pagini vecine în meniu - /securitate era IDENTICĂ cu pagina de start (`35d334799f1c`, același
-cadru, aceeași ancoră, aceeași înălțime de secțiune) și /accesibilitate cu /investitia
-(`9f6787429eb7`). Control: /comparatie contra paginii de start dă amprente diferite, deci
-metoda deosebește. Ecranul plin rămâne un gest de vitrină; pe bandă fotografia e textură, iar
-un cadru care se repetă acolo nu mai citește ca aceeași pagină reintitulată.
+```tsx
+<Buton href="/contact">Discuție de 30 de minute</Buton>        // primar pe fundal deschis
+<Buton href="/contact" fel="alb">Discuție</Buton>              // primar pe fundal închis
+<Buton href="/solutii" fel="contur">Vedeți domeniile</Buton>   // al doilea drum, cu contur
+<Buton href="/despre" fel="text">Despre noi</Buton>            // al doilea drum, ca legătură
+```
 
-**Ce cere un ecran plin cu fotografie:** un cadru cu subiect care se vede sub voal, și un
-cadru pe care nu îl mai deschide altă pagină. Amândouă se măsoară: luminanța medie în
-cadranul liber (x 700-1260, y 70-300 la 1280x800, unde voalul e același pe toate paginile) și
-amprenta stratului de fotografie. Reper: pagina aprobată stă la 0,174 medie cu un maxim de
-0,847 - adică are un subiect luminat. Cadrele care nu ajung acolo se pun pe bandă, nu pe
-ecran plin.
+**Un singur buton primar pe secțiune.** `plin` și `alb` sunt amândouă primare: nu se pun două
+pe același ecran, indiferent de fundal. Al doilea drum e `contur` sau `text`. Proba numără
+butoanele primare pe fiecare secțiune a paginii de start și refuză a doua.
 
-Sub el vin secțiunile, pe fundal de noapte, cu `py-24 md:py-36` între ele, titluri condensate
-cu majuscule și text sub 60 de cuvinte pe bloc.
+## Gramatica paginii de start
 
-**Cadrul se umple sau nu există.** Lățimea containerului nu e o decorație pe care o alegi o
-dată și o refolosești: e promisiunea că textul ajunge la marginea ei. Paginile juridice stăteau
-în containerul de registru (1180 px) și declarau o coloană de conținut de 952 px, dar h2 folosea
-516 și paragraful 485 - deci 436 px rămâneau goi ÎNĂUNTRUL coloanei declarate, pe 26 din 28 de
-secțiuni, cu cinci margini drepte diferite pe aceeași pagină și niciuna a containerului. Pagina
-de start umple cadrul pe toate cele cinci secțiuni ale ei. Reparația nu îngustează textul, ci
-cadrul: `--container-act` (720 px) dă 148 px de jgheab pentru cifră plus 492 px de coloană, iar
-coloana ESTE măsura - de aceea pe paginile acelea nu mai există niciun `max-w-[..ch]` scris pe
-element. Două plafoane pentru aceeași măsură se abat unul de la altul; unul singur nu poate.
+1. **Erou** pe gradient violet, centrat: etichetă de 14 px, h1 pe două rânduri, un paragraf
+   de 16 px, UN buton alb, și un rând de 14 px cu iconiță sub el. **Fără fotografie** - eroul
+   e culoare, iar fotografiile intră abia sub el.
+2. **Rândul de carduri-imagine** care iese din banda eroului și intră peste secțiunea albă:
+   patru fotografii în carduri de 16 px, cu eticheta sub fiecare.
+3. **Banda albă de întrebare**: h2 de 48 px centrat, cu a doua propoziție în `violet`, și un
+   paragraf de 16 px sub el.
+4. **Două carduri**: unul mare cu gradient violet (pastilă, titlu, paragraf, buton alb), unul
+   coloană cu două carduri pe ceață.
+5. **Filele-pastilă** ale celor trei etape: fila activă e închisă cu literă albă, panoul are
+   imaginea în stânga și textul în dreapta. Toate panourile sunt în HTML-ul servit, doar
+   ascunse - cine citește fără JavaScript are tot textul.
+6. **Grila de domenii** pe ceață, două coloane, carduri albe.
+7. **Banda de încredere** pe `noapte-v`, cu faptele atribuite.
+8. **Banda CTA** violetă, cu buton alb.
+9. **Subsolul** pe ceață: coloane de legături de 14 px, blocul de identificare cerut de lege,
+   rândul juridic de 12 px.
 
-Măsura se verifică numărând caractere pe pagina randată, nu în `ch`: `ch` e lățimea glifei
-ZERO, printre cele mai late ale fontului, iar `max-w-[74ch]` dădea 98 de caractere pe rând, nu
-74. La 492 px ies 68 în medie, cu vârf la 75.
-
-Listele tipografice: un rând = o legătură, cu numele condensat cu majuscule și o săgeată de
-aramă la capăt. Pe pagina de start stau pe trei coloane, fiindcă rândul poartă doar numele;
-când poartă și o descriere, ca pe /solutii, lista trece pe o coloană și rândul ține toată
-lățimea. Fără grilă de cartonașe pentru aceleași date - același conținut nu are voie să apară
-în două limbaje vizuale la un clic distanță.
-
-UN buton plin pe secțiune, și în blocul de închidere, nu doar în antet. Al doilea drum se
-scrie ca legătură de text subliniată (`Buton fel="text"`, sau `secundar` la `Ecran`). Două
-chenare alăturate nu spun care e pasul următor.
-
-## Fotografii
-
-În `public/img/`: rafturi, cutii, dosare, dulapuri, sertare, mâini, legătură. Fiecare are o
-variantă de 1920 px pentru ecran lat și una de 960 px servită sub 768 px; toate variantele de
-960 sunt PORTRET, fiindcă un peisaj întins pe un telefon ținut vertical se mărește și se
-înmoaie.
-
-Sunt ILUSTRATIVE, de pe Pexels, cu licența în `public/img/LICENTA.md`. Textul alternativ spune
-„fotografie ilustrativă". Nu se afirmă nicăieri că ar fi depozitul nostru și nu se descarcă
-altele.
-
-**Fiecare pagină are una.** Registrul e `src/content/fotografii.ts` - un singur loc care ține
-numele fișierului, textul alternativ și ancora decupajului; pagina alege cheia, nu scrie
-descrierea. Ancora se poate rescrie din pagină (`{{ ...FOTOGRAFII.maini, pozitie: "center
-20%" }}`) când același cadru deschide două pagini cu titluri de înălțimi diferite, dar numai
-cu cifra pe care o dă baleiajul de pe captură scrisă lângă ea - vezi
-`src/app/cum-functioneaza/page.tsx`. Fișierul și textul alternativ rămân ale registrului. Același cadru ajunge pe două-trei pagini, deci două descrieri scrise de mână ar
-diverge la prima editare. Cheile se aleg ca paginile VECINE să nu deschidă la fel: cele șase
-intrări din bara de sus au șase cadre diferite, iar cele șapte fișe de domeniu au șapte.
-
-Voalul de sub text e LOCAL, nu pe tot ecranul: negru sub coloana de text, jos și în stânga,
-plus o dungă subțire pe primii 140 px, sub bara fixă. Greul stă pe stratul din STÂNGA, unde e
-coloana de text; cele două treimi din dreapta rămân fotografie. Sub 768 px voalul e mai gros,
-fiindcă acolo textul ține toată lățimea și nu mai există jumătate de fotografie de apărat.
-Antetul-bandă are voalul lui, mai uniform, fiindcă amândouă coloanele lui poartă text.
-
-Contrastul textului peste fotografie NU e măsurat de `axe`: regula `color-contrast` întoarce
-`incomplete` pentru textul așezat peste o imagine și îl lasă în afara verdictului. Se măsoară
-pe captură, cu textul ascuns și cu pixelii citiți sub dreptunghiurile strânse pe litere.
-Pragul: media peste 4,5:1 pentru text mic - eticheta de 11-12 px și firul de navigare sunt
-cele care cad primele.
-
-Cifra de 5,18:1 „cea mai mică medie pe toate cele 22 de pagini" venea dintr-o măsurătoare
-care lua media pixelilor din dreptunghiul literelor. Remăsurat pe 6 sep 2026 cu literele
-ASCUNSE, adică pe fundalul curat, eticheta de 12 px în `arama-clar` dădea 4,39:1 mediană pe
-/accesibilitate și 4,60 pe /investitia - sub prag, pe chiar pagina care promite pragul. După
-trecerea celor patru documente pe bandă, cele șase pagini de mecanism stau la 4,82-6,71
-mediană (cea mai mică: /arhivare-fizica). **Pe paginile de vitrină pe care nu le-a atins
-felia 27 măsurătoarea nu s-a repetat cu metoda nouă, iar percentila 90 a fundalului scade
-acolo până la 1,22 (/solutii/imobiliare) - de verificat separat.** **O fotografie nouă, o
-mutare de decupaj sau o schimbare de înălțime a titlului cer remăsurarea.** A treia nu
-
-**Un voal constant nu dă un rezultat constant.** Fotografiile intră cu expuneri foarte diferite,
-deci ce se egalizează e IEȘIREA, nu intrarea. Amplitudinea de luminanță a benzii (p95-p5),
-măsurată pe captură cu textul făcut transparent, la 1280 px: cu un singur voal peste toate,
-`rafturi` dădea 0,0138 (fotografia se vede), `dosare` 0,0081 (o aluzie) și `legatura` 0,0036 -
-de 3,8 ori mai plat, adică 139.896 de octeți plătiți pentru șase niveluri de gri. Fiecare
-fotografie își poartă acum factorul ei în registru (`voalBanda`), iar `.voal-banda` îl aplică pe
-TRANSMITANȚA stratului vertical, nu pe opacitate: la 1 rămân exact valorile aprobate.
-
-Plafonul nu-l pune ținta, îl pune litera. Voalul subțiat lasă să treacă și lumina de sub text,
-iar contrastul peste fotografie nu e măsurat de `axe`. `legatura` ar fi avut nevoie de 2,9 ca să
-atingă referința; la 2,9 eticheta de aramă cădea la 4,44:1 la 390 px. Stă la 2,5, unde dă 0,0108
-și 4,80:1. Se scrie ce s-a măsurat: două din trei pagini ajung la referință, a treia se oprește
-cu o cincime sub ea, fiindcă dincolo se plătește în literă.
-
-Contrastul textului peste fotografie NU e măsurat de `axe`. Se măsoară pe captură, cu textul
-ascuns și cu pixelii citiți sub dreptunghiurile strânse pe litere. Pragul: media peste 4,5:1
-pentru text mic - eticheta de 11 px și firul de navigare sunt cele care cad primele. Măsurat
-pe toate cele 22 de pagini, la 1280 și la 390: cea mai mică medie este 5,18:1. **O fotografie
-nouă, o mutare de decupaj sau o schimbare de înălțime a titlului cer remăsurarea.** A treia nu
-e evidentă și a fost prinsă chiar aici: titlurile mai înalte urcă blocul de text, iar blocul e
-lipit de marginea de jos, deci eticheta iese din zona groasă a voalului.
-
-## Mișcare
-
-Două gesturi, amândouă pe primul ecran: fotografia respiră lent (`respira`, de la scara 1 la
-1,04 în 20 de secunde, numai prin transformare) și eticheta, titlul, linia și butonul urcă
-eșalonat (`urca`, cu treptele de la 1 la 5), o singură dată. Setarea de mișcare redusă a
-sistemului le oprește pe amândouă. Fără dezvăluire la derulare pe text.
+Ancorele paginii de start (`scan`, `store`, `solve`, `domenii`, `discutie`) rămân cu aceleași
+nume: harta site-ului trimite la ele, iar o ancoră fără țintă e legătură moartă pe pagina
+care există tocmai ca să arate drumurile. Primele trei sunt chiar butoanele filelor, deci
+`/#store` deschide fila Store, nu doar derulează lângă ea.
 
 ## Cum se construiește o pagină interioară
 
-Antetul e același ecran plin ca pe pagina de start. `AntetPagina` îl compune, cu firul de
-navigare deasupra etichetei, și emite datele structurate din aceeași listă.
+Antetul e ALB și scurt: firul de navigare, eticheta, titlul de 48 px, o linie, butonul violet
+și, în dreapta, fotografia într-un card cu raza de 16 px.
 
 ```tsx
 import AntetPagina from "@/components/AntetPagina";
-import SectiuneRegistru from "@/components/SectiuneRegistru";
 import ListaBifa from "@/components/ListaBifa";
-import BlocDovada from "@/components/BlocDovada";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 export const metadata = { alternates: { canonical: "/arhivare-fizica" } };
 
@@ -256,36 +202,65 @@ export default function Pagina() {
         lead="O linie, sub 40 de cuvinte, care spune ce găsește omul pe pagina asta."
         actiune={{ href: "/contact", text: "Discuție de 30 de minute" }}
         secundar={{ href: "/cum-functioneaza", text: "Vedeți mecanismul" }}
-        imagine={{ nume: "rafturi", alt: "Rafturi de arhivă, fotografie ilustrativă" }}
+        imagine={FOTOGRAFII.rafturi}
       />
 
-      <SectiuneRegistru cota="I" eticheta="Preluare" titlu="Ce se întâmplă în prima zi">
-        <ListaBifa titlu="Ce aducem" elemente={["Cutii", "Etichete", "Proces-verbal"]} />
-        <BlocDovada eticheta="Ce nu putem susține încă">
-          Textul care spune ce nu e confirmat. Rămâne pe pagină, nu se taie.
-        </BlocDovada>
-      </SectiuneRegistru>
+      <ListaBifa titlu="Ce aducem" elemente={["Cutii", "Etichete", "Proces-verbal"]} />
     </main>
   );
 }
 ```
 
 `titlu` primește și noduri, nu doar șiruri, deci ruperea de rând se scrie acolo unde o vreți.
-`imagine` vine din registrul de fotografii (`FOTOGRAFII.rafturi`); fără el, antetul stă pe
-`noapte-2`, iar asta e o excepție care se argumentează, nu implicitul. `forma="banda"` e
-pentru documente și unelte. `Ecran` mai primește `dovada`, o
-linie de 14 px sub buton, pentru atribuiri de felul „ADRIA Servicii Arhivare, Golești -
-autorizată, din 2019"; azi nu o folosește nicio pagină.
+`forma="banda"` scurtează antetul paginilor care sunt documente sau unelte. Fotografia vine
+din registrul `src/content/fotografii.ts`, cu textul alternativ scris acolo o singură dată.
+
+Componentele de pagină moștenite (`PaginaDeSegment`, `Fisa*`, `Juridic*`, `Mecanism*`,
+`Termene*`, `Comparatie*`) au fost **retintuite mecanic** la felia de fundație: li s-a
+schimbat paleta și greutatea literei, nu așezarea. Notele lor lungi descriu direcția
+anterioară, cu măsurătorile ei pe fundal închis, și fiecare fișier o spune în primele rânduri.
+Gramatica lor se rescrie la valul următor.
 
 ## Ce nu se face
 
-Fără grilă de fișe identice cu icoane. Fără numere mari de ornament - un număr are voie să
-existe dacă se citește, ca `Pasul 1` din `Pas`. Fără emoji. Fără antiteza „nu e X, e Y". Fără
-secțiuni interschimbabile. Fără gradiente decorative, umbre sau colțuri rotunjite. Fără
-sigilii despre propria noastră rigoare, de felul unei date de verificare tipărite în subsol.
+- **Fotografie pe tot ecranul.** Fotografia stă în card, cu colțuri, și nu poartă text peste
+  ea. Așa dispare tot mecanismul de voal: nu mai există contrast peste imagine, adică exact
+  cazul pe care `axe` îl marchează „needs review" și îl lasă în afara verdictului.
+- **Majuscule pe titluri.** Nici din CSS, nici scrise în text. Titlul e o propoziție.
+- **Umbre pe carduri.** Separarea se face cu culoarea de fundal.
+- **Al doilea buton primar** în aceeași secțiune.
+- **Culori din direcția anterioară**, nici măcar definite „pentru orice eventualitate": o
+  culoare definită și nefolosită e gaura prin care direcția veche supraviețuiește tăcut.
+- **Emoji, gradiente decorative, grilă de fișe identice cu icoane, numere mari de ornament.**
+- **Sigilii despre propria noastră rigoare**, de felul unei date de verificare tipărite în
+  subsol.
 
-Conținutul nu se inventează și nu se pierde. Textul fiecărei pagini e scris atribuit, cu
-afirmațiile înregistrate în `src/content/afirmatii/`. Se REAȘAZĂ în ritmul nou - mai puțin pe
-ecran, restul în secțiuni de detaliu - dar coloanele despre ce nu putem susține încă rămân,
-temeiurile legale rămân, iar cifre, certificări sau clienți nu se adaugă. Ce tăiați din
-pagină, tăiați și din registrul ei de afirmații.
+Conținutul nu se inventează și nu se pierde. Fiecare afirmație verificabilă are o intrare în
+`src/content/afirmatii/`, iar ce nu putem susține rămâne scris ca atare. Cifre, certificări
+sau clienți nu se adaugă. Ce se taie din pagină se taie și din registrul ei.
+
+## Scriptul de contrast
+
+Cifrele din acest document se pot reface. Raportul de luminanță WCAG, din valorile paletei:
+
+```python
+def canal(v):
+    v = v / 255.0
+    return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+
+def luminanta(rgb):
+    r, g, b = rgb
+    return 0.2126 * canal(r) + 0.7152 * canal(g) + 0.0722 * canal(b)
+
+def contrast(a, b):
+    la, lb = luminanta(a), luminanta(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+```
+
+Pe gradient se măsoară pe captură: se citesc dreptunghiurile strânse pe text și culoarea
+calculată a fiecărui bloc, se opresc tranzițiile și animațiile, se face litera transparentă,
+se așteaptă, se face captura, apoi se calculează contrastul pe fiecare pixel de sub literă.
+Lângă rezultat se pune întotdeauna un martor cu răspuns cunoscut - alb pe negru, care trebuie
+să dea 21,00 - și se verifică pe pagină o culoare pe care o cunoașteți dinainte, ca să se
+vadă dacă foaia de stil chiar s-a aplicat.
