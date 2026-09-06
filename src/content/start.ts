@@ -41,25 +41,30 @@ export const EROU = {
 
 // Cele patru carduri-imagine care ies din banda eroului. Fotografiile sunt cele din
 // `public/img/`, ilustrative, cu licenta in `public/img/LICENTA.md`.
+//
+// Textul alternativ e scris aici, nu citit din `src/content/fotografii.ts`, fiindca pagina de
+// start isi tine textele in fisierul asta. Cheile sunt aceleasi, deci cand se schimba setul de
+// fotografii - cum s-a intamplat pe 2026-09-06, ca site-ul sa nu mai poarte cadrele primului
+// site - se rescriu AMBELE locuri, altfel alt-ul descrie o fotografie care nu mai exista.
 export const CARDURI_EROU: CardImagine[] = [
   {
     nume: "rafturi",
-    alt: "Rafturi metalice de arhivă cu cutii numerotate, fotografie ilustrativă",
+    alt: "Perete de rafturi albe cu teancuri de hârtii și cutii de carton, fotografie ilustrativă",
     eticheta: "Depozit",
   },
   {
     nume: "cutii",
-    alt: "Cutii de arhivă cu cote numerotate pe raft, fotografie ilustrativă",
+    alt: "Cutii de carton stivuite pe un raft metalic, cu etichete de manipulare, fotografie ilustrativă",
     eticheta: "Preluare",
   },
   {
     nume: "dosare",
-    alt: "Dosare de arhivă legate cu sfoară, fotografie ilustrativă",
+    alt: "Fișe de carton cu etichete scrise de mână, într-un sertar de catalog, fotografie ilustrativă",
     eticheta: "Digitizare",
   },
   {
     nume: "sertare",
-    alt: "Perete de sertare de arhivă numerotate, fotografie ilustrativă",
+    alt: "Mâini care deschid un sertar dintr-un fișet metalic alb, fotografie ilustrativă",
     eticheta: "Căutare",
   },
 ];
@@ -104,7 +109,7 @@ export const ETAPE = {
       legatura: { href: "/cum-functioneaza", text: "Cum funcționează" },
       imagine: {
         nume: "dosare",
-        alt: "Dosare de arhivă legate cu sfoară, fotografie ilustrativă",
+        alt: "Fișe de carton cu etichete scrise de mână, într-un sertar de catalog, fotografie ilustrativă",
         pozitie: "center 55%",
       },
     },
@@ -116,7 +121,7 @@ export const ETAPE = {
       legatura: { href: "/arhivare-fizica", text: "Arhivare fizică" },
       imagine: {
         nume: "cutii",
-        alt: "Cutii de arhivă cu cote numerotate pe raft, fotografie ilustrativă",
+        alt: "Cutii de carton stivuite pe un raft metalic, cu etichete de manipulare, fotografie ilustrativă",
         pozitie: "center 45%",
       },
     },
@@ -128,7 +133,7 @@ export const ETAPE = {
       legatura: { href: "/instrumente/termene-de-pastrare", text: "Termene de păstrare" },
       imagine: {
         nume: "maini",
-        alt: "Mână care scoate un dosar dintr-o cutie de arhivă, fotografie ilustrativă",
+        alt: "Mâini care răsfoiesc actele dintr-o mapă cu despărțitoare, pe un birou luminos, fotografie ilustrativă",
         pozitie: "center 50%",
       },
     },
