@@ -1,33 +1,24 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
 import Link from "next/link";
 
-// Un domeniu pe hub-ul /solutii: un RAND de lista, nu un cartonas.
+// Un domeniu pe hub-ul /solutii: un CARD, in grila de doua coloane.
 //
-// DE CE S-A SCHIMBAT FORMA. Pana pe 2026-09-06 aceleasi sapte domenii aratau in doua
-// limbaje opuse, la un clic distanta: pe pagina de start, lista de legaturi cu majuscule
-// condensate si sageata de arama, pe negru; pe /solutii, sapte cartonase ALBE de 384x227 px
-// pe pagina neagra, cu litera din paleta veche. In plus era chiar forma pe care o cauti cand
-// vanezi sabloane: sapte copii identice ale aceleiasi cutii, ultimul rand cu o celula din
-// trei ocupata, si sapte repetari ale aceluiasi indemn. Pe 390 px iesea o scara
-// alb-negru-alb-negru de sapte trepte.
+// CE S-A SCHIMBAT LA VALUL S1-b, si de ce. Randul de lista era forma directiei anterioare:
+// sapte randuri late, cu numele la 33 px si o linie subtire intre ele, adica un registru.
+// REF-V pune aceeasi multime intr-o grila de carduri pe ceata, cu sageata diagonala in
+// coltul din dreapta-sus (§4.5). Sageata diagonala e marca „duce in alta parte" si nu se
+// repeta ca indemn: nu scrie nimic, e un semn.
 //
-// Randul de aici e forma paginii de start, cu o singura completare ceruta de continut:
-// acolo lista poarta doar numele, deci incape pe trei coloane; aici poarta si rezumatul
-// domeniului, care nu se pierde, deci randul tine toata latimea. Sageata a ramas - e marca
-// legaturii, nu un indemn repetat de sapte ori.
+// Cardul e alb pe sectiune de ceata, fara umbra: separarea se face prin culoarea de fundal,
+// ca peste tot in REF-V. `Card`, componenta inghetata, nu poate purta sageata in colt, deci
+// cardul asta e scris aici; razele si logica de fundal sunt aceleasi.
 //
-// Doua stari, si diferenta e o decizie de onestitate, nu de stil:
-//   - cu `href`: domeniul are pagina proprie, randul intreg e legatura;
-//   - fara `href`: domeniul e pe lista, dar pagina nu exista inca, deci randul NU e
-//     legatura. O legatura catre o pagina care nu exista e o legatura moarta, si e exact
-//     clasa pe care un cititor automat o plateste cel mai scump.
-//
-// Starea vine din date (`pagina` nenul in segmente.ts), nu dintr-un steag scris de mana pe
-// hub: asa nu poate exista un rand care promite o pagina inexistenta.
+// CELE DOUA STARI RAMAN, si diferenta e tot o decizie de onestitate, nu de stil:
+//   - cu `href`: domeniul are pagina proprie, cardul intreg e legatura;
+//   - fara `href`: domeniul e pe lista, dar pagina nu exista inca, deci cardul NU e
+//     legatura, iar in coltul lui sta eticheta „In pregatire" in locul sagetii. O legatura
+//     catre o pagina care nu exista e o legatura moarta.
+// Starea vine din date (`pagina` nenul in `segmente.ts`), nu dintr-un steag scris de mana pe
+// hub: asa nu poate exista un card care promite o pagina inexistenta.
 
 type Props = {
   titlu: string;
@@ -35,42 +26,55 @@ type Props = {
   children: React.ReactNode;
 };
 
-// Marimea numelui e cea de pe ecranul "Domenii" al paginii de start, cu o treapta in plus:
-// acolo lista e una dintre sase sectiuni si numele poarta un singur cuvant, aici lista ESTE
-// pagina. Masurat la 1280 px, pagina de start da 30,7 px pe rand; hub-ul da 33,3.
-const RAND = "grid gap-x-10 gap-y-2 py-7 md:grid-cols-[minmax(0,7fr)_minmax(0,9fr)_auto]";
-const NUME =
-  "font-afis text-[clamp(1.5rem,2.6vw,2.25rem)] font-semibold ";
-const REZUMAT = "text-[16px] leading-[1.55] text-cerneala-2";
+const CUTIE = "relative block h-full rounded-card-mare p-8 no-underline";
+const TITLU = "max-w-[16ch] text-titlu-4 text-cerneala";
+const REZUMAT = "mt-3 max-w-[42ch] text-corp text-cerneala-2";
+
+function SageataDiagonala() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      aria-hidden="true"
+      focusable="false"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="absolute top-7 right-7 text-violet transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+    >
+      <path d="M6 14 L14 6" />
+      <path d="M7 6h7v7" />
+    </svg>
+  );
+}
 
 export default function FisaDomeniu({ titlu, href, children }: Props) {
   if (!href) {
     return (
-      <li className="list-none border-b border-linie">
-        <div className={RAND}>
-          <h3 className={NUME + " text-cerneala-2"}>{titlu}</h3>
-          <p className={REZUMAT}>{children}</p>
-          <span className="font-mono text-[12px]  text-cerneala-2 md:self-center">
+      <li className="list-none">
+        <div className={CUTIE + " bg-alb"}>
+          <span className="absolute top-7 right-7 rounded-pastila bg-ceata px-3 py-1 text-nota font-semibold text-cerneala-2">
             În pregătire
           </span>
+          <h3 className={TITLU}>{titlu}</h3>
+          <p className={REZUMAT}>{children}</p>
         </div>
       </li>
     );
   }
 
   return (
-    <li className="list-none border-b border-linie">
-      <Link href={href} className={"group block no-underline " + RAND}>
-        <h3 className={NUME + " text-cerneala-2 transition-colors duration-200 group-hover:text-cerneala"}>
-          {titlu}
-        </h3>
+    <li className="list-none">
+      <Link
+        href={href}
+        className={CUTIE + " group bg-alb transition-colors duration-200 hover:bg-violet-pal"}
+      >
+        <SageataDiagonala />
+        <h3 className={TITLU}>{titlu}</h3>
         <p className={REZUMAT}>{children}</p>
-        <span
-          aria-hidden
-          className="font-mono text-violet transition-transform duration-200 group-hover:translate-x-1 md:self-center"
-        >
-          →
-        </span>
       </Link>
     </li>
   );
