@@ -1,6 +1,9 @@
 // Exemplele de raspuns din cartonasul de erou. Sunt ILUSTRARE, construite pe
 // documente-model: nu sunt documentele unui client si nu reproduc o conversatie
 // reala. Ultimul exemplu este un refuz, si e acolo dinadins.
+//
+// Voce: raspunsul incepe cu ce voia omul sa afle - data, termenul, numarul facturii -
+// si abia dupa vine de unde iese. Propozitii scurte, punct la final.
 
 export type ExempluRaspuns = {
   /** Textul scurt de pe butonul care schimba exemplul. */
@@ -18,7 +21,7 @@ export const EXEMPLE: ExempluRaspuns[] = [
   {
     intrebare: "Când expiră contractul de salubritate?",
     raspuns:
-      "Contractul a fost semnat la 14 martie 2019, pe o durată de 8 ani. Expiră la 13 martie 2027 și se prelungește numai prin act adițional, nu automat.",
+      "Expiră pe 13 martie 2027. A fost semnat pe 14 martie 2019, pe opt ani. Nu se prelungește singur: trebuie act adițional.",
     sursa: "Contract 214/2019 · pag. 4 · art. 7.2",
     legatura: "Deschideți documentul la pagina 4",
     refuz: false,
@@ -27,7 +30,7 @@ export const EXEMPLE: ExempluRaspuns[] = [
   {
     intrebare: "Ce garanție are hala din Mioveni?",
     raspuns:
-      "Garanția de bună execuție este de 24 de luni de la recepția la terminarea lucrărilor. Recepția a fost semnată pe 12 iunie 2023, deci garanția curge până pe 12 iunie 2025.",
+      "Garanția ține până pe 12 iunie 2025. Este garanție de bună execuție, 24 de luni de la recepție. Recepția s-a semnat pe 12 iunie 2023.",
     sursa: "PV recepție hala Mioveni 2023 · pag. 3 · cap. IV",
     legatura: "Deschideți documentul la pagina 3",
     refuz: false,
@@ -36,7 +39,7 @@ export const EXEMPLE: ExempluRaspuns[] = [
   {
     intrebare: "Pe ce factură a intrat avizul 4412?",
     raspuns:
-      "Avizul de însoțire a mărfii 4412 a intrat pe factura 2024-0871, emisă pe 18 septembrie 2024, cu 14 poziții de marfă.",
+      "Pe factura 2024-0871, emisă pe 18 septembrie 2024. Avizul de însoțire a mărfii 4412 apare acolo cu 14 poziții.",
     sursa: "Facturi emise 2024, trimestrul III · pag. 42 · poziția 6",
     legatura: "Deschideți documentul la pagina 42",
     refuz: false,
