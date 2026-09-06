@@ -239,6 +239,51 @@ Conținutul nu se inventează și nu se pierde. Fiecare afirmație verificabilă
 `src/content/afirmatii/`, iar ce nu putem susține rămâne scris ca atare. Cifre, certificări
 sau clienți nu se adaugă. Ce se taie din pagină se taie și din registrul ei.
 
+## Reziduurile paletei vechi - inventar MĂSURAT
+
+Felia 1 a schimbat paleta, dar nu a rescris toate paginile interioare. Clasele Tailwind rămase
+sunt **șiruri**, nu identificatori: `typecheck`, `lint` și `build` nu le văd, iar `axe` nu le
+vede nici el atunci când elementul rămâne lizibil din alt motiv (o legătură subliniată
+satisface 1.4.1 chiar dacă și-a pierdut culoarea). Degradarea e tăcută, deci inventarul se
+face cu o comandă, nu din memorie.
+
+Lista se reface din **diferența** dintre culorile de pe `main` și cele de acum, nu dintr-o
+listă scrisă de mână:
+
+```bash
+git show main:src/app/globals.css | grep -oP '^\s*--color-\K[a-z0-9-]+' | sort -u > /tmp/culori_main
+grep -oP '^\s*--color-\K[a-z0-9-]+' src/app/globals.css | sort -u > /tmp/culori_head
+ALT=$(comm -23 /tmp/culori_main /tmp/culori_head | paste -sd'|')
+grep -rnoP "\b(bg|text|border|from|to|via|ring|fill|stroke|decoration|outline|divide|placeholder|caret|accent)-($ALT)(?![-a-zA-Z0-9])" src/
+```
+
+**Măsurat pe acest commit:** 28 de roluri de culoare dispărute, **52 de apariții** în `src/`,
+din care **44 în cod viu** și 8 în comentarii.
+
+| Fișier | Clase vii |
+|---|---|
+| `src/app/instrumente/termene-de-pastrare/page.tsx` | 12 |
+| `src/app/harta-site/page.tsx` | 8 |
+| `src/content/termene.ts` | 6 |
+| `src/app/not-found.tsx` | 6 |
+| `src/app/solutii/page.tsx` | 4 |
+| `src/app/despre/page.tsx` | 4 |
+| `src/app/contact/page.tsx` | 4 |
+
+Cele 8 din comentarii, care descriu mecanisme pe culori care nu mai există și trebuie
+rescrise odată cu fișierul: `TermeneFisa.tsx` (3), `JuridicPagina.tsx` (2), `CadruScan.tsx`,
+`ComparatieTabel.tsx`, `SecuritateIntrebare.tsx` (câte unul).
+
+Jetoanele moarte, după frecvență: `text-hartie-veche-2` (12), `text-arama-clar` (10),
+`border-linie-suprafata` (8), `text-hartie-veche-3` (3), `border-linie-noapte` (2), apoi câte
+unul din `text-verde`, `text-tus-2`, `text-hartie-veche`, `text-arama-inchis`,
+`bg-verde-moale`, `bg-noapte`, `bg-linie-suprafata`, `bg-hartie-2`, `bg-arama-moale`.
+
+**Controlul regexului**, obligatoriu înainte de a te încrede în cifră: `bg-noapte-v` de pe
+`BandaIncredere.tsx` este un jeton **valid** din paleta nouă și NU trebuie să apară în listă -
+de asta expresia se termină cu `(?![-a-zA-Z0-9])`. Fără el, orice `-v`, `-2`, `-clar` lipit de
+un nume mort ar fi numărat greșit.
+
 ## Scriptul de contrast
 
 Cifrele din acest document se pot reface. Raportul de luminanță WCAG, din valorile paletei:
