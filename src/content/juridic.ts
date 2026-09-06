@@ -535,7 +535,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
     },
     {
       id: "automat",
-      titlu: "Cererea este citită de un om.",
+      titlu: "Decizii automate, profilare, antrenare de modele: cererea este citită de un om.",
       blocuri: [
         {
           fel: "paragraf",

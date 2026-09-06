@@ -39,7 +39,7 @@ export const EXEMPLE: ExempluRaspuns[] = [
   {
     intrebare: "Pe ce factură a intrat avizul 4412?",
     raspuns:
-      "Pe factura 2024-0871, emisă pe 18 septembrie 2024. Avizul de însoțire a mărfii 4412 apare acolo cu 14 poziții.",
+      "Pe factura 2024-0871, emisă pe 18 septembrie 2024. Avizul de însoțire a mărfii 4412 este poziția 6 dintre cele 14 de pe factură.",
     sursa: "Facturi emise 2024, trimestrul III · pag. 42 · poziția 6",
     legatura: "Deschideți documentul la pagina 42",
     refuz: false,
