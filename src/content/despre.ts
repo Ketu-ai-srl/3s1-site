@@ -37,7 +37,7 @@ export const DESPRE = {
 export const STAREA_DE_AZI: FaptDespre[] = [
   {
     titlu: "Depozitul lucrează deja.",
-    text: "Oamenii, halele de la Golești și preluarea cu proces-verbal sunt ale ADRIEI. Lucrează pentru clienții ei dinainte să existe site-ul acesta.",
+    text: "Oamenii, depozitul de la Golești și preluarea cu proces-verbal sunt ale ADRIEI. Lucrează pentru clienții ei dinainte să existe site-ul acesta.",
   },
   {
     titlu: "Căutarea se construiește acum.",
