@@ -1,10 +1,10 @@
 {
   "fisiere": 12,
-  "teste": 94,
-  "asertiuni": 231,
+  "teste": 96,
+  "asertiuni": 233,
   "sarite_maxim": 0,
   "masurat_la": "2026-09-06",
-  "masurat_pe": "felia 6 a valului S1-d, dupa reparatiile cerute de critic (setul de fotografii propriu al site-ului 3s1): la cele 11 fisiere ale lotului lot/s1-b s-a adaugat tests/fotografii.test.ts, cu 8 cazuri - sapte verificari plus controlul pozitiv al cheii fara fisier. Fata de ridicarea de dimineata (12/93/226) au mai intrat un caz nou (alt-urile din start.ts comparate cuvant cu cuvant cu registrul) si asertiunea care cere ID-uri Pexels distincte in LICENTA.md. Cifrele sunt copiate din randul MASURAT al portii de regresie (12 fisiere, 94 teste, 231 asertiuni), nu estimate. Podeaua anterioara (11/86/209) era a lotului lot/s1-b, cea dinaintea ei (8/49/144) a lotului lot/s1-a.",
+  "masurat_pe": "felia 6 a valului S1-d, runda a treia (ultimele doua cadre schimbate si reparatiile cerute de critic): tests/fotografii.test.ts a crescut de la 8 la 9 cazuri - a intrat martorul care arata ca extractorul chiar citeste `pozitie` si nu o imprumuta de la cardul urmator - iar cazul care compara start.ts cu registrul verifica de acum si `pozitie`, nu doar `alt`. De aici 96 de teste si 233 de asertiuni, fata de 94 si 231. Cifrele sunt copiate din randul MASURAT al portii de regresie (12 fisiere, 96 teste, 233 asertiuni), rulata pe arborele COMMITAT, nu estimate. Podelele anterioare: 12/94/231 (felia 6, dupa prima runda de reparatii), 12/93/226, 11/86/209 (lotul lot/s1-b), 8/49/144 (lotul lot/s1-a).",
   "de_ce": "Pragul e podeaua acceptata ultima data, nu tinta. E asezat pe ce era COMMITAT in momentul scrierii portii, deliberat, nu pe ce era in arborele de lucru: in aceeasi zi un alt val adauga tests/browser/, iar un prag luat dintr-o munca in curs devine fals in clipa in care ea se rearanjeaza, si ar inrosi lotul cuiva care face lucrul corect. Poarta tipareste AVERT R-01..R-03 cat timp masuratoarea e peste prag, cu textul 'ridica pragul': asta e semnalul ca valorile de aici trebuie inlocuite cu cele masurate, dupa ce valul de probe aterizeaza. Ridicarea se face copiind cifrele din randul MASURAT al portii.",
   "cum_se_coboara": "Stergerea unui test invechit e legitima. Se scade cifra de aici IN ACELASI COMMIT cu stergerea, si poarta o lasa sa treaca, marcand-o 'coborare DECLARATA'. Fara modificarea acestui fisier, scaderea fata de HEAD opreste lotul."
 }
