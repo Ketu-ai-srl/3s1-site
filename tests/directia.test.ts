@@ -252,26 +252,125 @@ describe('litera si scara', () => {
     expect(CSS, 'nota nu e 14 px').toMatch(/--text-nota:\s*14px/)
   })
 
+  // Evaluator minim de valori CSS, pentru jetoanele scarii: numar fara unitate, `px`, `rem`,
+  // si `clamp(minim, preferat, maxim)` unde fiecare parte e o suma de termeni `px`/`rem`/`vw`.
+  // Nu e un motor CSS: acopera exact formele folosite in globals.css, si crapa daca apare
+  // alta - tacerea ar fi mai rea decat eroarea.
+  const px = (termen: string, latime: number): number => {
+    let total = 0
+    const gasite = termen.match(/-?[0-9.]+(?:px|rem|vw)/g)
+    if (!gasite) throw new Error('nu stiu sa evaluez termenul CSS: ' + termen)
+    for (const t of gasite) {
+      const n = parseFloat(t)
+      if (t.endsWith('px')) total += n
+      else if (t.endsWith('rem')) total += n * 16
+      else total += (n / 100) * latime
+    }
+    return total
+  }
+  const evalueaza = (expr: string, latime: number): number => {
+    const e = expr.trim()
+    const c = e.match(/^clamp\((.+)\)$/)
+    if (c) {
+      const parti = c[1].split(',').map((s) => s.trim())
+      if (parti.length !== 3) throw new Error('clamp cu alt numar de parti: ' + e)
+      const [mn, pref, mx] = parti.map((p) => px(p, latime))
+      return Math.min(Math.max(mn, pref), mx)
+    }
+    return px(e, latime)
+  }
+  // Raportul REAL dintre pasul de rand si marimea literei, la o latime data. Cand inaltimea
+  // de rand e un numar fara unitate, raportul e chiar acel numar, la orice latime.
+  const raportLa = (css: string, jeton: string, latime: number): number => {
+    const fs = css.match(new RegExp('--text-' + jeton + ':\\s*([^;]+);'))
+    const lh = css.match(new RegExp('--text-' + jeton + '--line-height:\\s*([^;]+);'))
+    if (!fs) throw new Error('nu gasesc --text-' + jeton)
+    if (!lh) throw new Error('nu gasesc --text-' + jeton + '--line-height')
+    const v = lh[1].trim()
+    if (/^[0-9.]+$/.test(v)) return Number(v)
+    return evalueaza(v, latime) / evalueaza(fs[1], latime)
+  }
+  const raportMinim = (css: string, jeton: string): { r: number; la: number } => {
+    let r = Infinity
+    let la = 0
+    for (let w = 320; w <= 1920; w++) {
+      const x = raportLa(css, jeton, w)
+      if (x < r) {
+        r = x
+        la = w
+      }
+    }
+    return { r, la }
+  }
+
   it('inaltimea de rand a titlurilor incape diacriticele romanesti', () => {
     // Pragul e cel masurat la directia anterioara, pe fontul real: virgula lui S coboara
     // 0,180 em sub linia de baza, iar A/I cu accent urca 0,889 em, deci 1,069 em e minimul
     // sub care doua randuri se ating. Se pastreaza desi titlurile nu mai sunt cu majuscule -
-    // nu costa nimic, iar o regula relaxata fiindca „azi nu mai avem majuscule" se strica la
+    // nu costa nimic, iar o regula relaxata fiindca "azi nu mai avem majuscule" se strica la
     // primul titlu scris cu majuscule.
+    //
+    // DE CE SE MASOARA PE INTERVAL, nu pe o cifra. Pana la valul asta proba citea jetonul ca
+    // pe un numar unic. Nu mai poate: REF-V cere la cele doua capete RAPORTURI diferite (h1
+    // 1,111 la 1440 si 1,222 la 390), asa ca inaltimea de rand a devenit si ea `clamp`, iar
+    // un `clamp` nu are "un" raport. Proba masoara acum raportul REAL, la fiecare latime de
+    // la 320 la 1920, si cere ca MINIMUL lui sa treaca pragul. Pe un jeton scris ca numar
+    // fix se reduce exact la verificarea de dinainte, deci nu s-a pierdut nimic: s-au
+    // adaugat 1600 de puncte de masurare acolo unde era unul.
     const PRAG = 1.069
-    const pasi: Array<[string, RegExpMatchArray | null]> = [
-      ['--text-titlu-1--line-height', CSS.match(/--text-titlu-1--line-height:\s*([0-9.]+)\s*;/)],
-      ['--text-titlu-2--line-height', CSS.match(/--text-titlu-2--line-height:\s*([0-9.]+)\s*;/)],
-      ['--text-titlu-3--line-height', CSS.match(/--text-titlu-3--line-height:\s*([0-9.]+)\s*;/)],
-    ]
-    for (const [jeton, m] of pasi) {
-      expect(m, 'nu gasesc ' + jeton).not.toBeNull()
-      expect(Number(m![1]), jeton + ' e sub pragul diacriticelor').toBeGreaterThanOrEqual(PRAG)
+    for (const jeton of ['titlu-1', 'titlu-2', 'titlu-3']) {
+      const { r, la } = raportMinim(CSS, jeton)
+      expect(r, jeton + ' scade sub pragul diacriticelor la ' + la + ' px').toBeGreaterThanOrEqual(PRAG)
     }
+
+    // MARTOR POZITIV: proba trebuie sa se inroseasca pe defectul pe care il pazeste, in
+    // AMANDOUA formele. Fara asta, trecerea de mai sus nu dovedeste nimic.
+    const subPrag = '--text-titlu-1: 72px; --text-titlu-1--line-height: 1.0;'
+    expect(raportMinim(subPrag, 'titlu-1').r, 'martor pozitiv (numar fix sub prag) NU a fost prins').toBeLessThan(PRAG)
+    // Aceeasi valoare gresita, ascunsa intr-un clamp: la 390 px da 36/36, adica exact 1,0.
+    // Forma noua nu are voie sa devina o portita pentru defectul vechi.
+    const clampSubPrag =
+      '--text-titlu-1: clamp(2.25rem, 5vw, 4.5rem); --text-titlu-1--line-height: clamp(2.25rem, 5.6vw, 5rem);'
+    expect(raportMinim(clampSubPrag, 'titlu-1').r, 'martor pozitiv (clamp sub prag) NU a fost prins').toBeLessThan(PRAG)
+    // MARTOR NEGATIV: valoarea din arbore, care trebuie sa treaca.
+    const bun =
+      '--text-titlu-1: clamp(2.25rem, 5vw, 4.5rem); --text-titlu-1--line-height: clamp(2.75rem, 5.6vw, 5rem);'
+    expect(raportMinim(bun, 'titlu-1').r, 'martor negativ respins pe nedrept').toBeGreaterThanOrEqual(PRAG)
+
     const baza = CSS.match(/h1,\s*\n\s*h2,\s*\n\s*h3,\s*\n\s*h4\s*\{([\s\S]*?)\}/)
     const pas = baza![1].match(/line-height:\s*([0-9.]+)\s*;/)
     expect(pas, 'regula de baza h1..h4 nu are line-height').not.toBeNull()
     expect(Number(pas![1]), 'line-height de baza sub pragul diacriticelor').toBeGreaterThanOrEqual(PRAG)
+  })
+
+  it('titlurile cad pe cifrele REF-V la amandoua capetele, nu doar la 1440', () => {
+    // Constatarea care a produs proba asta: marimea literei era `clamp`, dar inaltimea de
+    // rand era un raport UNIC, iar REF-V cere la cele doua capete raporturi diferite. La
+    // 1440 iesea exact; la 390, h1 dadea 40,32 px in loc de 44 si h2 28,08 in loc de 32.
+    // Nicio proba nu se uita atunci la capatul ingust, fiindca jetonul avea o singura cifra
+    // si cifra aia era corecta la capatul larg. Cifrele de mai jos sunt cele citite din
+    // REF-V si reverificate pe stiluri calculate, cu innerWidth citit din pagina.
+    const CERUT: Array<[string, number, number, number]> = [
+      // jeton, latime, marimea literei, pasul de rand
+      ['titlu-1', 1440, 72, 80],
+      ['titlu-1', 390, 36, 44],
+      ['titlu-2', 1440, 48, 56],
+      ['titlu-2', 390, 24, 32],
+    ]
+    for (const [jeton, latime, fsCerut, lhCerut] of CERUT) {
+      const fs = CSS.match(new RegExp('--text-' + jeton + ':\\s*([^;]+);'))!
+      const lh = CSS.match(new RegExp('--text-' + jeton + '--line-height:\\s*([^;]+);'))!
+      const eticheta = jeton + ' la ' + latime + ' px'
+      expect(evalueaza(fs[1], latime), eticheta + ': marimea literei').toBeCloseTo(fsCerut, 2)
+      const v = lh[1].trim()
+      const lhReal = /^[0-9.]+$/.test(v) ? Number(v) * evalueaza(fs[1], latime) : evalueaza(v, latime)
+      expect(lhReal, eticheta + ': pasul de rand').toBeCloseTo(lhCerut, 2)
+    }
+    // MARTOR POZITIV: raportul fix de dinainte, care trecea la 1440 si rata la 390. Daca
+    // proba asta nu l-ar prinde, n-ar apara nimic.
+    const vechi = 'clamp(2.25rem, 5vw, 4.5rem)'
+    expect(evalueaza(vechi, 390) * 1.12, 'martor pozitiv: raportul fix NU a fost prins la 390').toBeCloseTo(40.32, 2)
+    expect(evalueaza(vechi, 1440) * 1.12, 'martorul de control: acelasi raport la capatul larg').toBeCloseTo(80.64, 2)
   })
 })
 
