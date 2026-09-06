@@ -1,16 +1,15 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
 import {
   CAMPURI_IDENTITATE,
   ETICHETE,
   entitate,
   identitateCompleta,
 } from "@/content/entitate";
+import { MASURA_ACT } from "@/content/interior-juridic";
 
-// Blocul de identificare a comerciantului de pe pagina de termeni.
+// Blocul de identificare a comerciantului de pe pagina de termeni, ca un CARD pe ceata:
+// raza 12 px, fara chenar si fara umbra, despartit de pagina alba prin culoarea lui - regula
+// REF-V pentru orice card. Inainte era un dreptunghi alb cu o linie violet in stanga, adica
+// invizibil pe o pagina alba, si o lista de definitii cu linii sus si jos.
 //
 // DE CE NU E ACELASI CU CEL DIN SUBSOL, desi arata la fel. Subsolul il afiseaza pe fiecare
 // pagina si TACE cand datele lipsesc - acolo tacerea e alegerea corecta, fiindca un subsol
@@ -36,21 +35,19 @@ import {
 export default function JuridicIdentificare() {
   if (!identitateCompleta()) {
     return (
-      <div className="border-l-2 border-violet bg-alb px-6 py-5">
-        {/* Aceeasi caseta ca `declaratie` din `JuridicBlocuri` si `BlocDovada`: arama pe
-            noapte-3 da 5,72:1. Fundalul bej de dinainte era ultima suprafata deschisa
-            ramasa in mijlocul paginii de termeni. */}
-        <span className="mb-1.5 block font-mono text-eticheta font-medium text-violet ">
+      <div className="rounded-card bg-ceata p-6">
+        <span className="mb-2 block text-nota font-semibold text-cerneala-2">
           Ce lipsește azi, și de ce
         </span>
-        <p className="text-corp text-cerneala-2">
+        <p className={`${MASURA_ACT} text-corp text-cerneala-2`}>
           3S este o firmă în curs de înființare. Din datele cerute de art. 5, azi există una
-          singură, adresa de poștă electronică: <strong className="font-semibold text-cerneala">contact@3s.ro</strong>.
-          Denumirea exactă, sediul, datele din registrul comerțului, codul de identificare
-          fiscală și telefonul apar aici după înmatriculare, copiate dintr-un certificat, nu
-          scrise din memorie.
+          singură, adresa de poștă electronică:{" "}
+          <strong className="font-semibold text-cerneala">contact@3s.ro</strong>. Denumirea
+          exactă, sediul, datele din registrul comerțului, codul de identificare fiscală și
+          telefonul apar aici după înmatriculare, copiate dintr-un certificat, nu scrise din
+          memorie.
         </p>
-        <p className="mt-3 text-corp text-cerneala-2">
+        <p className={`mt-3 ${MASURA_ACT} text-corp text-cerneala-2`}>
           Nu le înlocuim cu datele firmei-mamă: ar fi o afirmație falsă despre o altă persoană
           juridică. Golul este verificat automat înainte de fiecare publicare și blochează
           punerea site-ului în producție cât timp durează, tocmai ca să nu poată fi uitat.
@@ -60,11 +57,11 @@ export default function JuridicIdentificare() {
   }
 
   return (
-    <dl className="grid gap-x-8 gap-y-2 border-y border-linie py-6 text-corp sm:grid-cols-2">
+    <dl className="m-0 grid gap-x-8 gap-y-3 rounded-card bg-ceata p-6 text-corp sm:grid-cols-2">
       {CAMPURI_IDENTITATE.map((camp) => (
         <div key={camp} className="flex flex-wrap gap-x-2">
           <dt className="text-cerneala-2">{ETICHETE[camp]}:</dt>
-          <dd className="m-0 font-medium text-cerneala">{entitate[camp]}</dd>
+          <dd className="m-0 font-semibold text-cerneala">{entitate[camp]}</dd>
         </div>
       ))}
     </dl>

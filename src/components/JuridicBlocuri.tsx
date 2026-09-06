@@ -1,39 +1,28 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
 import Link from "next/link";
 import JuridicIdentificare from "./JuridicIdentificare";
 import type { Bloc, Frag } from "@/content/juridic";
+import { MASURA_ACT } from "@/content/interior-juridic";
 
 // Randarea blocurilor dintr-o sectiune juridica. Un singur loc care stie cum arata un
-// paragraf, o enumerare si o caseta, ca sa nu se raspandeasca stilurile prin trei pagini.
+// paragraf, o enumerare, un rand de definitie si o caseta, ca sa nu se raspandeasca
+// stilurile prin trei pagini.
 //
 // LEGATURILE. Regula e cea din subsol si e mecanica, nu de gust: `Link` pentru o ruta,
 // `<a>` cand adresa contine un diez. `Link` trece intre pagini fara reincarcare, dar pe o
 // ancora din pagina CURENTA sare peste derularea lina din `globals.css`. Conditia pe diez
 // acopera ambele cazuri cu o singura regula, deci nu se poate aplica gresit.
 //
-// LATIMEA RANDULUI nu se mai scrie aici. O da coloana grilei, adica cadrul actului
-// (`--container-act`, 720 px), si de-asta nu mai exista niciun `max-w-[..ch]` pe elemente:
-// doua plafoane pentru aceeasi masura se pot abate unul de la altul, iar exact asta se si
-// intampla - h2 statea la 516 px, paragraful la 485, caseta la 547 si blocul de randuri la
-// 712, in aceeasi coloana declarata de 952.
-//
-// Ce ramane din masuratoarea veche, fiindca e capcana care a produs-o: plafonul dinainte
-// era scris `max-w-[74ch]` si suna a „74 de caractere pe rand". Nu era. `ch` e latimea
-// glifei ZERO, printre cele mai late ale fontului, deci unitatea raspunde la alta intrebare
-// decat cea pusa: masurat cu un `Range` peste fiecare rand vizual, dadea 661 px si 98 de
-// caractere in medie, cu varf la 103. Nicio poarta nu se inrosea, fiindca niciuna nu numara
-// caractere. Cifrele de azi se masoara la fel, pe pagina randata, nu din aritmetica lui
-// `ch`, si sunt scrise langa `--container-act` in `globals.css`.
+// MASURA RANDULUI nu se scrie aici si nu se scrie de doua ori: e `MASURA_ACT` din
+// `src/content/interior-juridic.ts`, cu motivul si cifra masurata langa ea. O foloseste si
+// blocul de identificare, si incheierea actului, deci un al doilea plafon scris pe elemente
+// s-ar abate de la primul - exact defectul masurat inainte, cand h2 statea la 516 px,
+// paragraful la 485 si caseta la 547, in aceeasi coloana declarata.
 
 function bucata(f: Frag, i: number) {
   if (typeof f === "string") {
     return <span key={i}>{f}</span>;
   }
-  const stil = "text-violet underline underline-offset-[3px] hover:text-cerneala";
+  const stil = "text-violet underline decoration-violet-2 underline-offset-[3px] hover:text-cerneala";
   if (f.href.includes("#")) {
     return (
       <a key={i} href={f.href} className={stil}>
@@ -64,26 +53,22 @@ function Caseta({
   // Aceleasi doua feluri ca in `BlocDovada`: `declaratie` spune ce am ales si de ce,
   // `limite` spune ce nu putem sustine. Nu se refoloseste componenta aceea fiindca ea
   // randeaza un singur `<p>` si aici casetele poarta legaturi si fraze lungi.
-  // Aceleasi doua suprafete ca in `BlocDovada`, ca cele doua casete de onestitate ale
-  // site-ului sa nu arate diferit: `declaratie` pe noapte-3 cu linia de arama in stanga,
-  // `limite` pe noapte-2 cu chenar. Pana pe 2026-09-06 erau bej (#f4eadf) si aproape-alb,
-  // ultimele doua suprafete deschise de pe paginile juridice.
+  //
+  // SUPRAFETELE, la valul S1-b: doua carduri cu raza de 12 px, despartite de pagina prin
+  // CULOARE, nu prin chenar si nu prin umbra - regula REF-V pentru orice card. `declaratie`
+  // sta pe `violet-pal`, adica pe suprafata de accent a referintei, unde violetul da 5,12:1
+  // si cerneala peste 15:1; `limite` sta pe `ceata`, o treapta mai discreta, fiindca e o
+  // recunoastere, nu o afirmatie. Inainte amandoua erau dreptunghiuri cu muchii drepte, una
+  // pe alb cu o linie in stanga - adica invizibila pe o pagina alba.
   const stil =
-    fel === "declaratie"
-      ? "border-l-2 border-violet bg-alb px-6 py-5"
-      : "border border-linie bg-ceata px-6 py-5";
-  // Eticheta: arama pe noapte-3 da 5,72:1, deci trece si ca text mic. Nota veche descria
-  // perechea de pe fundalul bej (4,48:1, sub prag), care nu mai exista pe pagina.
+    fel === "declaratie" ? "bg-violet-pal" : "bg-ceata";
   const stilEticheta = fel === "declaratie" ? "text-violet" : "text-cerneala-2";
+  const stilText = fel === "declaratie" ? "text-cerneala" : "text-cerneala-2";
 
   return (
-    <div className={`my-6 ${stil}`}>
-      <span
-        className={`mb-1.5 block font-mono text-eticheta font-medium ${stilEticheta}`}
-      >
-        {eticheta}
-      </span>
-      <p className="text-corp text-cerneala-2">
+    <div className={`my-8 rounded-card p-6 ${stil}`}>
+      <span className={`mb-2 block text-nota font-semibold ${stilEticheta}`}>{eticheta}</span>
+      <p className={`${MASURA_ACT} text-corp ${stilText}`}>
         <Text parti={parti} />
       </p>
     </div>
@@ -97,19 +82,19 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
         switch (b.fel) {
           case "paragraf":
             return (
-              <p key={i} className="mb-4 text-corp text-cerneala-2 last:mb-0">
+              <p key={i} className={`mb-4 ${MASURA_ACT} text-corp text-cerneala-2 last:mb-0`}>
                 <Text parti={b.text} />
               </p>
             );
 
           case "lista":
             return (
-              <ul key={i} className="m-0 mb-4 list-none p-0 last:mb-0">
+              <ul key={i} className={`m-0 mb-4 ${MASURA_ACT} list-none p-0 last:mb-0`}>
                 {b.elemente.map((e, j) => (
-                  <li key={j} className="mb-3 flex gap-4 text-corp text-cerneala-2 last:mb-0">
-                    {/* Cratima de arama e un element real, nu un marcator de lista: se
-                        aliniaza pe prima linie oricat de lung ar fi randul. */}
-                    <span aria-hidden className="mt-[11px] h-px w-[9px] shrink-0 bg-violet" />
+                  <li key={j} className="mb-3 flex gap-3 text-corp text-cerneala-2 last:mb-0">
+                    {/* Liniuta e un element real, nu un marcator de lista: se aliniaza pe
+                        prima linie oricat de lung ar fi randul. */}
+                    <span aria-hidden className="mt-[11px] h-px w-[10px] shrink-0 bg-violet" />
                     <span>
                       <Text parti={e} />
                     </span>
@@ -120,20 +105,17 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
 
           case "randuri":
             return (
-              <div key={i} className="mb-4 last:mb-0">
+              <div key={i} className="my-6 border-t border-linie last:mb-0">
                 {b.randuri.map((r) => (
                   <div
                     key={r.titlu}
-                    className="grid gap-1.5 border-t border-linie py-4 last:border-b md:grid-cols-[170px_1fr] md:gap-6"
+                    className="grid gap-1.5 border-b border-linie py-4 md:grid-cols-[180px_1fr] md:gap-6"
                   >
-                    {/* Coloana titlului s-a stramtat de la 260 la 170 px odata cu cadrul,
-                        si tot atunci `lg` a devenit `md`, ca sa se schimbe odata cu grila
-                        sectiunii. In 492 px, un titlu de 260 ar fi lasat textului 208 -
-                        mai putin decat titlului, care e o eticheta scurta. Asa, masurat,
-                        textul sta pe 298 px si 41 de caractere pe rand. Titlurile lungi
-                        („Verificarea intr-un browser real") trec pe doua randuri, ceea ce
-                        la o lista de definitii e firesc. */}
-                    <h3 className="font-afis text-[19px]  text-cerneala">{r.titlu}</h3>
+                    {/* Randul de definitie: eticheta pe coloana din stanga, textul pe
+                        dreapta, despartite doar de linia de 1 px. Titlul a coborat de la
+                        19 px la treapta de subtitlu a REF-V (20/28), si e la aceeasi
+                        greutate ca restul titlurilor - 400, din regula de baza. */}
+                    <h3 className="text-subtitlu text-cerneala">{r.titlu}</h3>
                     <p className="text-corp text-cerneala-2">
                       <Text parti={r.text} />
                     </p>
@@ -148,7 +130,7 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
 
           case "identificare":
             return (
-              <div key={i} className="my-6">
+              <div key={i} className="my-8">
                 <JuridicIdentificare />
               </div>
             );

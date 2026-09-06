@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import AntetPagina from "@/components/AntetPagina";
+import HartaAncore from "@/components/HartaAncore";
 import HartaLista from "@/components/HartaLista";
-import SectiuneRegistru from "@/components/SectiuneRegistru";
+import JuridicSectiune from "@/components/JuridicSectiune";
+import { ANCORE_ACASA } from "@/content/interior-juridic";
 import { PAGINI_JURIDICE } from "@/content/juridic";
 import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA, type Ruta } from "@/content/rute";
 import { FOTOGRAFII } from "@/content/fotografii";
@@ -20,12 +22,13 @@ import { FOTOGRAFII } from "@/content/fotografii";
 // principale", in loc sa dispara tacut dintr-o harta care se declara completa. Ce se
 // pierde e doar asezarea ei ideala, si aia se vede.
 //
-// FORMA RANDULUI e cea a listelor tipografice ale directiei (`HartaLista`), aceeasi cu a
-// fiselor de domeniu de pe /solutii. Inainte era o legatura subliniata cu doua randuri de
-// text sub ea, adica al doilea limbaj vizual pentru acelasi fel de continut, la un clic
-// distanta de hub.
+// ASEZAREA, la valul S1-b: sectiuni albe si de ceata alternate, fiecare cu eticheta ei si
+// cu titlul de 48 px, iar rutele in GRILA DE CARDURI (`HartaLista`), trei pe rand la 1440.
+// Inainte erau douazeci si doua de randuri late cat pagina, unul sub altul, in cinci benzi
+// de registru cu cota romana - forma paginilor de vitrina, pusa pe un cuprins. Cardurile
+// arata o grupa intreaga dintr-o privire, ceea ce e chiar sarcina unei harti.
 //
-// UN SINGUR BUTON IN EROU, si nu e o ancora. Erau doua: "Vedeti toate paginile" catre
+// UN SINGUR BUTON IN ANTET, si nu e o ancora. Erau doua: "Vedeti toate paginile" catre
 // `#pagini` si "Vedeti cum functioneaza" catre o pagina care sta oricum in bara de sus.
 // Primul nu promitea nimic - derula catre lista care urmeaza imediat sub ecran - iar al
 // doilea repeta un rand din bara. Pagina de start, aprobata, poarta UN buton, si el numeste
@@ -64,6 +67,7 @@ export default function HartaSite() {
     <main id="continut">
       <AntetPagina
         adresa="/harta-site"
+        forma="banda"
         imagine={FOTOGRAFII.cutii}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Harta site-ului" }]}
         eticheta="Cuprins"
@@ -71,96 +75,84 @@ export default function HartaSite() {
           <>
             Tot ce scrie pe site,
             <br />
-            într-o singură listă
+            într-o singură listă.
           </>
         }
         lead="Lista se face din manifestul de rute al site-ului, deci nu poate arăta o pagină care nu există și nici ascunde una care există."
         actiune={{ href: CALE_DISCUTIE, text: "Discuție de 30 de minute" }}
       />
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="pagini"
-        dens
-        cota="I"
         eticheta="Prezentarea"
         titlu="Paginile principale."
         lead="De aici începe oricine ne vede prima dată: ce facem, cum lucrăm, cine suntem și pe ce drum ne scrieți."
       >
         <HartaLista rute={principale} />
-      </SectiuneRegistru>
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="domenii"
-        ton="inchis"
-        cota="II"
+        ton="ceata"
         eticheta="Domeniile"
         titlu="Fișele pe domenii."
         lead="Aceleași etape, scrise cu documentele și termenele fiecărui domeniu. Hubul le adună pe toate."
       >
-        <HartaLista rute={domenii} />
-      </SectiuneRegistru>
+        <HartaLista rute={domenii} fundal="ceata" />
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="instrumente"
-        cota="III"
         eticheta="Instrumentele"
         titlu="Ce puteți folosi fără să ne cumpărați nimic."
         lead="Pagini scrise ca să fie utile singure. Se pot tipări, trimite prin mesaj sau cita, iar noi le corectăm când cineva ne arată că un rând contrazice actul citat."
       >
         <HartaLista rute={instrumente} />
-      </SectiuneRegistru>
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="juridic"
-        ton="inchis"
-        cota="IV"
+        ton="ceata"
         eticheta="Documentele"
         titlu="Textele juridice ale site-ului."
         lead="Cine răspunde de site, ce date primim printr-un mesaj și ce scriem în browserul dumneavoastră. Sunt scurte dinadins."
       >
-        <HartaLista rute={juridice} />
-      </SectiuneRegistru>
+        <HartaLista rute={juridice} fundal="ceata" />
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="sectiuni"
-        cota="V"
         eticheta="Pagina de start"
         titlu="Secțiunile paginii de start."
         lead="Nu sunt pagini separate, sunt locuri din pagina de start. Legăturile duc direct la ele."
       >
-        <ul className="m-0 grid list-none border-t border-linie-noapte p-0 md:grid-cols-3">
-          {SECTIUNI_ACASA.map((s) => (
-            <li key={s.ancora} className="border-b border-linie-noapte">
-              <a
-                href={"/#" + s.ancora}
-                className="group flex items-baseline justify-between py-5 pr-2 font-afis text-[clamp(1.35rem,2.2vw,1.95rem)] font-semibold tracking-[0.04em] uppercase text-hartie-veche-2 no-underline transition-colors duration-200 hover:text-hartie-veche md:pr-8"
-              >
-                {s.scurt}
-                <span
-                  aria-hidden="true"
-                  className="text-arama-clar transition-transform duration-200 group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Pastilele stau pe ceata, deci sectiunea le da un cadru propriu: pe alb, o pastila
+            alba n-ar avea de ce sa se deosebeasca de pagina. */}
+        <div className="rounded-card-mare bg-ceata p-6 md:p-8">
+          <span className="mb-5 block text-nota font-semibold text-cerneala-2">
+            {ANCORE_ACASA.eticheta}
+          </span>
+          <HartaAncore sectiuni={SECTIUNI_ACASA} />
+        </div>
 
-        <p className="mt-10 max-w-[68ch] text-[16px] leading-[1.55] text-hartie-veche-2">
+        <p className="mt-10 max-w-[62ch] text-corp text-cerneala-2">
           Pagini publice pe tot site-ul: {RUTE.length}. Toate sunt listate mai sus, în cele
           patru grupe, fiindcă ultima grupă ia tot ce nu a intrat în celelalte.
         </p>
 
-        <p className="mt-5 max-w-[68ch] text-[16px] leading-[1.55] text-hartie-veche-2">
+        <p className="mt-5 max-w-[62ch] text-corp text-cerneala-2">
           Harta pentru mașini stă la{" "}
-          <a href="/sitemap.xml" className="text-arama-clar underline underline-offset-[3px]">
+          <a
+            href="/sitemap.xml"
+            className="text-violet underline decoration-violet-2 underline-offset-[3px]"
+          >
             sitemap.xml
           </a>
           . Se face din același manifest, păstrând rutele marcate pentru indexare. Pagina
           aceasta le arată pe toate, inclusiv pe cele care nu se indexează.
         </p>
-      </SectiuneRegistru>
+
+      </JuridicSectiune>
     </main>
   );
 }

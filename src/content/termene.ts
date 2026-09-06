@@ -22,18 +22,32 @@ export type Termen = {
   nota: string;
 };
 
+// PASTILELE DE STARE, pe paleta REF-V. S-a schimbat DOAR sirul de clase: textul si cheile
+// sunt neatinse, fiindca ele sunt continut, nu stil. Cele trei perechi de dinainte
+// (fundal moale plus cerneala, cate una pe stare) numeau culori care nu mai exista in
+// `globals.css` de la felia de fundatie, deci nu mai produceau CSS: pastilele isi
+// pierdeau si fundalul, si culoarea, si ramaneau text pe suprafata paginii.
+//
+// Perechile de acum, cu contrastul calculat din valorile paletei:
+//   confirmat    violet pe violet-pal   5,12:1 - suprafata de accent a referintei
+//   orientativ   cerneala pe ceata     16,27:1 - o treapta mai discreta, fara accent
+//   neconfirmat  alb pe cerneala       17,73:1 - singura pastila inchisa, fiindca e
+//                singurul rand pe care nu il putem sustine
+//
+// Codul de culoare nu poarta singur informatia: starea e scrisa in litere, intreaga, pe
+// fiecare pastila.
 export const STARI: Record<StareTermen, { text: string; clase: string }> = {
   confirmat: {
     text: "Confirmat cu articol de lege",
-    clase: "bg-verde-moale text-verde",
+    clase: "bg-violet-pal text-violet",
   },
   orientativ: {
     text: "Orientativ, confirmați pe nomenclator",
-    clase: "bg-arama-moale text-arama-inchis",
+    clase: "bg-ceata text-cerneala",
   },
   neconfirmat: {
     text: "Nu îl putem susține încă",
-    clase: "bg-hartie-2 text-tus-2",
+    clase: "bg-cerneala text-alb",
   },
 };
 
