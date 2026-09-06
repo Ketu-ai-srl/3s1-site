@@ -59,7 +59,7 @@ export const TERMENE_ROMANIA: TermenCuAncora[] = TERMENE.map((t) => ({
 // sursa, iar o lista goala randata printr-o ramura care nu se executa niciodata ar fi cod
 // neverificat pus in pagina. Partea de Moldova e scrisa ca text, in campul `moldova` de mai jos,
 // si spune exact ce lipseste. Cand cineva are actul si articolul, randurile intra in
-// `termene.ts` langa cele romanesti, cu aceeasi coloana de temei.
+// `termene.ts` langa cele romanesti, cu acelasi temei pe rand.
 
 export const PAGINA_TERMENE = {
   titluMeta: "Termene de păstrare a documentelor",
@@ -68,7 +68,7 @@ export const PAGINA_TERMENE = {
   eticheta: "Instrument",
   h1: "Vedeți cât se păstrează un document și din ce articol vine termenul.",
   // Nu mai exista camp `lead` pentru antet, si nu s-a pierdut niciun cuvant din el: textul
-  // a coborat in `cuprins.subTabel`, sub tabel. Motivul e masurat, nu de gust - vezi nota
+  // a coborat in `cuprins.subTabel`, sub randul de ancore. Motivul e masurat, nu de gust - vezi nota
   // din `src/app/instrumente/termene-de-pastrare/page.tsx`.
 
   acoperire: {
@@ -99,6 +99,10 @@ export const PAGINA_TERMENE = {
       "Opt categorii de documente, fiecare cu termenul, cu momentul din care începe să curgă și cu actul din care provine. Acoperim România. Unde nu putem arăta articolul, rândul rămâne gol și scriem de ce.",
       "Actul normativ stă pe rând, sub numele categoriei, la orice lățime de ecran. Categoria duce la fișa întreagă, cu momentul din care curge termenul și cu nota lui.",
     ],
+    // ORFANE de cand tabelul a devenit rand de ancore: cele trei antete de coloana nu mai
+    // sunt citite de nicio componenta (grep peste `src/` si `tests/` le gaseste doar aici).
+    // Raman scrise fiindca sunt CHEI de continut inghetat, iar stergerea lor e treaba valului
+    // de continut, nu a unei reparatii de asezare.
     antetDocument: "Categoria de documente",
     antetTermen: "Termen",
     antetTemei: "Actul normativ",
@@ -108,11 +112,15 @@ export const PAGINA_TERMENE = {
 
   fise: {
     titlu: "Fiecare rând, cu actul lui.",
-    // „Ordinea este cea din verificatorul de pe pagina de start" a stat aici pana pe
-    // 2026-09-06 si trimitea la un obiect care nu mai exista nicaieri pe site: `id="termene"`
-    // pe pagina de start da zero potriviri, iar `VerificatorTermene` nu e importat de nicio
-    // pagina. Ordinea CHIAR e a tabelului de mai sus, deci propozitia se scrie despre el.
-    lead: "Ordinea este cea din tabelul de mai sus. Rândul fără cifră nu are cifră fiindcă nu am găsit articolul, nu fiindcă am uitat de el.",
+    // Propozitia asta a trimis de doua ori la un obiect care nu e pe pagina. Intai
+    // „verificatorul de pe pagina de start" (`id="termene"` da zero potriviri, iar
+    // `VerificatorTermene` nu e importat de nicio pagina), apoi „tabelul de mai sus", scris
+    // cand tabelul tocmai fusese inlocuit cu randul de ancore: `<table` da 0 in HTML-ul
+    // servit. Obiectul care CHIAR sta deasupra fiselor e lista de ancore din `TermeneCuprins`,
+    // si ordinea ei e ordinea fiselor - amandoua vin din `TERMENE_ROMANIA`, in aceeasi
+    // iterare. Numele din text trebuie sa fie al lui; `tests/felie-juridic-referinte.test.ts`
+    // masoara asta la fiecare rulare.
+    lead: "Ordinea este cea din lista de mai sus. Rândul fără cifră nu are cifră fiindcă nu am găsit articolul, nu fiindcă am uitat de el.",
   },
 
   moldova: {
@@ -120,7 +128,7 @@ export const PAGINA_TERMENE = {
     paragrafe: [
       "Lucrăm pentru România și pentru Republica Moldova, iar întrebarea despre termenele moldovenești vine des. Pe pagina aceasta nu apare niciun termen moldovenesc.",
       "Motivul nu ne avantajează: nu am citit actele moldovenești la sursă, articol cu articol. Un termen luat din memorie arată la fel cu unul corect, și tocmai de asta este mai periculos decât un rând gol. Cine îl folosește ca să apere o eliminare află diferența prea târziu.",
-      "Ne trebuie trei lucruri ca să apară aici: actul moldovenesc, articolul citit la sursă și confirmarea că forma citită este în vigoare. Când le avem, rândurile intră în același tabel, cu aceeași coloană de temei, și se vede pe ele de unde vin.",
+      "Ne trebuie trei lucruri ca să apară aici: actul moldovenesc, articolul citit la sursă și confirmarea că forma citită este în vigoare. Când le avem, rândurile intră în aceeași listă, cu același temei pe rând, și se vede pe ele de unde vin.",
       "Dacă lucrați cu arhive în Republica Moldova și cunoașteți actul și articolul, scrieți-ne. Adăugăm rândul cu trimiterea la act. Iar dacă ne arătați că un rând românesc contrazice actul citat, îl corectăm în pagină.",
     ],
   },

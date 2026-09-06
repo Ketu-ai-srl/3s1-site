@@ -1,17 +1,29 @@
 import Link from "next/link";
 import Buton from "@/components/Buton";
 import Eticheta from "@/components/Eticheta";
+import HartaLista from "@/components/HartaLista";
 import Invelis from "@/components/Invelis";
-import { CALE_DISCUTIE, RUTE, type Ruta } from "@/content/rute";
+import { NEGASITA } from "@/content/interior-juridic";
+import { RUTE, type Ruta } from "@/content/rute";
 
-// Pagina de 404, in limbajul directiei: fundal de noapte, cota mono pe coloana de margine,
-// titlul in fontul de afis, cu majuscule. Pana pe 2026-09-06 era ultima suprafata alba a
-// site-ului, cu numeralul in serifa si titlul in fontul de text - adica pagina care ii apare
-// omului cand ceva merge prost era chiar cea care nu semana cu site-ul. Meniul si subsolul
-// vin din layout, deci omul care nimereste aici are aceleasi drumuri ca pe orice alta pagina.
+// Pagina de 404, pe gramatica interioara REF-V: fundal ALB, eticheta de 14 px, titlul de
+// 48 px cu litera obisnuita si punct la final, un paragraf, patru carduri de drum si UN
+// buton violet catre pagina de start.
+//
+// CE ERA INAINTE, si de ce a picat fiecare bucata: fundalul de noapte si liniile de
+// suprafata ale directiei anterioare - sase clase din paleta veche, care nu mai produceau
+// CSS de la felia de fundatie, deci pagina se randa cu fundalul implicit si cu chenare
+// invizibile. Numele lor nu se scriu aici pe litere: comanda de inventar din DIRECTIA.md
+// cauta in fisierul intreg, nu doar in cod, iar un comentariu care citeaza clasa devine
+// chiar instanta pe care inventarul o numara.
+//
+// Mai erau doua: titlul scris cu MAJUSCULE si la greutatea 700, adica exact ce refuza
+// directia, intr-un font care nici nu incarca greutatea 700; si doua butoane, unul plin si
+// unul de text, cand pagina asta are de dat un singur raspuns.
 //
 // Nu se deschide cu ecran plin si nu poarta fotografie: nu e o pagina de vitrina, e un
-// indicator. Cine ajunge aici cauta un drum, nu un afis.
+// indicator. Cine ajunge aici cauta un drum, nu un afis. Meniul si subsolul vin din layout,
+// deci omul care nimereste aici are aceleasi drumuri ca pe orice alta pagina.
 //
 // PATRU DRUMURI, NU TOT SITE-UL. Doua runde au incercat sa faca lista de 22 de rute mai
 // suportabila - intai scotandu-le descrierile, apoi asezandu-le pe trei coloane - si niciuna
@@ -24,89 +36,52 @@ import { CALE_DISCUTIE, RUTE, type Ruta } from "@/content/rute";
 //
 // Omul care ajunge aici cauta UN drum, nu harta intreaga; harta intreaga are pagina ei, si
 // randul care duce la ea sta chiar sub lista. Deci raman patru destinatii: pagina de start,
-// domeniile, instrumentul de termene si contactul.
+// domeniile, instrumentul de termene si contactul. Ele se randeaza cu `HartaLista`, aceeasi
+// grila de carduri ca in harta site-ului: acelasi fel de continut, acelasi limbaj vizual.
 //
 // Numele si adresele vin tot din manifest, cautate dupa cale: daca o ruta e redenumita,
-// randul isi ia numele nou, iar daca dispare din manifest, randul dispare cu ea. O pagina de
+// cardul isi ia numele nou, iar daca dispare din manifest, cardul dispare cu ea. O pagina de
 // 404 care trimite spre adrese inexistente ar fi chiar defectul pe care il explica.
 const CAI_SCURTE = ["/", "/solutii", "/instrumente/termene-de-pastrare", "/contact"];
 
 const DESTINATII: Ruta[] = CAI_SCURTE.map((cale) => RUTE.find((r) => r.cale === cale)).filter(
   (r): r is Ruta => Boolean(r),
 );
-//
+
 // Nu poarta titlu propriu in `metadata`: fisierul asta nu e o pagina de ruta, iar HTML-ul
 // lui (`_not-found`) nu intra in harta de site si nu se indexeaza.
 
-const RAND_LISTA =
-  "group flex items-baseline justify-between gap-4 border-b border-linie-suprafata py-3.5 font-afis text-[clamp(1.05rem,1.5vw,1.35rem)] font-semibold tracking-[0.04em] uppercase text-cerneala-2 no-underline transition-colors duration-200 hover:text-cerneala";
-
-const SAGEATA =
-  "font-mono text-violet transition-transform duration-200 group-hover:translate-x-1";
-
 export default function PaginaNegasita() {
   return (
-    <main className="border-t border-linie-suprafata bg-noapte">
-      <Invelis>
-        <div className="grid gap-4 py-16 md:grid-cols-[148px_1fr] md:gap-8 md:py-24">
-          <div className="flex items-baseline gap-3 border-b border-linie-suprafata pb-3 md:relative md:block md:border-b-0 md:pb-0">
-            <span
-              aria-hidden
-              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie-suprafata md:block"
-            />
-            <span
-              aria-hidden
-              className="font-mono text-[15px] leading-none font-medium tracking-[0.18em] text-violet md:mb-3 md:block md:text-[17px]"
-            >
-              404
-            </span>
-            <Eticheta className="md:block md:max-w-[120px]">Adresă negăsită</Eticheta>
-          </div>
+    <main className="bg-alb">
+      <Invelis className="pt-[96px] pb-20 md:pt-[120px] md:pb-24">
+        <Eticheta className="mb-4 block text-violet!">{NEGASITA.eticheta}</Eticheta>
 
-          <div>
-            <h1 className="mb-5 max-w-[20ch] font-afis text-titlu-2 font-bold tracking-[-0.01em] uppercase text-cerneala">
-              Adresa asta nu duce la nicio pagină.
-            </h1>
-            <p className="mb-10 max-w-[60ch] text-lead text-cerneala-2">
-              Fie adresa a fost scrisă altfel, fie pagina pe care o căutați nu există pe acest
-              site. Mai jos sunt patru drumuri scurte.
-            </p>
+        <h1 className="max-w-[20ch] text-titlu-2 text-cerneala">{NEGASITA.titlu}</h1>
 
-            <Eticheta className="mb-3 block">Drumuri</Eticheta>
-            <ul className="m-0 list-none border-t border-linie-suprafata p-0">
-              {DESTINATII.map((ruta) => (
-                <li key={ruta.cale} className="list-none">
-                  <Link href={ruta.cale} className={RAND_LISTA}>
-                    {ruta.scurt}
-                    <span aria-hidden className={SAGEATA}>
-                      →
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+        <p className="mt-5 max-w-[62ch] text-corp text-cerneala-2">{NEGASITA.text}</p>
 
-            <p className="mt-6 max-w-[60ch] text-nota text-cerneala-3">
-              Toate paginile site-ului, fiecare cu ce scrie pe ea într-un rând, stau în{" "}
-              <Link
-                href="/harta-site"
-                className="text-violet underline underline-offset-[3px]"
-              >
-                harta site-ului
-              </Link>
-              .
-            </p>
-
-            <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <Buton href="/" marime="mare" sageata className="max-sm:w-full">
-                Înapoi la pagina de start
-              </Buton>
-              <Buton href={CALE_DISCUTIE} fel="text" marime="mare">
-                Discuție de 30 de minute
-              </Buton>
-            </div>
-          </div>
+        <div className="mt-8">
+          <Buton href="/" sageata className="max-sm:w-full">
+            {NEGASITA.buton}
+          </Buton>
         </div>
+
+        <span className="mt-14 mb-5 block text-nota font-semibold text-cerneala-2">
+          {NEGASITA.drumuri}
+        </span>
+        <HartaLista rute={DESTINATII} coloane={2} />
+
+        <p className="mt-8 max-w-[62ch] text-corp text-cerneala-2">
+          Toate paginile site-ului, fiecare cu ce scrie pe ea într-un rând, stau în{" "}
+          <Link
+            href="/harta-site"
+            className="text-violet underline decoration-violet-2 underline-offset-[3px]"
+          >
+            harta site-ului
+          </Link>
+          .
+        </p>
       </Invelis>
     </main>
   );

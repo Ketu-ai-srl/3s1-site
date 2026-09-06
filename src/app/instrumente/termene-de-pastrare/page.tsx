@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AntetPagina from "@/components/AntetPagina";
-import BlocDovada from "@/components/BlocDovada";
-import Buton from "@/components/Buton";
+import BandaCTA from "@/components/BandaCTA";
+import JuridicListaLipsa from "@/components/JuridicListaLipsa";
+import JuridicSectiune from "@/components/JuridicSectiune";
 import ListaBifa from "@/components/ListaBifa";
-import SectiuneRegistru from "@/components/SectiuneRegistru";
 import TermeneCuprins from "@/components/TermeneCuprins";
 import TermeneFisa from "@/components/TermeneFisa";
 import TermeneRegula from "@/components/TermeneRegula";
 import { FOTOGRAFII } from "@/content/fotografii";
+import { ANCORE_TERMENE } from "@/content/interior-juridic";
 import { PAGINA_TERMENE as P, TERMENE_ROMANIA } from "@/content/termene-extins";
 
 // Verificatorul de termene, ca document de sine statator.
@@ -19,22 +20,35 @@ import { PAGINA_TERMENE as P, TERMENE_ROMANIA } from "@/content/termene-extins";
 // ancora proprie, deci pagina se poate tipari, trimite prin mesaj cu trimitere la un rand
 // anume, si citi de un crawler care nu executa JavaScript.
 //
-// De aceea au disparut si trimiterile catre "verificatorul de pe pagina de start": duceau
-// la `/#termene`, o ancora ramasa fara sectiune. Poarta de legaturi nu le-ar fi prins - ea
-// verifica ancorele doar in pagina care le poarta, iar acestea aratau spre alta pagina -
-// deci erau legaturi moarte pe care nicio masina nu le numara.
-//
-// Erau PATRU, nu trei. Prima runda le-a scos pe cele trei din JSX si a lasat-o pe a patra,
-// care statea in fisierul de continut (`termene-extins.ts`, linia de deschidere a sectiunii
-// II) si se randa in pagina ca propozitie, fara legatura: "Ordinea este cea din verificatorul
-// de pe pagina de start". Trimiterea fara `href` e mai greu de vazut si la fel de falsa -
-// pe o pagina al carei argument e ca nu scriem ce nu putem sustine, cu atat mai mult.
-// De cautat cu grep in `src/content/`, nu doar in `src/app/`, cand se retrage un obiect.
-//
 // CE NU FACE, si e o decizie, nu o scapare: nu adauga niciun termen nou. Cifrele raman cele
 // din `src/content/termene.ts`, unde le-a scris felia care le-a cules, cu actul pe fiecare
 // rand. Un instrument corect pe o jurisdictie bate unul plauzibil pe optsprezece, iar randul
 // care nu are articol ramane gol, cu motivul scris pe el.
+//
+// ASEZAREA, la valul S1-b, si ce s-a schimbat fata de valul de fundatie:
+//
+//   RANDUL DE ANCORE inlocuieste tabelul de deschidere. Tabelul repeta, in forma stransa,
+//   ce scrie mai jos pe fise: categoria, termenul, actul. Ce facea el si nu face fisa e
+//   navigarea, iar asta a ramas - opt ancore, patru pe rand la 1440, fiecare cu termenul si
+//   cu actul pe ea, deci cele doua propozitii din `cuprins.subTabel` raman adevarate.
+//
+//   FISELE SUNT CARDURI, doua pe rand la 1440, cu cifra termenului la 36 px. Erau opt
+//   articole late cat pagina, despartite de o linie: un perete de text din care nu se vedea
+//   unde se termina unul si incepe altul.
+//
+//   REGULILE DE FOLOSIRE SUNT UN ACORDEON. Patru blocuri deschise, de cate cincizeci de
+//   cuvinte, asezate dupa opt fise, erau un al doilea perete exact acolo unde atentia e deja
+//   consumata. Textul ramane in HTML-ul servit: acordeonul e `details`/`summary`.
+//
+//   CE NU E ACOPERIT nu mai poarta bifa. Cinci randuri despre ce lipseste, fiecare bifat, e
+//   semnul care spune contrariul textului; forma REF-V pentru ele e liniuta gri
+//   (`JuridicListaLipsa`), langa lista cu bife a ce ESTE acoperit.
+//
+//   INCHEIEREA E BANDA CTA VIOLETA a referintei, nu o a sasea banda de registru cu doua
+//   butoane. Butonul e unul singur, alb pe violet, si duce la discutia de treizeci de minute.
+//
+// SECTIUNILE SI ANCORELE LOR RAMAN CELE VECHI (`pe-scurt`, `randuri`, `acoperire`, `moldova`,
+// `folosire`, `discutie`): se citeaza in mesaje si nu se redenumesc la o reasezare.
 //
 // Canonical auto-referential: fara el pagina ar mosteni canonical-ul layout-ului si ar arata
 // spre pagina de start, ceea ce o scoate din index.
@@ -44,32 +58,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/instrumente/termene-de-pastrare" },
 };
 
+const LEGATURA = "text-violet underline decoration-violet-2 underline-offset-[3px]";
+
 export default function TermeneDePastrare() {
   return (
     <main id="continut">
-      {/* ANTETUL E O BANDA, NU UN ECRAN PLIN, si actiunea principala e tabelul, nu o
-          intalnire. Pagina asta ESTE unealta. Masurat inainte: antet de vitrina de 800 px al
+      {/* ANTETUL E O BANDA, NU UN ECRAN PLIN, si actiunea principala e lista, nu o intalnire.
+          Pagina asta ESTE unealta. Masurat inainte de scurtare: antet de vitrina de 800 px al
           carui buton principal cerea o intalnire, urmat de o sectiune de 1126 px despre
-          acoperire, iar primul rand din tabel aparea pe la 1800 px - dupa 2,25 ecrane la 1280
-          px. Cine vrea sa afle cati ani se pastreaza statele de salarii derula doua ecrane si
-          jumatate, iar primul lucru care i se cerea era o intalnire. Discutia n-a disparut:
-          sta in blocul de incheiere, unde era deja.
-
-          BANDA S-A TOPIT IN SECTIUNEA I pe 2026-09-06, si iata de ce costul de coerenta se
-          platise fara ca beneficiul sa fie livrat. Cu banda scurtata, dar cu linia ei de
-          patru randuri, cu doua butoane si cu titlul sectiunii I deasupra tabelului, primul
-          rand incepea la y=772 la 1280x800 (o felie de 28 px vizibila) si la y=997 la
-          390x844, adica 153 px SUB linia de plutire - exact pe latimea cititorului care
-          primeste pagina prin mesaj. Erau trei lucruri intre h1 si primul rand: linia,
-          butoanele si al doilea titlu.
-
-          Ce s-a facut cu fiecare, fiindca niciunul nu s-a pierdut: linia din antet si linia
-          de deasupra tabelului au coborat SUB tabel (`cuprins.subTabel`); butonul principal
-          era o ancora catre `#pe-scurt`, adica derula 294 px catre ceva ce devine oricum
-          vizibil, si a disparut cu totul; butonul al doilea ducea la /arhivare-fizica, care
-          sta in bara de sus, iar drumul catre ea a ramas scris in sectiunea V, in propozitia
-          care spune ce se citeste acolo. Titlul sectiunii I ar fi repetat h1-ul, deci
-          sectiunea a ramas cu cota si eticheta ei, si cu tabelul dedesubt. */}
+          acoperire, iar primul rand aparea pe la 1800 px - dupa 2,25 ecrane la 1280 px.
+          Discutia n-a disparut: sta in banda de incheiere. */}
       <AntetPagina
         adresa="/instrumente/termene-de-pastrare"
         forma="banda"
@@ -79,163 +77,136 @@ export default function TermeneDePastrare() {
         titlu={P.h1}
       />
 
-      <SectiuneRegistru id="pe-scurt" dens cota="I" eticheta="Pe scurt">
+      <JuridicSectiune id="pe-scurt" eticheta={ANCORE_TERMENE.eticheta}>
         <TermeneCuprins
           termene={TERMENE_ROMANIA}
-          antetDocument={P.cuprins.antetDocument}
-          antetTermen={P.cuprins.antetTermen}
-          antetTemei={P.cuprins.antetTemei}
           fara={P.cuprins.fara}
           faraTemei={P.cuprins.faraTemei}
         />
 
         {P.cuprins.subTabel.map((text) => (
-          <p
-            key={text.slice(0, 40)}
-            className="mt-8 max-w-[66ch] text-[16px] leading-[1.55] text-hartie-veche-2"
-          >
+          <p key={text.slice(0, 40)} className="mt-8 max-w-[62ch] text-corp text-cerneala-2">
             {text}
           </p>
         ))}
-      </SectiuneRegistru>
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="randuri"
-        cota="II"
+        ton="ceata"
         eticheta="Rândurile"
         titlu={P.fise.titlu}
         lead={P.fise.lead}
       >
-        {TERMENE_ROMANIA.map((t) => (
-          <TermeneFisa key={t.ancora} termen={t} />
-        ))}
+        <ul className="m-0 grid list-none gap-6 p-0 lg:grid-cols-2">
+          {TERMENE_ROMANIA.map((t) => (
+            <li key={t.ancora}>
+              <TermeneFisa termen={t} />
+            </li>
+          ))}
+        </ul>
 
-        <p className="mt-10 max-w-[66ch] text-[16px] leading-[1.55] text-hartie-veche-2">
+        <p className="mt-10 max-w-[62ch] text-corp text-cerneala-2">
           Ce diferă de la un domeniu la altul, inclusiv rândul lăsat gol la{" "}
-          <Link
-            href="/solutii/avocatura"
-            className="text-arama-clar underline underline-offset-[3px]"
-          >
+          <Link href="/solutii/avocatura" className={LEGATURA}>
             casele de avocatură
           </Link>
           , se citește pe fișele de domeniu.
         </p>
-      </SectiuneRegistru>
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="acoperire"
-        ton="inchis"
-        cota="III"
         eticheta="Acoperirea"
         titlu={P.acoperire.titlu}
         lead={P.acoperire.lead}
       >
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <ListaBifa titlu="Ce este acoperit" elemente={P.acoperire.acoperit} />
-          <ListaBifa titlu="Ce nu este acoperit" elemente={P.acoperire.neacoperit} />
+          <JuridicListaLipsa
+            titlu="Ce nu este acoperit"
+            elemente={P.acoperire.neacoperit}
+            oColoana
+          />
         </div>
 
-        <BlocDovada fel="declaratie" eticheta="Ce este pagina aceasta" className="mt-10">
-          {P.acoperire.nota}
-        </BlocDovada>
-      </SectiuneRegistru>
+        <div className="mt-10 rounded-card bg-violet-pal p-6">
+          <span className="mb-2 block text-nota font-semibold text-violet">
+            Ce este pagina aceasta
+          </span>
+          <p className="max-w-[62ch] text-corp text-cerneala">{P.acoperire.nota}</p>
+        </div>
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="moldova"
-        cota="IV"
+        ton="ceata"
         eticheta="A doua jurisdicție"
         titlu={P.moldova.titlu}
       >
         {P.moldova.paragrafe.map((text) => (
-          <p
-            key={text.slice(0, 40)}
-            className="mb-5 max-w-[68ch] text-[16px] leading-[1.55] text-hartie-veche-2"
-          >
+          <p key={text.slice(0, 40)} className="mb-5 max-w-[62ch] text-corp text-cerneala-2">
             {text}
           </p>
         ))}
 
-        <p className="mt-8 max-w-[62ch] text-[15.5px] leading-[1.5] text-hartie-veche-2">
+        <p className="mt-8 max-w-[62ch] text-corp text-cerneala-2">
           Scrieți-ne la{" "}
-          <a
-            href="mailto:contact@3s.ro"
-            className="text-arama-clar underline underline-offset-[3px]"
-          >
+          <a href="mailto:contact@3s.ro" className={LEGATURA}>
             contact@3s.ro
           </a>
           , cu actul și articolul. Adăugăm rândul și scriem de unde vine.
         </p>
-      </SectiuneRegistru>
+      </JuridicSectiune>
 
-      <SectiuneRegistru
+      <JuridicSectiune
         id="folosire"
-        ton="inchis"
-        cota="V"
         eticheta="Folosirea"
         titlu={P.folosire.titlu}
         lead={P.folosire.lead}
       >
-        {P.folosire.reguli.map((r) => (
-          <TermeneRegula key={r.titlu} titlu={r.titlu}>
-            {r.text}
-          </TermeneRegula>
-        ))}
+        <TermeneRegula reguli={P.folosire.reguli} />
 
         <div className="mt-14">
           <ListaBifa titlu="Actele pe care le citim" elemente={P.folosire.temeiuri} />
         </div>
 
-        <BlocDovada fel="limite" eticheta="Limitele instrumentului" className="mt-10">
-          {P.folosire.nota}
-        </BlocDovada>
+        <div className="mt-10 rounded-card bg-ceata p-6">
+          <span className="mb-2 block text-nota font-semibold text-cerneala-2">
+            Limitele instrumentului
+          </span>
+          <p className="max-w-[62ch] text-corp text-cerneala-2">{P.folosire.nota}</p>
+        </div>
 
-        <p className="mt-10 max-w-[66ch] text-[16px] leading-[1.55] text-hartie-veche-2">
+        <p className="mt-10 max-w-[62ch] text-corp text-cerneala-2">
           Cum se face selecționarea, pas cu pas, și ce hârtie rămâne după fiecare etapă sunt
           scrise pe{" "}
-          <Link
-            href="/arhivare-fizica"
-            className="text-arama-clar underline underline-offset-[3px]"
-          >
+          <Link href="/arhivare-fizica" className={LEGATURA}>
             pagina de arhivare fizică
           </Link>
           , iar mecanismul întreg, de la preluare până la răspunsul cu sursa citată, pe{" "}
-          <Link
-            href="/cum-functioneaza"
-            className="text-arama-clar underline underline-offset-[3px]"
-          >
+          <Link href="/cum-functioneaza" className={LEGATURA}>
             pagina de mecanism
           </Link>
           .
         </p>
-      </SectiuneRegistru>
 
-      <SectiuneRegistru
-        id="discutie"
-        cota="VI"
-        eticheta="Pasul următor"
-        titlu={P.incheiere.titlu}
-      >
-        <p className="mb-10 max-w-[62ch] text-[clamp(1.05rem,1.3vw,1.2rem)] leading-[1.5] text-hartie-veche-2">
-          {P.incheiere.text}
-        </p>
-
-        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
-          <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
-            Programați o discuție de 30 de minute
-          </Buton>
-          <Buton href="/solutii" fel="text" marime="mare">
-            Fișele pe domenii
-          </Buton>
-        </div>
-
-        <p className="mt-8 max-w-[62ch] text-[15.5px] leading-[1.5] text-hartie-veche-3">
+        <p className="mt-5 max-w-[62ch] text-corp text-cerneala-2">
           Restul paginilor sunt listate în{" "}
-          <Link href="/harta-site" className="text-arama-clar underline underline-offset-[3px]">
+          <Link href="/harta-site" className={LEGATURA}>
             harta site-ului
           </Link>
           .
         </p>
-      </SectiuneRegistru>
+      </JuridicSectiune>
+
+      <div id="discutie">
+        <BandaCTA
+          titlu={P.incheiere.titlu}
+          text={P.incheiere.text}
+          actiune={{ href: "/contact", text: "Programați o discuție de 30 de minute" }}
+        />
+      </div>
     </main>
   );
 }
