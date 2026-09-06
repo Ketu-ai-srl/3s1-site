@@ -290,7 +290,7 @@ export const ACCESIBILITATE = {
       text: "Cea de pe pagina de contact. Nu avem încă un formular dedicat pentru semnalările de accesibilitate și nu pretindem că avem: adresa aceea este citită, un formular fără destinatar nu ar fi.",
     },
     {
-      titlu: "Ce ne ajută să scrieți.",
+      titlu: "Ce ne ajută să scrieți",
       text: "Adresa paginii, ce încercați să faceți acolo și cu ce citiți pagina, dacă vă este comod să ne spuneți: browserul, cititorul de ecran, mărimea textului. O propoziție despre ce nu a mers ne ajută mai mult decât un raport tehnic.",
     },
     {

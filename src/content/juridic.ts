@@ -126,7 +126,7 @@ export const TERMENI: PaginaJuridica = {
     },
     {
       id: "ce-face-site-ul",
-      titlu: "Ce face site-ul, și ce nu face.",
+      titlu: "Ce face site-ul, și ce nu face",
       blocuri: [
         {
           fel: "paragraf",
