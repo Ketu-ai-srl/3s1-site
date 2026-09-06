@@ -1,50 +1,54 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
-// Un rând de întrebare deschisă: întrebarea, miza ei și starea de azi.
+import Acordeon from "./Acordeon";
+import type { IntrebareDeschisa } from "@/content/securitate";
+
+// Cele sase intrebari deschise ale partii digitale, ca ACORDEON pe linii (REF-V.md §4,
+// „Pagina interioara": FAQ, acordeon, linii `linie`).
 //
-// De ce este componentă proprie și nu încă un `MecanismRandFisa`: rândurile astea nu
-// poartă un răspuns, ci lipsa lui. Diferența trebuie să se vadă dintr-o privire, altfel
-// cititorul le citește ca pe niște afirmații și pleacă exact cu impresia pe care pagina
-// încearcă să o evite. Starea stă pe coloana de margine, în același loc pe fiecare rând,
-// ca să se poată număra fără să fie citite toate.
+// CE S-A SCHIMBAT LA VALUL S1-b. Fiecare intrebare era un rand de registru pe doua coloane,
+// cu starea in marginea din stanga in litera monospatiata. Sase randuri asa ocupau cat o
+// pagina, iar sectiunea era ultima inainte de incheiere. Acordeonul le strange la sase linii
+// si lasa intrebarile sa se citeasca dintr-o privire - care e chiar scopul lor: cine vine cu
+// un chestionar de securitate isi cauta intrebarea in lista, nu citeste eseul.
 //
-// RÂNDURI DISTINCTE, nu un bloc. Cele șase întrebări sunt argumentul paginii de
-// securitate, nu subsolul ei: strânse într-o listă cu bulină, s-ar fi citit ca o
-// rezervă politicoasă la sfârșit. Fiecare are propriul rând, cu propria linie deasupra,
-// și se numără de la distanță.
+// UNDE A AJUNS STAREA, si ce se pierde. `Acordeon` e inghetat si primeste `intrebare` ca
+// SIR, deci in randul de sumar nu incape o pastila: starea a coborat in panoul pliat, langa
+// motivul pentru care intrebarea conteaza. Se pierde citirea starii dintr-o privire, pe sase
+// randuri deodata. Ce tine locul: titlul sectiunii spune raspunsul colectiv pe fata - sase
+// intrebari la care nu avem raspuns in scris - deci cifra care conteaza se vede fara sa
+// deschida nimeni nimic; in panou raman cele doua stari care difera de restul. Daca se
+// hotaraste vreodata ca randul de sumar trebuie sa poarte pastila, se schimba `Acordeon`, nu
+// se dubleaza aici lista in afara lui.
 //
-// Culoarea stării e arama direcției, luată din suprafață (`text-cerneala-accent`), deci
-// se recalculează dacă rândul ajunge vreodată pe altă treaptă de fundal. Pe `noapte` dă
-// 6,76:1 și pe `noapte-3` 5,72:1 - peste pragul de 4,5:1 cerut textului mic; cifrele
-// măsurate sunt în `docs/design/DIRECTIA.md`.
+// RASPUNSUL E IN HTML-UL SERVIT. `Acordeon` foloseste `details` / `summary`, deci textul
+// pliat exista in documentul livrat de server si se citeste cu scripturile oprite. Poarta
+// S-17 il masoara.
+//
+// Componenta primeste TOATA lista, nu o intrebare, fiindca acordeonul e un singur element cu
+// linii comune: sase acordeoane de cate un rand ar desena sase chenare.
 
 type Props = {
-  intrebare: string;
-  deCeConteaza: string;
-  stare: string;
+  intrebari: IntrebareDeschisa[];
+  /** eticheta de deasupra pastilei de stare, ca sa se stie ce spune cifra din dreptul ei */
+  etichetaStare: string;
 };
 
-export default function SecuritateIntrebare({ intrebare, deCeConteaza, stare }: Props) {
+export default function SecuritateIntrebare({ intrebari, etichetaStare }: Props) {
   return (
-    <div className="grid gap-4 border-t border-linie py-8 last:border-b lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8 lg:py-10">
-      <div>
-        <span className="block font-mono text-[11px]  text-cerneala-2">
-          Întrebare deschisă
-        </span>
-        <span className="mt-1.5 block font-mono text-[13.5px] leading-[1.4] text-violet">
-          {stare}
-        </span>
-      </div>
-
-      <div>
-        <h3 className="font-afis max-w-[30ch] text-[clamp(1.15rem,1.9vw,1.5rem)] font-semibold  text-cerneala">
-          {intrebare}
-        </h3>
-        <p className="mt-3 max-w-[64ch] text-[17px] leading-[1.6] text-cerneala-2">{deCeConteaza}</p>
-      </div>
-    </div>
+    <Acordeon
+      elemente={intrebari.map((i) => ({
+        intrebare: i.intrebare,
+        raspuns: (
+          <>
+            <p className="m-0">{i.deCeConteaza}</p>
+            <p className="m-0 mt-4 flex flex-wrap items-baseline gap-2">
+              <span className="text-nota font-semibold text-cerneala">{etichetaStare}</span>
+              <span className="rounded-pastila bg-violet-pal px-3 py-1 text-nota font-semibold text-violet">
+                {i.stare}
+              </span>
+            </p>
+          </>
+        ),
+      }))}
+    />
   );
 }

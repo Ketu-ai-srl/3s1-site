@@ -1,55 +1,51 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
-// O etapă dintr-un lanț, cu urma scrisă care rămâne după ea.
+// O etapa a mecanismului, ca CARD in grila paginii interioare.
 //
-// FORMA, în direcția nouă: un ecran scurt, nu un rând de tabel. Cota etapei stă în
-// margine, în mono, iar titlul urcă la o treaptă condensată cu majuscule - destul cât
-// să se citească de la distanța de la care se derulează, nu atât cât să concureze cu
-// titlul secțiunii (`text-titlu-2`). Textul rămâne sub 60 de cuvinte, iar dedesubt vine
-// ștampila.
+// CE S-A SCHIMBAT LA VALUL S1-b. Etapa era un rand lat de registru: numarul in litera
+// monospatiata pe o coloana de 7rem, titlul la pana la 40 px si, sub el, o caseta cu bara
+// verticala. Sase randuri asa faceau 3494 px la 1280, adica 4,37 ecrane sub un singur titlu.
+// REF-V aseaza aceeasi multime in carduri de doua coloane, deci sase etape intra in ceva mai
+// mult de un ecran si se citesc doua cate doua.
 //
-// DE CE ȘTAMPILĂ, și nu încă un paragraf. Fiecare etapă se închide cu un DOCUMENT, iar
-// documentul e jumătate din argument - exact partea pe care o poate arăta cineva la un
-// control. Topită în paragraf, s-ar citi ca o promisiune printre altele; ridicată pe un
-// bloc propriu, cu eticheta ei de mono și cu linia de aramă în stânga, se numără.
+// HARTIA CARE RAMANE E JUMATATE DIN ARGUMENT, deci nu a coborat la 14 px intr-un colt: sta
+// sub o linie, cu eticheta ei, in acelasi card. Cine citeste etapa citeste si ce semneaza.
 //
-// Cerneala vine din SUPRAFAȚĂ (`text-cerneala*`), nu din paletă scrisă pe litere:
-// componenta stă azi pe `noapte` în trei pagini, iar ștampila își pune singură treapta
-// `noapte-2`, deci literele ei se recalculează acolo. Arama pe `noapte-2` rămâne peste
-// pragul de text mic; cifrele măsurate sunt în `docs/design/DIRECTIA.md`.
-//
-// Numărul e scris, nu ornamental: „Etapa 3" se citește, iar `01/02/03` mare, pus ca
-// decor, e chiar tiparul pe care direcția îl refuză.
+// Cardul e scris aici, nu luat din `Card`, dintr-un singur motiv: are trei etaje (pastila,
+// corp, hartia de sub linie), iar `Card` are doua. Razele, captuseala si regula „fara umbra
+// pe card static" sunt aceleasi.
 
 type Props = {
   numar: number;
   titlu: string;
   text: string;
   urma: string;
+  /** pe ce sta cardul: `alb` = sectiune alba, deci cardul e ceata; `ceata` = invers */
+  fundal?: "alb" | "ceata";
 };
 
-export default function MecanismEtapa({ numar, titlu, text, urma }: Props) {
+export default function MecanismEtapa({
+  numar,
+  titlu,
+  text,
+  urma,
+  fundal = "alb",
+}: Props) {
   return (
-    <li className="border-t border-linie py-12 last:border-b md:grid md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-12 md:py-16 lg:gap-x-20">
-      <span className="mb-5 block font-mono text-[12px]  text-violet md:mb-0 md:pt-3">
+    <li
+      className={
+        "flex h-full list-none flex-col rounded-card-mare p-8 " +
+        (fundal === "alb" ? "bg-ceata" : "bg-alb")
+      }
+    >
+      <span className="mb-4 inline-flex w-fit rounded-pastila bg-violet-pal px-3 py-1 text-nota font-semibold text-violet">
         Etapa {numar}
       </span>
 
-      <div>
-        <h3 className="font-afis max-w-[20ch] text-[clamp(1.6rem,3vw,2.5rem)] font-semibold tracking-[-0.01em]  text-cerneala">
-          {titlu}
-        </h3>
-        <p className="mt-5 max-w-[54ch] text-[17px] leading-[1.55] text-cerneala-2">{text}</p>
+      <h3 className="max-w-[22ch] text-titlu-4 text-cerneala">{titlu}</h3>
+      <p className="mt-3 text-corp text-cerneala-2">{text}</p>
 
-        <p className="mt-7 max-w-[54ch] border-l-2 border-violet bg-ceata px-5 py-4 text-[15.5px] leading-[1.5] text-cerneala-2">
-          <span className="mb-2 block font-mono text-[11px]  text-violet">
-            Rămâne scris
-          </span>
-          {urma}
-        </p>
+      <div className="mt-6 border-t border-linie pt-5">
+        <span className="mb-1.5 block text-nota font-semibold text-violet">Rămâne scris</span>
+        <p className="text-nota text-cerneala-2">{urma}</p>
       </div>
     </li>
   );
