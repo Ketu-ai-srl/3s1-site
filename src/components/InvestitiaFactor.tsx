@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 // Un element care determină costul, pe pagina de investiție.
 //
 // FORMA: listă tipografică mare, fără cifre. Pagina nu are voie să conțină prețuri, nici
@@ -25,23 +30,23 @@ type Props = {
 
 export default function InvestitiaFactor({ titlu, text, creste, scade }: Props) {
   return (
-    <li className="border-t border-linie-suprafata py-10 last:border-b md:py-14">
-      <h3 className="font-afis max-w-[26ch] text-[clamp(1.5rem,2.8vw,2.25rem)] font-bold tracking-[-0.01em] uppercase text-cerneala">
+    <li className="border-t border-linie py-10 last:border-b md:py-14">
+      <h3 className="font-afis max-w-[26ch] text-[clamp(1.5rem,2.8vw,2.25rem)] font-semibold tracking-[-0.01em]  text-cerneala">
         {titlu}
       </h3>
       <p className="mt-4 max-w-[60ch] text-[17px] leading-[1.6] text-cerneala-2">{text}</p>
 
       <dl className="mt-7 grid gap-6 sm:grid-cols-2 sm:gap-10">
-        <div className="border-l-2 border-cerneala-accent pl-5">
-          <dt className="m-0 font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-accent">
+        <div className="border-l-2 border-violet pl-5">
+          <dt className="m-0 font-mono text-[11px]  text-violet">
             Crește când
           </dt>
           <dd className="m-0 mt-2 max-w-[42ch] text-[15.5px] leading-[1.5] text-cerneala-2">
             {creste}
           </dd>
         </div>
-        <div className="border-l-2 border-linie-suprafata pl-5">
-          <dt className="m-0 font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-3">
+        <div className="border-l-2 border-linie pl-5">
+          <dt className="m-0 font-mono text-[11px]  text-cerneala-2">
             Scade când
           </dt>
           <dd className="m-0 mt-2 max-w-[42ch] text-[15.5px] leading-[1.5] text-cerneala-2">

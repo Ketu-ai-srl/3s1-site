@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import Link from "next/link";
 import AntetPagina from "./AntetPagina";
 import BlocDovada from "./BlocDovada";
@@ -116,13 +121,13 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
             latimea, si masurat la 1280 px blocul ocupa 620 din 1200 - jumatatea dreapta
             ramanea goala sub o linie care mergea pana la capat, adica arata neterminat, nu
             aerisit. Titlul de 41,6 px tine acum coloana lui. */}
-        <div className="border-t border-linie-suprafata">
+        <div className="border-t border-linie">
           {segment.durere.map((f) => (
             <div
               key={f.titlu}
-              className="grid items-start gap-x-14 gap-y-4 border-b border-linie-suprafata py-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:py-14 lg:gap-x-20"
+              className="grid items-start gap-x-14 gap-y-4 border-b border-linie py-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:py-14 lg:gap-x-20"
             >
-              <h3 className="font-afis text-[clamp(1.6rem,3.2vw,2.6rem)] font-semibold tracking-[0.02em] uppercase text-cerneala">
+              <h3 className="font-afis text-[clamp(1.6rem,3.2vw,2.6rem)] font-semibold  text-cerneala">
                 {f.titlu}
               </h3>
               <p className="max-w-[58ch] text-[17px] leading-[1.6] text-cerneala-2">{f.text}</p>
@@ -133,7 +138,7 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
         {/* Invitatia la corectie ramane pe pagina, dar sub blocuri, nu inaintea lor: e o
             reactie la ce tocmai s-a citit. Statea in linia de deschidere a sectiunii, iar
             acolo o impingea peste 60 de cuvinte odata cu textul mutat de pe ecran. */}
-        <p className="mt-10 max-w-[62ch] text-[15.5px] leading-[1.55] text-cerneala-3">
+        <p className="mt-10 max-w-[62ch] text-[15.5px] leading-[1.55] text-cerneala-2">
           Scriem problema așa cum arată ea dintr-un birou. Dacă nu vă recunoașteți în
           rândurile de mai sus, spuneți-ne: înseamnă că am înțeles greșit domeniul.
         </p>
@@ -146,13 +151,13 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
         titlu="Aceleași documente, alt mod de a ajunge la ele."
         lead="Pașii serviciului sunt aceiași peste tot. Aici scriem numai ce arată altfel în ziua de lucru a acestui domeniu."
       >
-        <dl className={"m-0 border-t border-linie-suprafata p-0 " + LATIME_REGISTRU}>
+        <dl className={"m-0 border-t border-linie p-0 " + LATIME_REGISTRU}>
           {segment.schimbare.map((f) => (
             <div
               key={f.titlu}
-              className="grid gap-x-10 gap-y-2 border-b border-linie-suprafata py-7 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]"
+              className="grid gap-x-10 gap-y-2 border-b border-linie py-7 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]"
             >
-              <dt className="font-afis text-[clamp(1.2rem,1.7vw,1.5rem)] font-semibold tracking-[0.03em] uppercase text-cerneala">
+              <dt className="font-afis text-[clamp(1.2rem,1.7vw,1.5rem)] font-semibold  text-cerneala">
                 {f.titlu}
               </dt>
               <dd className="m-0 max-w-[62ch] text-[16px] leading-[1.55] text-cerneala-2">
@@ -170,7 +175,7 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
           Etapele serviciului, fiecare cu documentul ei semnat, sunt scrise pe{" "}
           <Link
             href="/cum-functioneaza"
-            className="text-cerneala-accent underline underline-offset-[3px]"
+            className="text-violet underline underline-offset-[3px]"
           >
             pagina despre mecanism
           </Link>
@@ -198,18 +203,18 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
         titlu="Actele din care vine obligația, numite ca să le puteți citi."
         lead="Nu scriem un termen fără să spunem din ce act vine. Unde nu putem cita articolul, rândul rămâne gol și scriem de ce, în loc să punem o cifră care sună bine."
       >
-        <div className={"border-t border-linie-suprafata " + LATIME_REGISTRU}>
+        <div className={"border-t border-linie " + LATIME_REGISTRU}>
           {segment.temeiuri.map((t) => (
             <div
               key={t.act}
-              className="grid gap-x-10 gap-y-3 border-b border-linie-suprafata py-7 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]"
+              className="grid gap-x-10 gap-y-3 border-b border-linie py-7 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]"
             >
               {/* Numele actului e o CITARE, deci mono, ca in verificatorul de termene si
                   ca in stampila de citare de pe pagina de start. Mono, dar NU arama:
                   sectiunea are deja cota si eticheta blocului de limite in arama, iar
                   regula directiei e un singur accent odata. Forma monospatiata singura
                   spune ca e o citare. */}
-              <h3 className="font-mono text-[13.5px] leading-[1.5] tracking-[0.04em] text-cerneala">
+              <h3 className="font-mono text-[13.5px] leading-[1.5] text-cerneala">
                 {t.act}
               </h3>
               <p className="max-w-[62ch] text-[16px] leading-[1.55] text-cerneala-2">{t.ce}</p>
@@ -243,7 +248,7 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
           Termenele pe care le putem cita pe articol stau în{" "}
           <Link
             href="/instrumente/termene-de-pastrare"
-            className="text-cerneala-accent underline underline-offset-[3px]"
+            className="text-violet underline underline-offset-[3px]"
           >
             verificatorul de termene
           </Link>
@@ -293,11 +298,11 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
           </Buton>
         </div>
 
-        <p className="mt-8 max-w-[60ch] text-[15.5px] leading-[1.55] text-cerneala-3">
+        <p className="mt-8 max-w-[60ch] text-[15.5px] leading-[1.55] text-cerneala-2">
           Scrieți-ne și direct, dacă preferați:{" "}
           <a
             href="mailto:contact@3s.ro"
-            className="text-cerneala-accent underline underline-offset-[3px]"
+            className="text-violet underline underline-offset-[3px]"
           >
             contact@3s.ro
           </a>

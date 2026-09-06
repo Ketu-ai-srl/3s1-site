@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 "use client";
 
 import { useState } from "react";
@@ -24,7 +29,7 @@ import { STARI, TERMENE } from "@/content/termene";
 // neatinse, doar culorile trec in directia noua.
 
 const DOC_BAZA =
-  "cursor-pointer border border-linie-suprafata px-3.5 py-2.5 text-left font-afis text-[15px] leading-snug font-semibold tracking-[0.06em] uppercase transition-colors duration-150 lg:border-0 lg:border-b lg:border-linie-suprafata lg:px-3 lg:py-3.5";
+  "cursor-pointer border border-linie px-3.5 py-2.5 text-left font-afis text-[15px] leading-snug font-semibold  transition-colors duration-150 lg:border-0 lg:border-b lg:border-linie lg:px-3 lg:py-3.5";
 
 export default function VerificatorTermene() {
   const [ales, setAles] = useState(0);
@@ -36,7 +41,7 @@ export default function VerificatorTermene() {
       <div
         role="group"
         aria-label="Tipuri de documente"
-        className="flex flex-wrap gap-2 lg:flex-col lg:gap-0 lg:border-t lg:border-linie-suprafata"
+        className="flex flex-wrap gap-2 lg:flex-col lg:gap-0 lg:border-t lg:border-linie"
       >
         {TERMENE.map((t, i) => (
           <button
@@ -46,7 +51,7 @@ export default function VerificatorTermene() {
             onClick={() => setAles(i)}
             className={`${DOC_BAZA} ${
               i === ales
-                ? "border-cerneala-accent bg-transparent text-cerneala lg:border-l-2 lg:border-l-cerneala-accent"
+                ? "border-violet bg-transparent text-cerneala lg:border-l-2 lg:border-l-violet"
                 : "bg-transparent text-cerneala-2 hover:text-cerneala"
             }`}
           >
@@ -58,7 +63,7 @@ export default function VerificatorTermene() {
       <CadruScan className="min-h-[340px]">
         <div className="px-4 py-6 sm:px-6 sm:py-8" aria-live="polite">
           <span
-            className={`mb-4 inline-flex items-center gap-2 px-2.5 py-1 font-mono text-eticheta tracking-[0.08em] uppercase ${s.clase}`}
+            className={`mb-4 inline-flex items-center gap-2 px-2.5 py-1 font-mono text-eticheta ${s.clase}`}
           >
             {s.text}
           </span>
@@ -66,19 +71,19 @@ export default function VerificatorTermene() {
           <p className="mb-2 text-[16px] text-cerneala-2">{d.tip}</p>
 
           {d.termen ? (
-            <p className="mb-4 font-afis text-[34px] leading-[0.95] font-bold tracking-[0.01em] uppercase text-cerneala-accent sm:text-[42px] lg:text-[52px]">
+            <p className="mb-4 font-afis text-[34px] leading-[0.95] font-semibold  text-violet sm:text-[42px] lg:text-[52px]">
               {d.termen}
             </p>
           ) : (
-            <p className="mb-4 font-vitrina text-[22px] text-cerneala-3 italic">
+            <p className="mb-4 font-vitrina text-[22px] text-cerneala-2 italic">
               Rând lăsat gol, intenționat.
             </p>
           )}
 
           <dl className="m-0">
             {d.dela ? (
-              <div className="grid gap-1 border-t border-linie-suprafata py-3 text-[16px] sm:grid-cols-[150px_1fr] sm:gap-4">
-                <dt className="pt-[3px] font-mono text-eticheta tracking-[0.08em] uppercase text-cerneala-3">
+              <div className="grid gap-1 border-t border-linie py-3 text-[16px] sm:grid-cols-[150px_1fr] sm:gap-4">
+                <dt className="pt-[3px] font-mono text-eticheta  text-cerneala-2">
                   Curge din
                 </dt>
                 <dd className="m-0 text-cerneala-2">{d.dela}</dd>
@@ -86,8 +91,8 @@ export default function VerificatorTermene() {
             ) : null}
 
             {d.lege ? (
-              <div className="grid gap-1 border-t border-linie-suprafata py-3 text-[16px] sm:grid-cols-[150px_1fr] sm:gap-4">
-                <dt className="pt-[3px] font-mono text-eticheta tracking-[0.08em] uppercase text-cerneala-3">
+              <div className="grid gap-1 border-t border-linie py-3 text-[16px] sm:grid-cols-[150px_1fr] sm:gap-4">
+                <dt className="pt-[3px] font-mono text-eticheta  text-cerneala-2">
                   Temei legal
                 </dt>
                 <dd className="m-0 text-cerneala-2">
@@ -97,8 +102,8 @@ export default function VerificatorTermene() {
               </div>
             ) : null}
 
-            <div className="grid gap-1 border-t border-linie-suprafata py-3 text-[16px] sm:grid-cols-[150px_1fr] sm:gap-4">
-              <dt className="pt-[3px] font-mono text-eticheta tracking-[0.08em] uppercase text-cerneala-3">
+            <div className="grid gap-1 border-t border-linie py-3 text-[16px] sm:grid-cols-[150px_1fr] sm:gap-4">
+              <dt className="pt-[3px] font-mono text-eticheta  text-cerneala-2">
                 {d.termen ? "Ce mai trebuie știut" : "De ce este gol"}
               </dt>
               <dd className="m-0 text-cerneala-2">{d.nota}</dd>

@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 // O etapă dintr-un lanț, cu urma scrisă care rămâne după ea.
 //
 // FORMA, în direcția nouă: un ecran scurt, nu un rând de tabel. Cota etapei stă în
@@ -28,19 +33,19 @@ type Props = {
 
 export default function MecanismEtapa({ numar, titlu, text, urma }: Props) {
   return (
-    <li className="border-t border-linie-suprafata py-12 last:border-b md:grid md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-12 md:py-16 lg:gap-x-20">
-      <span className="mb-5 block font-mono text-[12px] tracking-[0.22em] uppercase text-cerneala-accent md:mb-0 md:pt-3">
+    <li className="border-t border-linie py-12 last:border-b md:grid md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-12 md:py-16 lg:gap-x-20">
+      <span className="mb-5 block font-mono text-[12px]  text-violet md:mb-0 md:pt-3">
         Etapa {numar}
       </span>
 
       <div>
-        <h3 className="font-afis max-w-[20ch] text-[clamp(1.6rem,3vw,2.5rem)] font-bold tracking-[-0.01em] uppercase text-cerneala">
+        <h3 className="font-afis max-w-[20ch] text-[clamp(1.6rem,3vw,2.5rem)] font-semibold tracking-[-0.01em]  text-cerneala">
           {titlu}
         </h3>
         <p className="mt-5 max-w-[54ch] text-[17px] leading-[1.55] text-cerneala-2">{text}</p>
 
-        <p className="mt-7 max-w-[54ch] border-l-2 border-cerneala-accent bg-noapte-2 px-5 py-4 text-[15.5px] leading-[1.5] text-cerneala-2">
-          <span className="mb-2 block font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-accent">
+        <p className="mt-7 max-w-[54ch] border-l-2 border-violet bg-ceata px-5 py-4 text-[15.5px] leading-[1.5] text-cerneala-2">
+          <span className="mb-2 block font-mono text-[11px]  text-violet">
             Rămâne scris
           </span>
           {urma}

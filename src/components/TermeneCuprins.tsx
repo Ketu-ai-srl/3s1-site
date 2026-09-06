@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import type { TermenCuAncora } from "@/content/termene-extins";
 
 // Cuprinsul verificatorului de termene: un rand pe categorie, cu actul si articolul ca
@@ -40,23 +45,23 @@ export default function TermeneCuprins({
   faraTemei: string;
 }) {
   return (
-    <div className="overflow-x-auto border-t border-linie-noapte">
+    <div className="overflow-x-auto border-t border-linie">
       <table className="w-full border-collapse text-left">
         <caption className="sr-only">
           Termenele de păstrare din pagina aceasta, pe scurt. Fiecare categorie duce la fișa
           ei completă, iar actul normativ este scris pe rând.
         </caption>
         <thead>
-          <tr className="border-b border-linie-noapte">
+          <tr className="border-b border-linie">
             <th
               scope="col"
-              className="py-2.5 pr-6 font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-hartie-veche-3"
+              className="py-2.5 pr-6 font-mono text-[11px] font-medium  text-cerneala-2"
             >
               {antetDocument} · {antetTemei}
             </th>
             <th
               scope="col"
-              className="py-2.5 font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-hartie-veche-3"
+              className="py-2.5 font-mono text-[11px] font-medium  text-cerneala-2"
             >
               {antetTermen}
             </th>
@@ -64,37 +69,37 @@ export default function TermeneCuprins({
         </thead>
         <tbody>
           {termene.map((t) => (
-            <tr key={t.ancora} className="border-b border-linie-noapte last:border-b-0">
+            <tr key={t.ancora} className="border-b border-linie last:border-b-0">
               <th scope="row" className={CELULA + " w-[66%] font-normal md:w-[58%]"}>
                 <a
                   href={"#" + t.ancora}
-                  className="group inline-flex items-baseline gap-3 font-afis text-[clamp(1.15rem,1.9vw,1.6rem)] font-semibold tracking-[0.04em] uppercase text-hartie-veche no-underline transition-colors duration-200 hover:text-arama-clar"
+                  className="group inline-flex items-baseline gap-3 font-afis text-[clamp(1.15rem,1.9vw,1.6rem)] font-semibold  text-cerneala no-underline transition-colors duration-200 hover:text-violet"
                 >
                   {t.scurt}
                   <span
                     aria-hidden="true"
-                    className="text-arama-clar transition-transform duration-200 group-hover:translate-x-1"
+                    className="text-violet transition-transform duration-200 group-hover:translate-x-1"
                   >
                     →
                   </span>
                 </a>
                 {t.lege ? (
-                  <span className="mt-2 block w-fit border-l-2 border-arama-clar bg-noapte-3 px-3 py-1.5 font-mono text-[12.5px] leading-[1.45] tracking-[0.04em] text-arama-clar">
+                  <span className="mt-2 block w-fit border-l-2 border-violet bg-alb px-3 py-1.5 font-mono text-[12.5px] leading-[1.45] text-violet">
                     {t.lege}
                   </span>
                 ) : (
-                  <span className="mt-2 block w-fit border-l-2 border-linie-noapte bg-noapte-2 px-3 py-1.5 font-mono text-[12.5px] leading-[1.45] tracking-[0.04em] text-hartie-veche-3">
+                  <span className="mt-2 block w-fit border-l-2 border-linie bg-ceata px-3 py-1.5 font-mono text-[12.5px] leading-[1.45] text-cerneala-2">
                     {faraTemei}
                   </span>
                 )}
               </th>
               <td className={CELULA}>
                 {t.termen ? (
-                  <span className="font-afis text-[clamp(1.05rem,1.6vw,1.35rem)] font-semibold tracking-[0.03em] uppercase text-hartie-veche">
+                  <span className="font-afis text-[clamp(1.05rem,1.6vw,1.35rem)] font-semibold  text-cerneala">
                     {t.termen}
                   </span>
                 ) : (
-                  <span className="font-mono text-[12.5px] tracking-[0.06em] uppercase text-hartie-veche-3">
+                  <span className="font-mono text-[12.5px]  text-cerneala-2">
                     {fara}
                   </span>
                 )}

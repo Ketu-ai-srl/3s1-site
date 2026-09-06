@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import Link from "next/link";
 
 // Un domeniu pe hub-ul /solutii: un RAND de lista, nu un cartonas.
@@ -35,17 +40,17 @@ type Props = {
 // pagina. Masurat la 1280 px, pagina de start da 30,7 px pe rand; hub-ul da 33,3.
 const RAND = "grid gap-x-10 gap-y-2 py-7 md:grid-cols-[minmax(0,7fr)_minmax(0,9fr)_auto]";
 const NUME =
-  "font-afis text-[clamp(1.5rem,2.6vw,2.25rem)] font-semibold tracking-[0.04em] uppercase";
+  "font-afis text-[clamp(1.5rem,2.6vw,2.25rem)] font-semibold ";
 const REZUMAT = "text-[16px] leading-[1.55] text-cerneala-2";
 
 export default function FisaDomeniu({ titlu, href, children }: Props) {
   if (!href) {
     return (
-      <li className="list-none border-b border-linie-suprafata">
+      <li className="list-none border-b border-linie">
         <div className={RAND}>
-          <h3 className={NUME + " text-cerneala-3"}>{titlu}</h3>
+          <h3 className={NUME + " text-cerneala-2"}>{titlu}</h3>
           <p className={REZUMAT}>{children}</p>
-          <span className="font-mono text-[12px] tracking-[0.18em] uppercase text-cerneala-3 md:self-center">
+          <span className="font-mono text-[12px]  text-cerneala-2 md:self-center">
             În pregătire
           </span>
         </div>
@@ -54,7 +59,7 @@ export default function FisaDomeniu({ titlu, href, children }: Props) {
   }
 
   return (
-    <li className="list-none border-b border-linie-suprafata">
+    <li className="list-none border-b border-linie">
       <Link href={href} className={"group block no-underline " + RAND}>
         <h3 className={NUME + " text-cerneala-2 transition-colors duration-200 group-hover:text-cerneala"}>
           {titlu}
@@ -62,7 +67,7 @@ export default function FisaDomeniu({ titlu, href, children }: Props) {
         <p className={REZUMAT}>{children}</p>
         <span
           aria-hidden
-          className="font-mono text-cerneala-accent transition-transform duration-200 group-hover:translate-x-1 md:self-center"
+          className="font-mono text-violet transition-transform duration-200 group-hover:translate-x-1 md:self-center"
         >
           →
         </span>

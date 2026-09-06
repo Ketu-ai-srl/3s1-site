@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 // Un rând de întrebare deschisă: întrebarea, miza ei și starea de azi.
 //
 // De ce este componentă proprie și nu încă un `MecanismRandFisa`: rândurile astea nu
@@ -24,18 +29,18 @@ type Props = {
 
 export default function SecuritateIntrebare({ intrebare, deCeConteaza, stare }: Props) {
   return (
-    <div className="grid gap-4 border-t border-linie-suprafata py-8 last:border-b lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8 lg:py-10">
+    <div className="grid gap-4 border-t border-linie py-8 last:border-b lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8 lg:py-10">
       <div>
-        <span className="block font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-3">
+        <span className="block font-mono text-[11px]  text-cerneala-2">
           Întrebare deschisă
         </span>
-        <span className="mt-1.5 block font-mono text-[13.5px] leading-[1.4] text-cerneala-accent">
+        <span className="mt-1.5 block font-mono text-[13.5px] leading-[1.4] text-violet">
           {stare}
         </span>
       </div>
 
       <div>
-        <h3 className="font-afis max-w-[30ch] text-[clamp(1.15rem,1.9vw,1.5rem)] font-semibold tracking-[0.02em] uppercase text-cerneala">
+        <h3 className="font-afis max-w-[30ch] text-[clamp(1.15rem,1.9vw,1.5rem)] font-semibold  text-cerneala">
           {intrebare}
         </h3>
         <p className="mt-3 max-w-[64ch] text-[17px] leading-[1.6] text-cerneala-2">{deCeConteaza}</p>

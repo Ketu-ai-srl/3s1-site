@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import Link from "next/link";
 
 // O grupa de rute din harta site-ului: un RAND pe pagina, nu un cartonas si nici o legatura
@@ -21,27 +26,27 @@ export type RandHarta = {
 
 export default function HartaLista({ rute }: { rute: RandHarta[] }) {
   return (
-    <ul className="m-0 list-none border-t border-linie-noapte p-0">
+    <ul className="m-0 list-none border-t border-linie p-0">
       {rute.map((r) => (
-        <li key={r.cale} className="border-b border-linie-noapte">
+        <li key={r.cale} className="border-b border-linie">
           <Link
             href={r.cale}
             className="group grid gap-x-10 gap-y-2 py-6 no-underline md:grid-cols-[minmax(0,7fr)_minmax(0,9fr)_auto]"
           >
-            <span className="font-afis text-[clamp(1.35rem,2.2vw,1.95rem)] font-semibold tracking-[0.04em] uppercase text-hartie-veche-2 transition-colors duration-200 group-hover:text-hartie-veche">
+            <span className="font-afis text-[clamp(1.35rem,2.2vw,1.95rem)] font-semibold  text-cerneala-2 transition-colors duration-200 group-hover:text-cerneala">
               {r.scurt}
             </span>
             <span>
-              <span className="block text-[16px] leading-[1.55] text-hartie-veche-2">
+              <span className="block text-[16px] leading-[1.55] text-cerneala-2">
                 {r.descriere}
               </span>
-              <span className="mt-1.5 block font-mono text-[12.5px] tracking-[0.06em] text-hartie-veche-3">
+              <span className="mt-1.5 block font-mono text-[12.5px] text-cerneala-2">
                 {r.cale}
               </span>
             </span>
             <span
               aria-hidden="true"
-              className="font-mono text-arama-clar transition-transform duration-200 group-hover:translate-x-1 md:self-center"
+              className="font-mono text-violet transition-transform duration-200 group-hover:translate-x-1 md:self-center"
             >
               →
             </span>

@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import Link from "next/link";
 import JuridicIdentificare from "./JuridicIdentificare";
 import type { Bloc, Frag } from "@/content/juridic";
@@ -28,7 +33,7 @@ function bucata(f: Frag, i: number) {
   if (typeof f === "string") {
     return <span key={i}>{f}</span>;
   }
-  const stil = "text-cerneala-accent underline underline-offset-[3px] hover:text-cerneala";
+  const stil = "text-violet underline underline-offset-[3px] hover:text-cerneala";
   if (f.href.includes("#")) {
     return (
       <a key={i} href={f.href} className={stil}>
@@ -65,16 +70,16 @@ function Caseta({
   // ultimele doua suprafete deschise de pe paginile juridice.
   const stil =
     fel === "declaratie"
-      ? "border-l-2 border-cerneala-accent bg-noapte-3 px-6 py-5"
-      : "border border-linie-suprafata bg-noapte-2 px-6 py-5";
+      ? "border-l-2 border-violet bg-alb px-6 py-5"
+      : "border border-linie bg-ceata px-6 py-5";
   // Eticheta: arama pe noapte-3 da 5,72:1, deci trece si ca text mic. Nota veche descria
   // perechea de pe fundalul bej (4,48:1, sub prag), care nu mai exista pe pagina.
-  const stilEticheta = fel === "declaratie" ? "text-cerneala-accent" : "text-cerneala-3";
+  const stilEticheta = fel === "declaratie" ? "text-violet" : "text-cerneala-2";
 
   return (
     <div className={`my-6 ${stil}`}>
       <span
-        className={`mb-1.5 block font-mono text-eticheta font-medium tracking-[0.1em] uppercase ${stilEticheta}`}
+        className={`mb-1.5 block font-mono text-eticheta font-medium ${stilEticheta}`}
       >
         {eticheta}
       </span>
@@ -104,7 +109,7 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
                   <li key={j} className="mb-3 flex gap-4 text-corp text-cerneala-2 last:mb-0">
                     {/* Cratima de arama e un element real, nu un marcator de lista: se
                         aliniaza pe prima linie oricat de lung ar fi randul. */}
-                    <span aria-hidden className="mt-[11px] h-px w-[9px] shrink-0 bg-cerneala-accent" />
+                    <span aria-hidden className="mt-[11px] h-px w-[9px] shrink-0 bg-violet" />
                     <span>
                       <Text parti={e} />
                     </span>
@@ -119,7 +124,7 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
                 {b.randuri.map((r) => (
                   <div
                     key={r.titlu}
-                    className="grid gap-1.5 border-t border-linie-suprafata py-4 last:border-b md:grid-cols-[170px_1fr] md:gap-6"
+                    className="grid gap-1.5 border-t border-linie py-4 last:border-b md:grid-cols-[170px_1fr] md:gap-6"
                   >
                     {/* Coloana titlului s-a stramtat de la 260 la 170 px odata cu cadrul,
                         si tot atunci `lg` a devenit `md`, ca sa se schimbe odata cu grila
@@ -128,7 +133,7 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
                         textul sta pe 298 px si 41 de caractere pe rand. Titlurile lungi
                         („Verificarea intr-un browser real") trec pe doua randuri, ceea ce
                         la o lista de definitii e firesc. */}
-                    <h3 className="font-afis text-[19px] tracking-[0.02em] uppercase text-cerneala">{r.titlu}</h3>
+                    <h3 className="font-afis text-[19px]  text-cerneala">{r.titlu}</h3>
                     <p className="text-corp text-cerneala-2">
                       <Text parti={r.text} />
                     </p>

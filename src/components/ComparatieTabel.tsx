@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import { Fragment } from "react";
 import type { ColoanaComparatie, RandComparatie } from "@/content/comparatie";
 
@@ -61,17 +66,17 @@ export default function ComparatieTabel({ coloane, randuri }: Props) {
           key={c.id}
           aria-hidden
           className={`hidden pb-5 lg:block ${
-            c.aNoastra ? "border-l-2 border-cerneala-accent pl-5" : ""
+            c.aNoastra ? "border-l-2 border-violet pl-5" : ""
           }`}
         >
           <span
-            className={`font-afis block text-[19px] leading-[1.15] font-semibold tracking-[0.02em] uppercase ${
-              c.aNoastra ? "text-cerneala-accent" : "text-cerneala"
+            className={`font-afis block text-[19px] leading-[1.15] font-semibold ${
+              c.aNoastra ? "text-violet" : "text-cerneala"
             }`}
           >
             {c.nume}
           </span>
-          <span className="mt-2 block font-mono text-[12px] leading-[1.45] text-cerneala-3">
+          <span className="mt-2 block font-mono text-[12px] leading-[1.45] text-cerneala-2">
             {c.rezumat}
           </span>
         </div>
@@ -82,8 +87,8 @@ export default function ComparatieTabel({ coloane, randuri }: Props) {
         // direcți ai grilei, iar `display: contents` a fost ani buni scos din arborele
         // de accesibilitate de mai multe motoare. Fragmentul nu produce niciun nod.
         <Fragment key={rand.axa}>
-          <div className="border-t border-linie-suprafata pt-8 pb-3 lg:pt-7 lg:pb-9">
-            <h3 className="font-afis max-w-[22ch] text-[19px] leading-[1.2] font-semibold tracking-[0.02em] uppercase text-cerneala lg:text-[17.5px]">
+          <div className="border-t border-linie pt-8 pb-3 lg:pt-7 lg:pb-9">
+            <h3 className="font-afis max-w-[22ch] text-[19px] leading-[1.2] font-semibold  text-cerneala lg:text-[17.5px]">
               {rand.axa}
             </h3>
           </div>
@@ -95,11 +100,11 @@ export default function ComparatieTabel({ coloane, randuri }: Props) {
                 key={c.id}
                 className={`border-l-2 pb-6 pl-4 lg:pt-7 lg:pb-9 ${
                   c.aNoastra
-                    ? "border-cerneala-accent lg:border-t lg:border-l-2 lg:pl-5"
-                    : "border-linie-suprafata lg:border-t lg:border-l-0 lg:pl-0"
+                    ? "border-violet lg:border-t lg:border-l-2 lg:pl-5"
+                    : "border-linie lg:border-t lg:border-l-0 lg:pl-0"
                 }`}
               >
-                <span className="mb-2 block font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-3 lg:sr-only">
+                <span className="mb-2 block font-mono text-[11px]  text-cerneala-2 lg:sr-only">
                   {c.nume}
                 </span>
                 <p
