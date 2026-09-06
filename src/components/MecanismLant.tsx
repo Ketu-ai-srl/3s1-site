@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 // Lanțul de la întrebare la pagina citată.
 //
 // E o listă ORDONATĂ fiindcă ordinea e conținutul: fiecare verigă se sprijină pe cea
@@ -24,13 +29,13 @@ export default function MecanismLant({ verigi }: Props) {
       {verigi.map((v, i) => (
         <li
           key={v.titlu}
-          className="border-t border-linie-suprafata py-8 last:border-b md:grid md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-12 md:py-10 lg:gap-x-20"
+          className="border-t border-linie py-8 last:border-b md:grid md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-12 md:py-10 lg:gap-x-20"
         >
-          <span className="mb-4 block font-mono text-[12px] tracking-[0.22em] uppercase text-cerneala-accent md:mb-0 md:pt-2">
+          <span className="mb-4 block font-mono text-[12px]  text-violet md:mb-0 md:pt-2">
             Veriga {i + 1}
           </span>
           <div>
-            <h3 className="font-afis max-w-[26ch] text-[clamp(1.15rem,2vw,1.6rem)] font-semibold tracking-[0.02em] uppercase text-cerneala">
+            <h3 className="font-afis max-w-[26ch] text-[clamp(1.15rem,2vw,1.6rem)] font-semibold  text-cerneala">
               {v.titlu}
             </h3>
             <p className="mt-3 max-w-[62ch] text-[17px] leading-[1.6] text-cerneala-2">{v.text}</p>

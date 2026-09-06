@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 // Sectiunea-registru a paginilor interioare: cota si eticheta pe un rand mic de mono,
 // titlul condensat cu majuscule, o linie de deschidere, apoi continutul. Spatiu mare
 // intre sectiuni (`py-24 md:py-36`), acelasi rand de margine ca la `Ecran`, ca titlul
@@ -41,9 +46,9 @@ export type Ton = "hartie" | "fisier" | "inchis";
 export const LATIME_REGISTRU = "max-w-[900px]";
 
 const FUNDAL: Record<Ton, string> = {
-  hartie: "bg-noapte",
-  fisier: "bg-noapte",
-  inchis: "bg-noapte-2",
+  hartie: "bg-alb",
+  fisier: "bg-alb",
+  inchis: "bg-ceata",
 };
 
 type Props = {
@@ -80,7 +85,7 @@ export default function SectiuneRegistru({
   children,
 }: Props) {
   return (
-    <section id={id} className={`border-t border-linie-suprafata ${FUNDAL[ton]}`}>
+    <section id={id} className={`border-t border-linie ${FUNDAL[ton]}`}>
       <div
         className={
           "mx-auto w-full max-w-vitrina px-6 md:px-10 " +
@@ -90,9 +95,9 @@ export default function SectiuneRegistru({
         {/* `div`, nu `p`, din acelasi motiv ca eticheta din `Ecran`: cota si eticheta nu
             sunt proza, si sunt scrise cu majuscule din CSS. Vezi nota lunga din
             `Ecran.tsx`. */}
-        <div className="mb-5 flex items-baseline gap-3 font-mono text-[12px] tracking-[0.22em] uppercase">
-          {cota ? <span className="text-cerneala-accent">{cota}</span> : null}
-          <span className={cota ? "text-cerneala-3" : "text-cerneala-accent"}>{eticheta}</span>
+        <div className="mb-5 flex items-baseline gap-3 font-mono text-[12px] ">
+          {cota ? <span className="text-violet">{cota}</span> : null}
+          <span className={cota ? "text-cerneala-2" : "text-violet"}>{eticheta}</span>
         </div>
         {/* La `dens`, titlul si linia stau alaturi, ca la banda de antet: asezate una sub
             alta impingeau primul rand al tabelului sub margine chiar dupa ce antetul se
@@ -107,7 +112,7 @@ export default function SectiuneRegistru({
             }
           >
             {titlu ? (
-              <h2 className="font-afis max-w-[22ch] text-titlu-2 font-bold tracking-[-0.01em] uppercase text-cerneala">
+              <h2 className="font-afis max-w-[22ch] text-titlu-2 font-semibold tracking-[-0.01em]  text-cerneala">
                 {titlu}
               </h2>
             ) : null}

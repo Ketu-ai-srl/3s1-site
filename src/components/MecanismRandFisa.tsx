@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 // Un rând de fișă: termenul sau întrebarea pe coloana din stânga, răspunsul pe dreapta.
 //
 // Aceeași formă cu rândurile de temei juridic din `PaginaDeSegment`, scoasă în componentă
@@ -20,8 +25,8 @@ type Props = {
 
 export default function MecanismRandFisa({ titlu, children }: Props) {
   return (
-    <div className="grid gap-3 border-t border-linie-suprafata py-8 last:border-b lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-8 lg:py-10">
-      <h3 className="font-afis max-w-[24ch] text-[clamp(1.15rem,1.9vw,1.5rem)] font-semibold tracking-[0.02em] uppercase text-cerneala">
+    <div className="grid gap-3 border-t border-linie py-8 last:border-b lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-8 lg:py-10">
+      <h3 className="font-afis max-w-[24ch] text-[clamp(1.15rem,1.9vw,1.5rem)] font-semibold  text-cerneala">
         {titlu}
       </h3>
       <p className="max-w-[64ch] text-[17px] leading-[1.6] text-cerneala-2">{children}</p>

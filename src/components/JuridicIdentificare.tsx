@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import {
   CAMPURI_IDENTITATE,
   ETICHETE,
@@ -31,11 +36,11 @@ import {
 export default function JuridicIdentificare() {
   if (!identitateCompleta()) {
     return (
-      <div className="border-l-2 border-cerneala-accent bg-noapte-3 px-6 py-5">
+      <div className="border-l-2 border-violet bg-alb px-6 py-5">
         {/* Aceeasi caseta ca `declaratie` din `JuridicBlocuri` si `BlocDovada`: arama pe
             noapte-3 da 5,72:1. Fundalul bej de dinainte era ultima suprafata deschisa
             ramasa in mijlocul paginii de termeni. */}
-        <span className="mb-1.5 block font-mono text-eticheta font-medium tracking-[0.1em] text-cerneala-accent uppercase">
+        <span className="mb-1.5 block font-mono text-eticheta font-medium text-violet ">
           Ce lipsește azi, și de ce
         </span>
         <p className="text-corp text-cerneala-2">
@@ -55,10 +60,10 @@ export default function JuridicIdentificare() {
   }
 
   return (
-    <dl className="grid gap-x-8 gap-y-2 border-y border-linie-suprafata py-6 text-corp sm:grid-cols-2">
+    <dl className="grid gap-x-8 gap-y-2 border-y border-linie py-6 text-corp sm:grid-cols-2">
       {CAMPURI_IDENTITATE.map((camp) => (
         <div key={camp} className="flex flex-wrap gap-x-2">
-          <dt className="text-cerneala-3">{ETICHETE[camp]}:</dt>
+          <dt className="text-cerneala-2">{ETICHETE[camp]}:</dt>
           <dd className="m-0 font-medium text-cerneala">{entitate[camp]}</dd>
         </div>
       ))}

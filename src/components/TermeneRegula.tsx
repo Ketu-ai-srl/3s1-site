@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 // O regula de folosire a listei de termene: numele regulii pe coloana din stanga, textul ei
 // pe dreapta.
 //
@@ -16,11 +21,11 @@ export default function TermeneRegula({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid gap-3 border-t border-linie-noapte py-7 last:border-b lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-10">
-      <h3 className="max-w-[24ch] font-afis text-[clamp(1.2rem,2vw,1.6rem)] font-semibold tracking-[0.03em] uppercase text-hartie-veche">
+    <div className="grid gap-3 border-t border-linie py-7 last:border-b lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-10">
+      <h3 className="max-w-[24ch] font-afis text-[clamp(1.2rem,2vw,1.6rem)] font-semibold  text-cerneala">
         {titlu}
       </h3>
-      <p className="max-w-[70ch] text-[16px] leading-[1.55] text-hartie-veche-2">{children}</p>
+      <p className="max-w-[70ch] text-[16px] leading-[1.55] text-cerneala-2">{children}</p>
     </div>
   );
 }

@@ -1,8 +1,9 @@
-// Lista cu semn de bifa: liniuta de arama e un element real, nu un marcator de lista, ca
-// sa se alinieze pe prima linie oricat de lung ar fi randul.
+// Lista cu bifa verde a REF-V: `succes` (#009e5b) deseneaza semnul, textul ramane la 16 px
+// in cerneala secundara. Bifa e ICOANA, nu litera: contrastul ei fata de alb e 3,48:1, sub
+// pragul de text, si de aceea informatia nu sta niciodata in culoarea ei, ci in cuvant.
 //
-// `inchis` a ramas in semnatura pentru paginile care il dau inca; pe fundal de noapte
-// culorile sunt aceleasi. Se scoate cand nu-l mai da nimeni.
+// `inchis` a ramas in semnatura pentru paginile altor felii care il dau inca; nu mai are
+// efect, fiindca nu mai exista suprafata inchisa sub liste.
 
 type Props = {
   titlu: string;
@@ -13,13 +14,27 @@ type Props = {
 export default function ListaBifa({ titlu, elemente }: Props) {
   return (
     <div>
-      <h3 className="mb-5 font-afis text-[24px] font-semibold tracking-[0.03em] uppercase text-cerneala">
-        {titlu}
-      </h3>
+      <h3 className="mb-5 text-titlu-4 text-cerneala">{titlu}</h3>
       <ul className="m-0 list-none p-0">
         {elemente.map((e) => (
-          <li key={e} className="mb-3 flex gap-4 text-corp text-cerneala-2">
-            <span aria-hidden className="mt-[11px] h-px w-[10px] shrink-0 bg-cerneala-accent" />
+          <li key={e} className="mb-3 flex gap-3 text-corp text-cerneala-2">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              aria-hidden="true"
+              focusable="false"
+              className="mt-[3px] shrink-0 text-succes"
+            >
+              <path
+                d="M3.5 9.5 L7 13 L14.5 5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             <span>{e}</span>
           </li>
         ))}

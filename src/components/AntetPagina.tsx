@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import Link from "next/link";
 import Ecran from "./Ecran";
 import type { Fotografie } from "@/content/fotografii";
@@ -84,7 +89,7 @@ export default function AntetPagina({
 
   const firNavigare = (
     <nav aria-label="Firul de navigare" className="mb-8 md:mb-10">
-      <ol className="m-0 flex flex-wrap items-baseline gap-x-2 gap-y-1 p-0 font-mono text-[12.5px] tracking-[0.06em] text-cerneala-2">
+      <ol className="m-0 flex flex-wrap items-baseline gap-x-2 gap-y-1 p-0 font-mono text-[12.5px] text-cerneala-2">
         {fir.map((v, i) => (
           <li key={v.text} className="flex items-baseline gap-2">
             {i > 0 ? (
@@ -104,7 +109,7 @@ export default function AntetPagina({
             {v.href ? (
               <Link
                 href={v.href}
-                className="text-cerneala-2 underline decoration-cerneala-3 underline-offset-[3px] hover:text-cerneala"
+                className="text-cerneala-2 underline decoration-violet-2 underline-offset-[3px] hover:text-cerneala"
               >
                 {v.text}
               </Link>

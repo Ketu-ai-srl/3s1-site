@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import Eticheta from "./Eticheta";
 
 // Blocul care spune ce NU putem sustine. Doua feluri: `declaratie` (ce nu scriem aici) si
@@ -22,14 +27,14 @@ export default function BlocDovada({
 }: Props) {
   const stil =
     fel === "declaratie"
-      ? "border-l-2 border-cerneala-accent bg-noapte-3 px-6 py-5"
-      : "border border-linie-suprafata bg-noapte-2 px-6 py-5";
+      ? "border-l-2 border-violet bg-alb px-6 py-5"
+      : "border border-linie bg-ceata px-6 py-5";
 
   return (
     <div className={`${stil} ${className}`}>
       {/* `arama-clar` pe `noapte-3`: 5,72:1, deci trece si ca text mic. */}
       {eticheta ? (
-        <Eticheta className="mb-2 block text-cerneala-accent!">{eticheta}</Eticheta>
+        <Eticheta className="mb-2 block text-violet!">{eticheta}</Eticheta>
       ) : null}
       <p className="max-w-[70ch] text-[16px] leading-[1.55] text-cerneala-2">{children}</p>
     </div>

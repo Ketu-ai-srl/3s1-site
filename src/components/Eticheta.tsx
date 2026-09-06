@@ -1,9 +1,12 @@
-// Eticheta mono: cota, categoria, numele mic de deasupra unui titlu. Aceeasi litera ca
-// eticheta de pe ecranele vitrinei, doar ca in culoarea de text secundar, nu in arama -
-// arama ramane pentru UN accent pe ecran.
+// Eticheta mica de deasupra unui titlu, sau cota unei fise: 14 px la greutatea 600, in
+// cerneala secundara. Fara majuscule si fara tracking larg - REF-V scrie etichetele cu
+// litera obisnuita, ca pe orice alt text.
 //
-// `inchis` a ramas in semnatura pentru paginile care il dau inca; pe fundal de noapte
-// ambele valori dau aceeasi culoare. Se scoate cand nu-l mai da nimeni.
+// De ce `cerneala-2` si nu `cerneala-3`: eticheta ajunge si pe carduri asezate pe `ceata`,
+// unde `cerneala-3` da 3,97:1, sub pragul de 4,5:1. O primitiva care ajunge pe doua
+// suprafete se scrie cu culoarea care trece pe amandoua.
+//
+// `inchis` a ramas in semnatura pentru paginile altor felii care il dau inca.
 
 type Props = {
   children: React.ReactNode;
@@ -13,10 +16,6 @@ type Props = {
 
 export default function Eticheta({ children, className = "" }: Props) {
   return (
-    <span
-      className={`font-mono text-[12px] font-medium tracking-[0.2em] uppercase text-cerneala-3 ${className}`}
-    >
-      {children}
-    </span>
+    <span className={`text-nota font-semibold text-cerneala-2 ${className}`}>{children}</span>
   );
 }

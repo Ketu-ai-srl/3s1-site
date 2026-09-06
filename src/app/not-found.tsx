@@ -42,7 +42,7 @@ const RAND_LISTA =
   "group flex items-baseline justify-between gap-4 border-b border-linie-suprafata py-3.5 font-afis text-[clamp(1.05rem,1.5vw,1.35rem)] font-semibold tracking-[0.04em] uppercase text-cerneala-2 no-underline transition-colors duration-200 hover:text-cerneala";
 
 const SAGEATA =
-  "font-mono text-cerneala-accent transition-transform duration-200 group-hover:translate-x-1";
+  "font-mono text-violet transition-transform duration-200 group-hover:translate-x-1";
 
 export default function PaginaNegasita() {
   return (
@@ -56,7 +56,7 @@ export default function PaginaNegasita() {
             />
             <span
               aria-hidden
-              className="font-mono text-[15px] leading-none font-medium tracking-[0.18em] text-cerneala-accent md:mb-3 md:block md:text-[17px]"
+              className="font-mono text-[15px] leading-none font-medium tracking-[0.18em] text-violet md:mb-3 md:block md:text-[17px]"
             >
               404
             </span>
@@ -90,7 +90,7 @@ export default function PaginaNegasita() {
               Toate paginile site-ului, fiecare cu ce scrie pe ea într-un rând, stau în{" "}
               <Link
                 href="/harta-site"
-                className="text-cerneala-accent underline underline-offset-[3px]"
+                className="text-violet underline underline-offset-[3px]"
               >
                 harta site-ului
               </Link>

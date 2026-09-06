@@ -1,52 +1,39 @@
 import type { Metadata } from "next";
-import { Barlow, Barlow_Condensed, IBM_Plex_Mono } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import DateStructurate from "@/components/DateStructurate";
 import Navigatie from "@/components/Navigatie";
 import Subsol from "@/components/Subsol";
 import { ADRESA_BAZA, indexareaEstePermisa } from "@/content/rute";
 
-// Trei familii, nu cinci. Source Serif 4 si IBM Plex Sans au iesit odata cu directia
-// noua (sep 2026): titlurile sunt Barlow Condensed, textul e Barlow, cotele si citarile
-// sunt Plex Mono. Fiecare familie in plus inseamna fisiere preincarcate pe FIECARE pagina,
-// pentru litere pe care nu le mai foloseste nimeni.
+// UN SINGUR FONT, DM Sans, cu doua greutati: 400 pentru titluri si corp, 600 pentru
+// butoane si etichete. Directia REF-V nu are titluri bold si nu are majuscule, deci
+// 700 nu se incarca deloc - un `font-bold` ramas undeva cade pe 600, nu aduce un
+// fisier in plus pe fiecare pagina.
 //
-// NUMELE VARIABILELOR incep cu `--fnt-`, nu cu `--font-`, si nu e cosmetica. Jetoanele
-// Tailwind din `globals.css` se numesc `--font-afis`, `--font-vitrina`, `--font-mono`, iar
-// `next/font` isi pune si el variabila pe elementul cu clasa. Cand amandoua se numeau
-// `--font-afis`, jetonul se definea pe `:root` ca `var(--font-afis), ...` - adica prin el
-// insusi - si depindea de ordinea foilor de stil daca se rezolva sau nu.
+// Trei familii au devenit una. Fiecare familie in plus inseamna fisiere preincarcate
+// pe FIECARE pagina, pentru litere pe care nu le mai foloseste nimeni; jetoanele
+// `--font-afis`, `--font-vitrina` si `--font-mono` din `globals.css` arata acum toate
+// catre variabila de mai jos, deci fisierele altor felii care le mai scriu primesc
+// acelasi font, nu o a doua familie strecurata printr-un nume mostenit.
 //
-// CLASELE STAU PE `<html>`, NU PE `<body>`, si asta a fost defectul masurat: cu variabila
-// pusa pe `body`, jetonul de pe `:root` (`--font-sans: var(--font-corp), ...`) se evalua pe un
-// element care NU avea `--font-corp`, deci era invalid, iar `body { font-family: var(--font-sans) }`
-// cadea pe fontul de sistem. `getComputedStyle(document.body).fontFamily` dadea stiva
-// `-apple-system, "Segoe UI", ...` pe toate cele 22 de pagini, iar `document.fonts` arata
-// toate fetele IBM Plex Sans `unloaded`. Utilitarele (`font-afis`, `font-mono`) mergeau,
-// fiindca Tailwind le scrie valoarea in clasa, care se evalueaza pe element, sub `body`.
-// Pe `<html>` variabila exista chiar pe `:root`, si jetonul se rezolva.
+// NUMELE VARIABILEI incepe cu `--fnt-`, nu cu `--font-`, si nu e cosmetica. Jetoanele
+// Tailwind se numesc `--font-*`, iar `next/font` isi pune si el variabila pe elementul
+// cu clasa. Cand amandoua se numeau la fel, jetonul se definea prin el insusi si
+// depindea de ordinea foilor de stil daca se rezolva sau nu.
+//
+// CLASA STA PE `<html>`, NU PE `<body>`, si asta a fost un defect masurat: cu variabila
+// pusa pe `body`, jetonul de pe `:root` se evalua pe un element care nu o avea, deci era
+// invalid, iar `body { font-family: var(--font-vitrina) }` cadea pe fontul de sistem pe
+// toate cele 22 de pagini.
 //
 // Subsetul `latin-ext` e obligatoriu, nu decorativ: fara el, s si t cu virgula
-// (U+0219 / U+021B) cad pe fontul de rezerva si diacriticele romanesti se vad
-// dintr-o alta familie in mijlocul cuvantului.
-const afis = Barlow_Condensed({
-  variable: "--fnt-afis",
+// (U+0219 / U+021B) cad pe fontul de rezerva si diacriticele romanesti se vad dintr-o
+// alta familie in mijlocul cuvantului.
+const text = DM_Sans({
+  variable: "--fnt-text",
   subsets: ["latin", "latin-ext"],
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
-const vitrina = Barlow({
-  variable: "--fnt-vitrina",
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-const masina = IBM_Plex_Mono({
-  variable: "--fnt-masina",
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500"],
+  weight: ["400", "600"],
   display: "swap",
 });
 
@@ -99,11 +86,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ro" className={`${afis.variable} ${vitrina.variable} ${masina.variable}`}>
+    <html lang="ro" className={text.variable}>
       <body className="antialiased">
         <DateStructurate />
         <a
-          className="absolute top-[-100px] left-4 z-[99] bg-hartie-veche px-4 py-3 font-mono text-fisa text-noapte no-underline focus:top-3"
+          className="absolute top-[-100px] left-4 z-[99] rounded-buton bg-violet px-4 py-3 text-nota font-semibold text-alb no-underline focus:top-3"
           href="#zona-continut"
         >
           Săriți la conținut

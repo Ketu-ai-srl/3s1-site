@@ -1,3 +1,8 @@
+// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
+// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
+// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
+// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
+// descriere a designului de acum.
 import Link from "next/link";
 import AntetPagina from "./AntetPagina";
 import Buton from "./Buton";
@@ -49,7 +54,7 @@ import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/j
 // care nimeni nu le-a semnalat - fiind corect intoarsa pe suprafata deschisa, litera trecea
 // de 4,5:1 si nicio poarta de contrast nu se inrosea. O poarta de contrast masoara
 // contrastul, nu coerenta; coerenta se masoara pe suprafata.
-const FUNDAL_ALTERNANT = ["bg-noapte", "bg-noapte-2"];
+const FUNDAL_ALTERNANT = ["bg-alb", "bg-ceata"];
 
 // Fotografia de antet, per pagina: cele trei pagini juridice se leaga intre ele in blocul de
 // incheiere, deci trebuie sa deschida cu trei cadre diferite.
@@ -81,7 +86,7 @@ function SectiuneJuridica({
   fundal: string;
 }) {
   return (
-    <section id={sectiune.id} className={`border-t border-linie-suprafata ${fundal}`}>
+    <section id={sectiune.id} className={`border-t border-linie ${fundal}`}>
       <CadruAct>
         {/* RITMUL. `py-14 md:py-24`, adica 56 px pe telefon si 96 px pe ecran lat, deci
             192 px de la ultimul rand al unei sectiuni la titlul urmatoarei. Nu e nici pasul
@@ -98,10 +103,10 @@ function SectiuneJuridica({
               il coteaza si la 167 de titlul pe care il numeroteaza, adica mai aproape de
               nimic decat de amandoua. Aliniata la dreapta, ramane la 16 px de filet si se
               citeste ca marca a coloanei din dreapta lui. */}
-          <div className="flex items-baseline gap-3 border-b border-linie-suprafata pb-3 md:relative md:block md:border-b-0 md:pb-0 md:text-right">
+          <div className="flex items-baseline gap-3 border-b border-linie pb-3 md:relative md:block md:border-b-0 md:pb-0 md:text-right">
             <span
               aria-hidden
-              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie-suprafata md:block"
+              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie md:block"
             />
             {/* Marcajul de sectiune, ascuns de la cititoarele de ecran: intelesul e purtat
                 de titlul h2, iar o cifra citita inaintea lui nu adauga nimic. Cuvantul
@@ -111,10 +116,10 @@ function SectiuneJuridica({
             {/* Cifra e in MONO, ca toate cotele site-ului, nu in serifa: serifa era ultima
                 urma a paletei vechi pe pagina asta si nu mai apare nicaieri altundeva. */}
             <span aria-hidden className="flex items-baseline gap-2 md:block">
-              <span className="font-mono text-eticheta font-medium tracking-[0.1em] text-cerneala-3 uppercase md:hidden">
+              <span className="font-mono text-eticheta font-medium text-cerneala-2  md:hidden">
                 Secțiunea
               </span>
-              <span className="font-mono text-[15px] leading-none font-medium tracking-[0.18em] text-cerneala-accent md:text-[17px]">
+              <span className="font-mono text-[15px] leading-none font-medium text-violet md:text-[17px]">
                 {numar}
               </span>
             </span>
@@ -130,7 +135,7 @@ function SectiuneJuridica({
                 2,3 fata de corp, si o distanta limpede fata de cele 64 ale titlului de
                 pagina. Nu urca la `text-titlu-2`: cu noua sectiuni, fiecare titlu ar deveni
                 un afis si documentul s-ar citi ca noua pagini lipite. */}
-            <h2 className="mb-6 font-afis text-[clamp(1.65rem,3vw,2.375rem)] tracking-[-0.01em] uppercase text-cerneala">
+            <h2 className="mb-6 font-afis text-[clamp(1.65rem,3vw,2.375rem)] tracking-[-0.01em]  text-cerneala">
               {sectiune.titlu}
             </h2>
             <JuridicBlocuri blocuri={sectiune.blocuri} />
@@ -143,7 +148,7 @@ function SectiuneJuridica({
 
 function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
   return (
-    <section className="border-t border-linie-suprafata bg-noapte-2">
+    <section className="border-t border-linie bg-ceata">
       <CadruAct>
         {/* Cuvantul „Cuprins" trece in jgheabul cifrelor, iar lista pe coloana de text: e
             aceeasi impartire ca la sectiuni, deci intrarile cuprinsului incep exact acolo
@@ -151,7 +156,7 @@ function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
             px si nici nu mai sunt necesare - noua intrari pe o coloana sunt un cuprins de
             document, doua coloane erau un artificiu de umplut latimea. */}
         <div className={GRILA_ACT + " py-12 md:py-16"}>
-          <h2 className="font-mono text-eticheta font-medium tracking-[0.18em] text-cerneala-3 uppercase md:text-right">
+          <h2 className="font-mono text-eticheta font-medium text-cerneala-2  md:text-right">
             Cuprins
           </h2>
           <ol className="m-0 grid list-none gap-y-2.5 p-0">
@@ -159,7 +164,7 @@ function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
               <li key={s.id} className="flex items-baseline gap-3 text-[15.5px]">
                 <span
                   aria-hidden
-                  className="w-5 shrink-0 font-mono text-fisa text-cerneala-accent"
+                  className="w-5 shrink-0 font-mono text-fisa text-violet"
                 >
                   {i + 1}
                 </span>
@@ -182,7 +187,7 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
   const celelalte = PAGINI_JURIDICE.filter((p) => p.cale !== pagina.cale);
 
   return (
-    <section className="border-t border-linie-suprafata bg-noapte">
+    <section className="border-t border-linie bg-alb">
       <CadruAct>
         {/* Incheierea sta pe coloana de text a actului, nu pe toata latimea cadrului:
             altfel ultimul bloc al paginii ar fi singurul care incepe cu 180 px mai la
@@ -190,7 +195,7 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
             poarte aici - dar coloana pe care o deschide se pastreaza. */}
         <div className={GRILA_ACT + " py-12 md:py-16"}>
           <div className="md:col-start-2">
-          <div className="mb-8 border border-linie-suprafata bg-noapte-2 px-6 py-5">
+          <div className="mb-8 border border-linie bg-ceata px-6 py-5">
             <Eticheta className="mb-1.5 block">Despre textul acesta</Eticheta>
             <p className="text-corp text-cerneala-2">{pagina.redactat}</p>
           </div>
@@ -211,17 +216,17 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
             ))}
           </div>
 
-          <p className="mt-6 text-[15.5px] text-cerneala-3">
+          <p className="mt-6 text-[15.5px] text-cerneala-2">
             Dacă ceva din pagina aceasta este neclar sau vă pare greșit, scrieți-ne la{" "}
             <a
               href="mailto:contact@3s.ro"
-              className="text-cerneala-accent underline underline-offset-[3px]"
+              className="text-violet underline underline-offset-[3px]"
             >
               contact@3s.ro
             </a>
             . Corectăm în text, nu în corespondență, ca să vadă și următorul cititor
             corectura. Serviciile sunt descrise pe{" "}
-            <Link href="/solutii" className="text-cerneala-accent underline underline-offset-[3px]">
+            <Link href="/solutii" className="text-violet underline underline-offset-[3px]">
               pagina de domenii
             </Link>
             .
