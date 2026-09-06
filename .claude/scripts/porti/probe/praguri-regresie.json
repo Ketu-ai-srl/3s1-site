@@ -1,10 +1,10 @@
 {
-  "fisiere": 11,
-  "teste": 86,
-  "asertiuni": 209,
+  "fisiere": 12,
+  "teste": 93,
+  "asertiuni": 226,
   "sarite_maxim": 0,
   "masurat_la": "2026-09-06",
-  "masurat_pe": "lotul lot/s1-b (cele 21 de pagini interioare ale lui 3s1 pe gramatica REF-V, feliile 3-5): tests/marcaj.test.ts, tests/directia.test.ts (scanarile de clase largite la tot src/), tests/interior-felie4.test.ts, tests/felie-juridic.test.ts, tests/felie-juridic-referinte.test.ts si cele sase fisiere din tests/browser/. Cifrele sunt copiate din randul MASURAT al portii (11 fisiere, 86 teste, 209 asertiuni), nu estimate. Podeaua anterioara (8/49/144) era a lotului lot/s1-a.",
+  "masurat_pe": "felia 6 a valului S1-d (setul de fotografii propriu al site-ului 3s1): la cele 11 fisiere ale lotului lot/s1-b s-a adaugat tests/fotografii.test.ts, cu 7 cazuri active si controlul pozitiv al cheii fara fisier. Cifrele sunt copiate din randul MASURAT al portii de regresie (12 fisiere, 93 teste, 226 asertiuni), nu estimate. Podeaua anterioara (11/86/209) era a lotului lot/s1-b, cea dinaintea ei (8/49/144) a lotului lot/s1-a.",
   "de_ce": "Pragul e podeaua acceptata ultima data, nu tinta. E asezat pe ce era COMMITAT in momentul scrierii portii, deliberat, nu pe ce era in arborele de lucru: in aceeasi zi un alt val adauga tests/browser/, iar un prag luat dintr-o munca in curs devine fals in clipa in care ea se rearanjeaza, si ar inrosi lotul cuiva care face lucrul corect. Poarta tipareste AVERT R-01..R-03 cat timp masuratoarea e peste prag, cu textul 'ridica pragul': asta e semnalul ca valorile de aici trebuie inlocuite cu cele masurate, dupa ce valul de probe aterizeaza. Ridicarea se face copiind cifrele din randul MASURAT al portii.",
   "cum_se_coboara": "Stergerea unui test invechit e legitima. Se scade cifra de aici IN ACELASI COMMIT cu stergerea, si poarta o lasa sa treaca, marcand-o 'coborare DECLARATA'. Fara modificarea acestui fisier, scaderea fata de HEAD opreste lotul."
 }
