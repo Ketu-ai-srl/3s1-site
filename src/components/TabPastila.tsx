@@ -80,15 +80,21 @@ export default function TabPastila({ file, ancore = false }: Props) {
           className="mt-10 md:grid md:grid-cols-2 md:items-center md:gap-12"
         >
           {f.imagine ? (
+            // `<picture>` cu sursa de 960 sub 768 px, aceeasi forma ca in `Ecran.tsx`:
+            // fisierul de 1920 e PEISAJ, si intr-un card de telefon inalt de 240 px se
+            // mareste peste 1x si se inmoaie - de aia exista a doua marime, portret.
             <div className="overflow-hidden rounded-card-mare">
-              <img
-                src={"/img/" + f.imagine.nume + "-1920.webp"}
-                alt={f.imagine.alt}
-                className="h-[240px] w-full object-cover md:h-[360px]"
-                style={{ objectPosition: f.imagine.pozitie ?? "center" }}
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source media="(max-width: 767px)" srcSet={"/img/" + f.imagine.nume + "-960.webp"} />
+                <img
+                  src={"/img/" + f.imagine.nume + "-1920.webp"}
+                  alt={f.imagine.alt}
+                  className="h-[240px] w-full object-cover md:h-[360px]"
+                  style={{ objectPosition: f.imagine.pozitie ?? "center" }}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
           ) : null}
           <div className={f.imagine ? "mt-8 md:mt-0" : ""}>

@@ -45,11 +45,17 @@ export const EROU = {
 // Textul alternativ e scris aici, nu citit din `src/content/fotografii.ts`, fiindca pagina de
 // start isi tine textele in fisierul asta. Cheile sunt aceleasi, deci cand se schimba setul de
 // fotografii - cum s-a intamplat pe 2026-09-06, ca site-ul sa nu mai poarte cadrele primului
-// site - se rescriu AMBELE locuri, altfel alt-ul descrie o fotografie care nu mai exista.
+// site - se rescriu AMBELE locuri, altfel alt-ul descrie o fotografie care nu mai exista. De
+// asta se ocupa acum o verificare: `tests/fotografii.test.ts` cere ca fiecare `alt` de aici sa
+// fie cuvant cu cuvant cel din registru.
+//
+// ANCORA DECUPAJULUI NU SE SCRIE AICI. Cardurile astea nu poarta `pozitie`: pagina de start o
+// citeste din `FOTOGRAFII`, cu cheia de mai jos. O a treia copie a unei cifre masurate ar
+// diverge la prima remasurare, si nimic nu se uita la ea.
 export const CARDURI_EROU: CardImagine[] = [
   {
     nume: "rafturi",
-    alt: "Perete de rafturi albe cu teancuri de hârtii și cutii de carton, fotografie ilustrativă",
+    alt: "Rafturi pline cu dosare și volume vechi puse în picioare, de-a lungul unui culoar îngust care se pierde în neclaritate, fotografie ilustrativă",
     eticheta: "Depozit",
   },
   {
@@ -59,7 +65,7 @@ export const CARDURI_EROU: CardImagine[] = [
   },
   {
     nume: "dosare",
-    alt: "Fișe de carton cu etichete scrise de mână, într-un sertar de catalog, fotografie ilustrativă",
+    alt: "Teanc de dosare vechi de carton maro și crem, cu file îngălbenite ieșind dintre coperțile uzate, prim-plan, fotografie ilustrativă",
     eticheta: "Digitizare",
   },
   {
@@ -107,10 +113,15 @@ export const ETAPE = {
       titlu: "Se digitizează ce se caută.",
       text: "Nu se scanează tot. Se scanează ce se cere des, iar originalul rămâne pe raft, cu cotă, și se aduce pe hârtie atunci când este cerut.",
       legatura: { href: "/cum-functioneaza", text: "Cum funcționează" },
+      // `pozitie` e copia celei din `src/content/fotografii.ts`, pentru aceeasi cheie, si o
+      // verificare din `tests/fotografii.test.ts` cere sa fie EGALE. Cifrele de pana la runda
+      // a treia (dosare 55%, cutii 45%) fusesera alese contra fotografiilor de dinaintea
+      // schimbarii setului si contra unui card masurat gresit la 343 px; remasurate pe cadrele
+      // de acum, la clientWidth 390 si card 358x240, nu mai au ce castiga fata de registru.
       imagine: {
         nume: "dosare",
-        alt: "Fișe de carton cu etichete scrise de mână, într-un sertar de catalog, fotografie ilustrativă",
-        pozitie: "center 55%",
+        alt: "Teanc de dosare vechi de carton maro și crem, cu file îngălbenite ieșind dintre coperțile uzate, prim-plan, fotografie ilustrativă",
+        pozitie: "center 50%",
       },
     },
     {
@@ -122,7 +133,7 @@ export const ETAPE = {
       imagine: {
         nume: "cutii",
         alt: "Mapă cu separatoare de carton, plină cu acte, într-o cutie bleu deschisă pe un birou de lemn, fotografie ilustrativă",
-        pozitie: "center 45%",
+        pozitie: "center 50%",
       },
     },
     {

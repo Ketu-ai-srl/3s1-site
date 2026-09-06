@@ -23,17 +23,37 @@
 // `cutii` era o scena de curierat (plicuri si cutii de transport, nu arhiva), vechiul
 // `dulapuri` un dulap de atelier cu granulatii de slefuit scrise cu creta, iar vechiul
 // `legatura` bibliorafturi noi cu eticheta de magazin si cod EAN pe cotor - marfa, nu depozit
-// in operare. Al patrulea cadru pe care omul l-a marcat, `dosare` (cel mai intunecat al
-// setului), a RAMAS cel vechi: inlocuitorul propus s-a dovedit la privire un teanc de manuale
-// tiparite, cu un numar de telefon si o insemnare comerciala lizibile la 1:1, deci ar fi mutat
-// defectul, nu l-ar fi reparat. Motivul e scris si in `public/img/LICENTA.md`.
+// in operare. Al patrulea cadru marcat atunci, `dosare`, a ramas cel vechi o runda in plus:
+// inlocuitorul propus s-a dovedit la privire un teanc de manuale tiparite, cu un numar de
+// telefon si o insemnare comerciala lizibile la 1:1.
 //
-// `pozitie` e ancora decupajului, si e o masuratoare, nu o preferinta. Cardul antetului are
-// ~555x340 px la 1440 (proportie 1,63), iar fisierul de 1920 e in general 3:2 (1,50), deci
-// acolo se taie doar ~8% pe verticala. Sub 768 px se serveste fisierul de 960, care e PORTRET
-// 2:3 (0,67) intr-un card de ~358x240 (1,49): acolo se vede o fereastra de numai 45% din
-// inaltime, si ea decide unde trebuie sa cada subiectul. Valorile de mai jos sunt alese
-// privind pagina construita la 1440 si la 390, cadru cu cadru.
+// RUNDA A TREIA, tot pe 2026-09-06, si ea inchide amandoua cadrele ramase in discutie:
+// `dosare` era cel mai intunecat al setului (luminanta 19,3 din 100, masurata pe esantion
+// 160x160 din fisierul de 1920) si a trecut la 44,3; `rafturi` purta la 1:1, in ORIGINAL,
+// lazi de vin cu textul lor comercial, titluri de reviste si un cod QR - nelizibile la 1920,
+// dar sursa insasi era de magazin. Setul masoara acum 39,0-76,7 la luminanta si 16,0-27,3 la
+// saturatie, adica niciun cadru sub 30 si niciunul peste 50. Motivele si ID-urile sunt in
+// `public/img/LICENTA.md`.
+//
+// `pozitie` e ancora decupajului, si e o masuratoare, nu o preferinta. Toate cifrele de mai
+// jos sunt citite din pagina CONSTRUITA, nu din CSS: `document.documentElement.clientWidth`
+// raportat de browser, 1440 si 390.
+//
+// UN SINGUR CARD, ca sa nu mai fie doua cifre in acelasi fisier. La clientWidth 390 cardul de
+// fotografie masoara 358x240 px pe toate paginile care poarta unul - `Ecran`, `TabPastila`,
+// `InvestitieRandFoto`, `SegmentRandTextImagine`. Cifra de 343x240 din runda a doua era
+// masurata cu bara de derulare clasica pe ecran (innerWidth 390, clientWidth 375), adica un
+// card cu 15 px mai ingust decat pe un telefon adevarat; s-a remasurat cu bara ascunsa.
+// Cardurile mici din randul eroului fac 171x120 la aceeasi latime - alt card, dar aceeasi
+// fereastra pe practic acelasi procent (46,8% fata de 44,7%), deci o singura valoare le
+// serveste pe amandoua.
+//
+// CE INSEAMNA FEREASTRA. Sub 768 px se serveste fisierul de 960, care e PORTRET 2:3 (0,67)
+// intr-un card de 358x240 (1,49): el se intinde pe latime, deci din inaltimea fisierului se
+// vede 240 / (1440 x 358/960) = 44,7%, si `pozitie` alege UNDE cade acea fereastra - de la
+// 0-44,7% (la 0%) pana la 55,3-100% (la 100%). La 1440 se serveste fisierul de 1920, peisaj
+// 3:2, iar cardul de 555x340 arata 91,9% din inaltimea lui: acolo aceeasi valoare aproape ca
+// nu se vede, si de aceea decupajul de telefon e cel care decide.
 //
 // ISTORIC, ca sa nu fie remasurat degeaba: pana la felia asta registrul mai avea doua campuri,
 // `filtru` (o desaturare CSS) si `voalBanda` (subtierea voalului de sub text). Amandoua erau
@@ -53,7 +73,11 @@ export type Fotografie = {
 export const FOTOGRAFII = {
   rafturi: {
     nume: "rafturi",
-    alt: "Perete de rafturi albe cu teancuri de hârtii și cutii de carton, fotografie ilustrativă",
+    alt: "Rafturi pline cu dosare și volume vechi puse în picioare, de-a lungul unui culoar îngust care se pierde în neclaritate, fotografie ilustrativă",
+    // 50% nu e implicit, e rezultatul masuratorii: banda de detaliu (abaterea standard pe
+    // randuri de 10 px, prag 45% din maxim) acopera 0-100% din fisierul de 960, fiindca
+    // rafturile umplu cadrul de sus pana jos. Nicio fereastra de 44,7% nu castiga nimic fata
+    // de alta, deci ramane cea care nu cere explicatie.
     pozitie: "center 50%",
   },
   cutii: {
@@ -61,43 +85,55 @@ export const FOTOGRAFII = {
     alt: "Mapă cu separatoare de carton, plină cu acte, într-o cutie bleu deschisă pe un birou de lemn, fotografie ilustrativă",
     // 50% e masurat, nu implicit: evantaiul de separatoare umple fisierul de 960 de la 0% la
     // 88,9% din inaltime (banda cu abaterea standard peste 45% din maxim, pe randuri de 10
-    // px), cu centrul la 44,5%. Fereastra de 46,6% de pe 390 px cade la 26,7-73,3%, adica in
-    // plin subiect indiferent de capat; nicio valoare nu castiga nimic masurabil, deci ramane
-    // cea care nu cere explicatie.
+    // px), cu centrul la 44,5%. Fereastra de 44,7% de pe clientWidth 390 cade la 27,7-72,3%,
+    // adica in plin subiect indiferent de capat; nicio valoare nu castiga nimic masurabil,
+    // deci ramane cea care nu cere explicatie.
     //
-    // MASURAT, ca sa nu se remasoare: cutia bleu din alt sta la 0-21,1% (capacul) si
-    // 73,6-91,0% (peretele din fata) din inaltimea fisierului de 960, adica in AFARA ferestrei
-    // de pe 390 px. S-a incercat 65%, care aduce 7,7 puncte de perete bleu in coltul de jos:
-    // privit, cadrul iese mai prost - taie varful evantaiului de separatoare, care e subiectul,
-    // ca sa castige o dunga. Alt-ul descrie FOTOGRAFIA, nu decupajul de telefon, si asa ramane.
+    // MASURAT, ca sa nu se remasoare: cutia bleu din alt sta la 0-22,8% (capacul) si
+    // 74,8-90,3% (peretele din fata) din inaltimea fisierului de 960 - pixeli cu albastrul
+    // peste rosu cu 30 de niveluri, pe cel putin 15% din latimea randului - adica amandoua in
+    // AFARA ferestrei. S-a incercat 65%, care muta fereastra la 35,9-80,6% si aduce 5,8 puncte
+    // de perete bleu in coltul de jos: privit, cadrul iese mai prost - taie varful evantaiului
+    // de separatoare, care e subiectul, ca sa castige o dunga. Alt-ul descrie FOTOGRAFIA, nu
+    // decupajul de telefon, si asa ramane.
     pozitie: "center 50%",
   },
   dosare: {
     nume: "dosare",
-    alt: "Fișe de carton cu etichete scrise de mână, într-un sertar de catalog, fotografie ilustrativă",
+    alt: "Teanc de dosare vechi de carton maro și crem, cu file îngălbenite ieșind dintre coperțile uzate, prim-plan, fotografie ilustrativă",
+    // 50%, si tot masurat: teancul e prim-plan si umple fisierul de 960 pe toata inaltimea
+    // (banda de detaliu 0-100%), deci fereastra de 44,7% cade pe subiect oriunde ar fi pusa.
+    // Singurul lucru de tinut afara e formularul tiparit de pe coperta de sus - randurile
+    // „Name / Address / Subject / From", necompletate - care sta la 0-6,2% din inaltimea
+    // fisierului: la 50% fereastra incepe la 27,7%, deci nu-l prinde. In fisierul de 1920 el
+    // nici nu exista, decupajul peisaj pornind sub el, de la randul 804 al sursei.
     pozitie: "center 50%",
   },
   dulapuri: {
     nume: "dulapuri",
-    alt: "Front de fișete metalice gri-bej, cu uși numerotate și cartonașe galbene prinse în colțare metalice pe fiecare ușă, fotografie ilustrativă",
-    // 40%, nu 50%: pe 390 px (innerWidth citit din pagina, /investitia) cardul e 343x240 si
-    // arata o fereastra de 46,6% din inaltimea fisierului portret. La 50% fereastra e
-    // 26,7-73,3%, iar eticheta numerotata de sus sta la 22,8-24,3% (masurata pe fisier,
-    // banda de pixeli deschisi) - adica exact deasupra taieturii, si pe telefon ar fi ramas
-    // doar cartonasul galben, fara nicio cifra. Alt-ul spune „usi numerotate", deci numarul
-    // trebuie sa se si vada. La 40% fereastra e 21,4-68,0%: prinde eticheta cu 1,4 puncte de
-    // margine si cartonasul galben intreg (45,3-57,1%). Pe 1440 se serveste fisierul de 1920,
-    // care acopera 93% din inaltimea cardului, deci mutarea aproape nu se vede acolo.
-    pozitie: "center 40%",
+    alt: "Front de fișete metalice maro cald, cu uși numerotate și cartonașe galbene prinse în colțare metalice pe fiecare ușă, fotografie ilustrativă",
+    // 38%, nu 50%, si nici 40% cat scria pana acum. Eticheta numerotata de sus sta la
+    // 22,8-24,3% din inaltimea fisierului de 960 (randuri cu peste 20 de pixeli avand toate
+    // cele trei canale peste 205), iar cartonasul galben la 45,2-57,1%. La 50% fereastra e
+    // 27,7-72,3%: eticheta ramane afara, si pe telefon s-ar fi vazut doar cartonasul galben,
+    // fara nicio cifra - dar alt-ul spune „usi numerotate", deci numarul trebuie sa se si
+    // vada. Valoarea de 40% din runda a doua fusese aleasa contra unei ferestre de 46,6%,
+    // masurata cu bara de derulare pe ecran; la fereastra reala de 44,7% ea da 22,1-66,8%,
+    // adica eticheta trece cu 0,7 puncte, aproape 10 px de fisier, iar privita in card se
+    // atinge de marginea de sus. La 38% fereastra e 21,0-65,7%: eticheta intra cu 1,8 puncte
+    // de margine si cartonasul galben ramane intreg. Pe 1440 se serveste fisierul de 1920,
+    // care acopera 91,9% din inaltimea cardului, deci mutarea aproape nu se vede acolo.
+    pozitie: "center 38%",
   },
   sertare: {
     nume: "sertare",
     alt: "Mâini care deschid un sertar dintr-un fișet metalic alb, fotografie ilustrativă",
-    // 60%, nu 50%: pe 390 px se vede o fereastra de 44,7% din inaltimea fisierului portret,
-    // iar la 50% ea se termina la 72,4% - sub manerul pe care il tine mana (64-75%), deci
-    // cadrul ramanea „doua maini pe alb", fara sertarul care e chiar subiectul. La 60%
-    // fereastra e 33,2-77,9% si prinde si mana de sus, si manerul, si deschizatura intunecata
-    // a sertarului tras. Pe 1440 fisierul de 1920 acopera 92% din card, deci acolo nu se vede.
+    // 60%, nu 50%. Deschizatura intunecata a sertarului tras sta la 37,2-49,8% din inaltimea
+    // fisierului de 960, iar manerul de metal la 65,4-66,9% (randuri cu peste 5% din latime
+    // sub nivelul 110 de gri). La 50% fereastra e 27,7-72,3% si manerul iese chiar pe
+    // marginea de jos - privit in card, degetele care il tin sunt taiate. La 60% fereastra e
+    // 33,2-77,9%: intra si mana de sus, si manerul intreg, si deschizatura. Pe 1440 fisierul
+    // de 1920 acopera 91,9% din card, deci acolo nu se vede.
     pozitie: "center 60%",
   },
   maini: {
@@ -109,9 +145,9 @@ export const FOTOGRAFII = {
     nume: "legatura",
     alt: "Teanc de documente legate cu spirală albă, cu cotoare colorate, pe un birou de lemn deschis, fotografie ilustrativă",
     // 50% e masurat: teancul ocupa 14,6-86,1% din inaltimea fisierului de 960 (aceeasi banda
-    // a abaterii standard), cu centrul la 50,4%. Fereastra de 46,6% de pe 390 px (masurat pe
-    // /comparatie) cade la 26,7-73,3%, adica simetric pe teanc; peretele crem de sus si
-    // biroul de jos raman amandoua afara, ceea ce e si scopul.
+    // a abaterii standard), cu centrul la 50,4%. Fereastra de 44,7% de pe clientWidth 390
+    // (masurat pe /comparatie) cade la 27,7-72,3%, adica simetric pe teanc; peretele crem de
+    // sus si biroul de jos raman amandoua afara, ceea ce e si scopul.
     pozitie: "center 50%",
   },
 } as const satisfies Record<string, Fotografie>;

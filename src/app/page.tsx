@@ -5,6 +5,7 @@ import BandaIncredere from "@/components/BandaIncredere";
 import Card from "@/components/Card";
 import Ecran from "@/components/Ecran";
 import TabPastila from "@/components/TabPastila";
+import { FOTOGRAFII, type CheieFotografie } from "@/content/fotografii";
 import { SEGMENTE } from "@/content/segmente";
 import {
   CARDURI_EROU,
@@ -61,19 +62,37 @@ export default function Acasa() {
 
       {/* Randul de carduri-imagine iese din banda eroului si intra peste sectiunea alba:
           marginea negativa il urca, `relative` il tine deasupra. E singurul loc in care
-          fotografiile se vad pe pagina de start, si stau in carduri cu raza 16 px. */}
+          fotografiile se vad pe pagina de start, si stau in carduri cu raza 16 px.
+
+          `<picture>`, nu `<img>` simplu: pana la runda a treia cardurile astea serveau
+          fisierul de 1920 si pe telefon, adica exact ce spunea registrul ca NU se intampla, iar
+          fisierul peisaj se si intindea in cardul de 171x120 al telefonului. MASURAT pe pagina
+          construita, la clientWidth 390: cele cinci imagini incarcate de `/` - patru carduri
+          aici plus fila deschisa - cantareau 556.180 octeti si cantaresc 399.054, adica 153 KB
+          si 28% mai putin, iar `currentSrc` al fiecareia se termina in `-960.webp`.
+
+          Ancora decupajului se citeste din `FOTOGRAFII`, nu se scrie a treia oara aici:
+          `CARDURI_EROU` isi tine deja alt-ul, iar o a treia copie a pozitiei ar diverge la
+          prima remasurare. */}
       <section className="bg-alb">
         <div className="mx-auto w-full max-w-vitrina px-4 md:px-8">
           <ul className="relative m-0 -mt-16 grid list-none grid-cols-2 gap-4 p-0 md:-mt-20 md:grid-cols-4 md:gap-6">
             {CARDURI_EROU.map((c) => (
               <li key={c.nume} className="overflow-hidden rounded-card-mare bg-alb">
-                <img
-                  src={"/img/" + c.nume + "-1920.webp"}
-                  alt={c.alt}
-                  className="h-[120px] w-full object-cover md:h-[180px]"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source media="(max-width: 767px)" srcSet={"/img/" + c.nume + "-960.webp"} />
+                  <img
+                    src={"/img/" + c.nume + "-1920.webp"}
+                    alt={c.alt}
+                    className="h-[120px] w-full object-cover md:h-[180px]"
+                    style={{
+                      objectPosition:
+                        FOTOGRAFII[c.nume as CheieFotografie]?.pozitie ?? "center",
+                    }}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 <span className="block px-4 py-3 text-nota font-semibold text-cerneala">
                   {c.eticheta}
                 </span>

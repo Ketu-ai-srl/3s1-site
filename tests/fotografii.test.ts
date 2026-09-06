@@ -17,7 +17,11 @@ import { FOTOGRAFII } from '../src/content/fotografii'
  *   4. `LICENTA.md` ramane fara rand pentru o cheie, sau cu un rand care nu duce la nicio
  *      fotografie Pexels, sau cu aceeasi adresa la doua chei (copiere de rand),
  *   5. `src/content/start.ts`, care isi tine propriile alt-uri pentru aceleasi chei, ramane cu
- *      descrierea cadrului VECHI - un alt rescris intr-un singur loc.
+ *      descrierea cadrului VECHI - un alt rescris intr-un singur loc,
+ *   6. acelasi start.ts tine si `pozitie` pentru trei dintre chei, si ea poate diverge la fel
+ *      de tacut: pana la runda a treia chiar diverguse (file-le: dosare 55%, cutii 45%;
+ *      registrul: 50% pentru amandoua), fiindca cifrele lor fusesera alese contra cadrelor
+ *      dinaintea schimbarii setului.
  * Plus regula de adevar a textului alternativ: descrie ce se vede, se termina cu mentiunea
  * ilustrativa si NU afirma ca ar fi depozitul nostru.
  *
@@ -95,25 +99,33 @@ function cheiFaraFisier(chei: readonly string[], fisiere: ReadonlySet<string>): 
 }
 
 /**
- * Perechile `nume` / `alt` scrise de mana intr-un fisier de continut. Se citeste linie cu
- * linie, nu cu un tipar peste tot fisierul, fiindca intre `nume:` si `alt:` pot sta comentarii
- * si alte campuri, iar un tipar lacom ar lega numele unui card de alt-ul urmatorului.
+ * Campurile `nume` / `alt` / `pozitie` scrise de mana intr-un fisier de continut. Se citeste
+ * linie cu linie, nu cu un tipar peste tot fisierul, fiindca intre ele pot sta comentarii si
+ * alte campuri, iar un tipar lacom ar lega numele unui card de alt-ul urmatorului.
+ *
+ * Cautarea se opreste la ACOLADA care inchide obiectul, nu dupa un numar fix de randuri. Cu o
+ * fereastra de +8 randuri, un card FARA `pozitie` - cum sunt cele din `CARDURI_EROU` - si-ar
+ * imprumuta valoarea de la cardul urmator, iar comparatia de mai jos ar cadea pe un card care
+ * n-a scris niciodata nimic. Acolada e chiar capatul obiectului, deci nu poate imprumuta.
  */
-function perechiNumeAlt(text: string): { nume: string; alt: string }[] {
+function campuriFoto(text: string): { nume: string; alt: string; pozitie?: string }[] {
   const randuri = text.split('\n')
-  const perechi: { nume: string; alt: string }[] = []
+  const gasite: { nume: string; alt: string; pozitie?: string }[] = []
   for (let i = 0; i < randuri.length; i++) {
     const n = randuri[i].match(/^\s*nume:\s*"([a-z]+)",\s*$/)
     if (!n) continue
-    for (let j = i + 1; j < Math.min(i + 8, randuri.length); j++) {
+    let alt: string | undefined
+    let pozitie: string | undefined
+    for (let j = i + 1; j < randuri.length; j++) {
+      if (/^\s*\}/.test(randuri[j])) break
       const a = randuri[j].match(/^\s*alt:\s*"(.*)",\s*$/)
-      if (a) {
-        perechi.push({ nume: n[1], alt: a[1] })
-        break
-      }
+      if (a && alt === undefined) alt = a[1]
+      const pz = randuri[j].match(/^\s*pozitie:\s*"(.*)",\s*$/)
+      if (pz && pozitie === undefined) pozitie = pz[1]
     }
+    if (alt !== undefined) gasite.push({ nume: n[1], alt, pozitie })
   }
-  return perechi
+  return gasite
 }
 
 const FISIERE_WEBP = readdirSync(DOSAR_IMG).filter((f) => f.endsWith('.webp'))
@@ -186,14 +198,14 @@ describe('setul de fotografii al site-ului', () => {
     expect(licenta, 'LICENTA.md nu mai numeste licenta Pexels').toContain('pexels.com/license/')
   })
 
-  it('alt-urile paginii de start sunt cuvant cu cuvant cele din registru', () => {
+  it('alt-ul SI pozitia din pagina de start sunt cele din registru', () => {
     // `src/content/start.ts` isi tine propriile alt-uri pentru aceleasi chei, fiindca pagina de
     // start isi tine textele acolo. Doua descrieri ale ACELUIASI cadru diverg la prima editare,
     // si pana acum nimic nu le compara: verificarea din `directia.test.ts` cere doar ca fiecare
     // alt din start.ts sa contina „ilustrativ", deci un alt rescris intr-un singur loc trecea
     // verde. Asta e chiar clasa de defect pe care registrul spune ca o inchide, deci se masoara.
     const start = readFileSync(join(RADACINA, 'src', 'content', 'start.ts'), 'utf8')
-    const perechi = perechiNumeAlt(start)
+    const perechi = campuriFoto(start)
     // Martorul extractorului: numarate independent, direct pe randurile `nume:`. Fara asta,
     // comparatia ar trece pe o lista goala daca tiparul nu mai potriveste - adica proba ar fi
     // verde tocmai cand nu mai citeste nimic. Pragul de jos e o podea, nu o cifra fixa: azi
@@ -202,12 +214,46 @@ describe('setul de fotografii al site-ului', () => {
     const cateNume = (start.match(/^\s*nume:\s*"/gm) || []).length
     expect(cateNume, 'start.ts nu mai declara nicio fotografie').toBeGreaterThan(3)
     expect(perechi.length, 'extractorul a pierdut perechi nume/alt').toBe(cateNume)
-    for (const { nume, alt } of perechi) {
+    for (const { nume, alt, pozitie } of perechi) {
       expect(CHEI as readonly string[], 'start.ts foloseste o cheie din afara registrului: ' + nume).toContain(nume)
-      expect(alt, 'alt-ul lui ' + nume + ' din start.ts a divergit de registru').toBe(
-        FOTOGRAFII[nume as keyof typeof FOTOGRAFII].alt,
-      )
+      const dinRegistru = FOTOGRAFII[nume as keyof typeof FOTOGRAFII]
+      expect(alt, 'alt-ul lui ' + nume + ' din start.ts a divergit de registru').toBe(dinRegistru.alt)
+      // `pozitie` e a DOUA cifra pe care start.ts o tinea pe cont propriu, si pana la runda a
+      // treia diverguse chiar: file-le scriau dosare 55% si cutii 45%, alese contra cadrelor
+      // dinaintea schimbarii setului, in timp ce registrul spunea 50% pentru amandoua - iar
+      // nicio proba nu se uita la asta. Un card care NU scrie `pozitie` (cele din
+      // `CARDURI_EROU`) e in regula: pagina lui o citeste din registru.
+      if (pozitie !== undefined) {
+        expect(
+          pozitie,
+          'pozitia lui ' + nume + ' din start.ts a divergit de registru',
+        ).toBe(dinRegistru.pozitie)
+      }
     }
+  })
+
+  it('martor: extractorul chiar vede pozitia, si nu o imprumuta de la cardul urmator', () => {
+    // Doua controale pozitive intr-unul, pe o fixtura asamblata AICI, nu citita din proiect:
+    // primul card nu are `pozitie` si nu trebuie sa capete una de la al doilea (asta era
+    // greseala pe care o facea fereastra de +8 randuri), iar al doilea trebuie s-o poarte pe a
+    // lui. Fara martor, comparatia de mai sus ar trece la fel de frumos daca extractorul ar
+    // intoarce mereu `pozitie: undefined`, adica tocmai cand nu mai masoara nimic.
+    const fixtura = [
+      '  {',
+      '    nume: "unu",',
+      '    alt: "alt unu",',
+      '    eticheta: "Unu",',
+      '  },',
+      '  {',
+      '    nume: "doi",',
+      '    alt: "alt doi",',
+      '    pozitie: "center 33%",',
+      '  },',
+    ].join('\n')
+    expect(campuriFoto(fixtura)).toEqual([
+      { nume: 'unu', alt: 'alt unu', pozitie: undefined },
+      { nume: 'doi', alt: 'alt doi', pozitie: 'center 33%' },
+    ])
   })
 
   it('textul alternativ descrie o fotografie ilustrativa, nu depozitul nostru', () => {
