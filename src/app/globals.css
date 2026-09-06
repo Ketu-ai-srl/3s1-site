@@ -124,18 +124,35 @@
   --text-titlu-3: clamp(1.75rem, 2.5vw, 2.25rem);
   --text-titlu-3--line-height: 1.22;
   --text-titlu-2: clamp(1.5rem, 3.35vw, 3rem);
-  --text-titlu-2--line-height: 1.17;
+  /* Vezi nota de la titlu-1: si aici inaltimea de rand e clamp, nu raport, fiindca
+     REF-V cere 24/32 la 390 (1,333) si 48/56 la 1440 (1,167). Punctele: 3,9vw da
+     15,21 px la 390 (sub minimul de 32) si 56,16 px la 1440 (peste maximul de 56),
+     deci ambele capete cad pe cifra ceruta. Raportul cel mai strans pe tot
+     intervalul este 3,9/3,35 = 1,164, peste pragul de 1,069 em. */
+  --text-titlu-2--line-height: clamp(2rem, 3.9vw, 3.5rem);
 
-  /* INALTIMEA DE RAND a titlului mare e 1,12, si e un prag, nu un gust. Diacriticele
-     romanesti cer, pe orice font, ca pasul de rand sa fie mai mare decat suma dintre
+  /* INALTIMEA DE RAND a titlurilor mari e un CLAMP, nu un raport, si asta e o corectie
+     masurata: marimea literei se scaleaza intre doua capete, dar REF-V cere la cele
+     doua capete raporturi DIFERITE - h1 72/80 la 1440 (1,111) si 36/44 la 390 (1,222).
+     Un raport unic nu le poate satisface pe amandoua: cu 1,12 fix, la 390 iesea 40,32
+     px in loc de 44, adica 3,68 px lipsa (-8,4%), masurat pe stiluri calculate cu
+     innerWidth citit din pagina. Cu 5,6vw intre 2,75rem si 5rem: la 390 vw da 21,84 px,
+     deci castiga minimul de 44; la 1440 da 80,64 px, deci castiga maximul de 80. Ambele
+     capete cad exact pe cifra ceruta.
+
+     Pragul de lizibilitate se pastreaza, doar ca acum se verifica pe intervalul intreg,
+     nu pe o singura cifra. Diacriticele romanesti cer, pe orice font, ca pasul de rand
+     sa fie mai mare decat suma dintre
      coborarea virgulei lui S/T si urcarea lui A/I cu accent. Pe directia veche cifra
      masurata pe fontul real era 1,069 em, si titlurile erau MAJUSCULE - cazul cel mai
      rau, fiindca virgula cadea peste o capitala. Aici titlurile sunt cu litera
      obisnuita, deci cerinta e mai mica, dar pragul se pastreaza: nu costa nimic, si o
      regula care se relaxeaza fiindca „acum nu mai avem majuscule" se strica la primul
-     titlu scris cu majuscule. */
+     titlu scris cu majuscule. Raportul cel mai strans pe care il produce perechea de
+     clamp-uri este 1,111 (la 1440 si peste), iar minimul din interiorul intervalului
+     este tot 1,12 - amandoua peste 1,069. */
   --text-titlu-1: clamp(2.25rem, 5vw, 4.5rem);
-  --text-titlu-1--line-height: 1.12;
+  --text-titlu-1--line-height: clamp(2.75rem, 5.6vw, 5rem);
 
   /* --- latimi -------------------------------------------------------------------
      `vitrina` e containerul REF-V: 1265 px de continut intr-o fereastra de 1440,
