@@ -55,7 +55,7 @@ export const EROU = {
 export const CARDURI_EROU: CardImagine[] = [
   {
     nume: "rafturi",
-    alt: "Rafturi pline cu dosare și volume vechi puse în picioare, de-a lungul unui culoar îngust care se pierde în neclaritate, fotografie ilustrativă",
+    alt: "Două șiruri lungi de dulapuri de lemn cu sertare mici, fiecare cu suportul lui de etichetă, de o parte și de alta a unui culoar central; un sertar este tras afară, cu fișele înăuntru, fotografie ilustrativă",
     eticheta: "Depozit",
   },
   {

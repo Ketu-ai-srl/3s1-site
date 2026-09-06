@@ -5,7 +5,7 @@ atribuire obligatorie): https://www.pexels.com/license/
 
 | Fișier | Sursă |
 |---|---|
-| rafturi-*.webp | https://www.pexels.com/photo/29533962/ |
+| rafturi-*.webp | https://www.pexels.com/photo/6549926/ |
 | cutii-*.webp | https://www.pexels.com/photo/4792288/ |
 | dosare-*.webp | https://www.pexels.com/photo/17846111/ |
 | dulapuri-*.webp | https://www.pexels.com/photo/3773984/ |
@@ -53,22 +53,59 @@ afara fișierului de 1920, fiindcă decupajul peisaj pornește sub el.
 
 `rafturi` -> 29533962 (rafturi pline cu dosare și volume vechi puse în picioare, culoar îngust,
 adâncime de câmp mică). Vechiul cadru (7303393) nu se vedea rău la 1920, dar originalul purta la
-1:1 lăzi de vin cu textul lor comercial, titluri de reviste și un cod QR. Cel nou nu are față,
-logo, cod de bare sau text de firmă; are, pe câteva cotoare din prim-plan, titluri în chirilică,
-lizibile numai în original, la 1:1 - decupajul de 1920 pornește de la marginea de sus a sursei
-tocmai ca să le lase afară, iar în fișierul de 960 rămâne un fragment de cuvânt de câțiva pixeli,
-ilizibil în card. Este consemnat aici pentru că e o urmă de text, nu pentru că ar fi o marcă.
+1:1 lăzi de vin cu textul lor comercial, titluri de reviste și un cod QR.
 
-Setul măsoară acum, pe aceleași eșantioane de 160x160 din fișierele de 1920: luminanță între 39,0
-(`dulapuri`) și 76,7 (`sertare`), saturație între 16,0 (`dosare`, `rafturi`) și 27,3 (`cutii`) -
-niciun cadru sub 30 la luminanță, niciunul peste 50 la saturație.
+**Corectat în runda a patra, și cadrul înlocuit:** nota de aici spunea că titlurile în chirilică
+de pe cotoarele din prim-plan sunt „lizibile numai în original, la 1:1". Nu era așa. Zona a fost
+mărită de 5 ori din chiar fișierul livrat de 1920, iar literele gofrate de pe un cotor se
+disting una câte una. Afirmația a fost scrisă din decupaj, nu din fișierul livrat. Vezi runda a
+patra, mai jos.
 
-Proveniența celor șapte a fost verificată în afara probei de unitate, cum cere nota din
-`tests/fotografii.test.ts`: semnătura de 32x32 în tonuri de gri a fiecărui `-1920` s-a comparat cu
-toate cele șapte surse re-descărcate. Pentru fiecare cadru, cea mai apropiată sursă este cea
-declarată în tabelul de mai sus, 7 din 7. La cele două surse portret comparația s-a făcut pe
-fereastra decupată, nu pe cadrul întreg: distanța la sursa proprie este 0,005 (`dosare`) și 0,003
-(`rafturi`), față de peste 1,01 la oricare alta.
+## Runda a patra, tot pe 2026-09-06: `rafturi`, a doua oară
+
+Cadrul 29533962, intrat în runda a treia, a ieșit tot pentru text. Nota de atunci spunea că
+titlurile în chirilică se citesc „numai în original, la 1:1"; măsurat din nou, un nume de autor
+gofrat pe un cotor din primul plan se citește **și în fișierul livrat de 1920**, iar textul
+alternativ le zicea „dosare" unor volume legate. Sunt două lucruri diferite și amândouă greșite:
+o urmă de text lizibilă într-un fișier care ajunge la vizitator, și o descriere care nu se
+potrivea cu obiectul.
+
+`rafturi` -> 6549926: o sală de catalog, cu două șiruri lungi de dulapuri de lemn cu sertare
+mici, culoar central, un sertar tras afară cu fișele în el. Sursa are 5856x3904, adică exact 3:2,
+deci fișierul de 1920 este cadrul întreg, fără decupaj. Privit înainte de generare la 1200 px și
+la 1:1 pe zonele cu text: nicio față, niciun logo, niciun cod de bare, niciun nume de firmă.
+
+Ce poartă totuși cadrul, scris aici pentru că e o urmă de text, nu pentru că ar fi o marcă:
+
+- **numere de inventar ștanțate vertical pe picioarele metalice** ale suporturilor, numai cifre
+  (de tipul `0163...`). Se citesc în original, la 1:1. În fișierul de 1920 aceeași zonă a fost
+  mărită de 6 ori și cifrele sunt o pată închisă fără contur: nu se mai citesc. Sunt marcaje de
+  inventar al mobilierului, din aceeași familie cu ușile numerotate din `dulapuri`.
+- **cartonașe de etichetă** în suporturile sertarelor: cele din planul apropiat, estompate de
+  adâncimea mică de câmp, au pe ele urme cenușii de literă tipărită; nu s-a putut descifra niciun
+  cuvânt la 1:1 în original.
+- în fundul sălii, dincolo de un geam, **un afiș sau un cotor mare** din care se vede o formă
+  roșiatică ce seamănă cu două litere. La 1:1 în original nu se descifrează, iar în fișierul de
+  1920 ocupă în jur de 15 px.
+
+Setul măsoară acum: luminanță între 39,0 (`dulapuri`) și 76,7 (`sertare`), saturație între 10,8
+(`rafturi`) și 27,3 (`cutii`) - niciun cadru sub 30 la luminanță, niciunul peste 50 la saturație.
+Cadrul care a ieșit măsura 48,2 și 16,0; cel care intră, 46,6 și 10,8.
+
+**Cum se măsoară, ca să nu iasă altă cifră data viitoare.** „Eșantion de 160x160" înseamnă
+**întregul fișier de 1920 redus la 160x160** (Pillow, LANCZOS), apoi media pe pixeli a lui `L` și
+`S` din `colorsys.rgb_to_hls`, înmulțite cu 100. NU înseamnă un decupaj de 160x160 din mijlocul
+fișierului: pe același set, decupajul din mijloc dă `dulapuri` saturație 85,5 în loc de 19,6 și
+`maini` luminanță 27,4 în loc de 60,3, adică ar aprinde de două ori praguri care nu sunt depășite.
+Metoda a fost aleasă rulând amândouă variantele pe cele șase cadre nemodificate: miniatura
+reproduce cifră cu cifră valorile scrise mai sus, 6 din 6; decupajul din mijloc, niciuna.
+
+Proveniența celor șapte a fost verificată din nou după schimbare, în afara probei de unitate, cum
+cere nota din `tests/fotografii.test.ts`: semnătura de 32x32 în tonuri de gri a fiecărui `-1920`
+s-a comparat cu toate cele șapte surse re-descărcate. Pentru fiecare cadru, cea mai apropiată sursă
+este cea declarată în tabelul de mai sus, 7 din 7. La sursa portret rămasă (`dosare`) comparația
+s-a făcut pe fereastra decupată, nu pe cadrul întreg. Distanța la sursa proprie este între 0,00005
+și 0,00029, față de cel puțin 1,47 la oricare alta.
 
 <!-- Dovada unicității, măsurată pe 2026-09-06 pe arborele acestei felii.
 
@@ -86,7 +123,7 @@ fereastra decupată, nu pe cadrul întreg: distanța la sursa proprie este 0,005
        wc -l < /tmp/aici.txt ; wc -l < /tmp/acolo.txt  # trebuie 14 și 14
        comm -12 /tmp/aici.txt /tmp/acolo.txt | wc -l   # sume comune
 
-     Măsurat din nou pe 2026-09-06, după runda a treia: 14 fișiere aici, 14 dincolo, 0 sume
+     Măsurat din nou pe 2026-09-06, după runda a patra: 14 fișiere aici, 14 dincolo, 0 sume
      comune. Control pozitiv, aceeași comandă cu celălalt site contra lui însuși: 14 din 14 -
      adică măsurătoarea chiar ar fi văzut coincidențele dacă existau.
 
@@ -100,34 +137,40 @@ fereastra decupată, nu pe cadrul întreg: distanța la sursa proprie este 0,005
        comm -12 /tmp/aici.txt /tmp/main.txt | wc -l   # sume comune
 
      Măsurat: 14 sume citite din `main`, 0 comune cu arborele de aici. Control pozitiv, aceeași
-     comandă cu `main` contra lui însuși: 14 din 14. -->
+     comandă cu `main` contra lui însuși: 14 din 14.
+
+     A treia direcție, adăugată în runda a patra, fiindcă `0 comune` de mai sus nu spune care
+     fișiere s-au schimbat ÎN runda asta - ar fi ieșit `0` și dacă nu se schimba nimic acum:
+     aceeași comandă cu `HEAD` în loc de `main` trebuie să dea exact `2 x (7 - câte cadre s-au
+     schimbat)` sume comune. Măsurat, cu un singur cadru schimbat: 12 din 14 comune cu `HEAD`,
+     adică cele șase cadre neatinse, și amândouă fișierele lui `rafturi` noi. -->
 
 ## Cele două mărimi
 
 Fiecare fotografie are o variantă de 1920 px lățime, pentru ecran lat, și una de 960 px, servită
 sub 768 px. Niciuna nu e mărită: toate cele șapte surse au fost re-descărcate de pe Pexels și
-măsurate cu Pillow pe 2026-09-06, iar cea mai îngustă are 2686 px lățime (`rafturi`), cea mai lată
+măsurate cu Pillow pe 2026-09-06, iar cea mai îngustă are 3016 px lățime (`dosare`), cea mai lată
 6042 px (`dulapuri`) - fiecare peste 1920 cu marjă.
 
-Varianta de 1920 este PEISAJ 3:2 la toate șapte. La cele cinci surse peisaj ea păstrează proporția
-originalului. La cele două surse portret intrate în runda a treia - `dosare` (3016x4021) și
-`rafturi` (2686x4029) - se taie o fereastră peisaj pe toată lățimea sursei, și asta e o abatere
-măsurată, nu o preferință: păstrându-le proporția, fișierele ar fi ieșit 1920x2560 și 1920x2880, cu
-281 KB și 265 KB la aceeași calitate 81, adică amândouă peste plafonul de 250 KB, și ar fi avut de
-trei ori mai mulți pixeli decât cardul de 555x340 în care intră. Ferestrele: `dosare` rândurile
-804-2815 din 4021, alese ca să lase afară formularul tipărit de pe coperta de sus; `rafturi`
-rândurile 0-1791 din 4029, alese ca să lase afară cotoarele cu titluri lizibile din planul apropiat.
+Varianta de 1920 este PEISAJ 3:2 la toate șapte. La cele șase surse peisaj ea păstrează proporția
+originalului; `rafturi` (5856x3904) este exact 3:2, deci acolo nu se taie nimic. Rămâne o singură
+sursă portret, `dosare` (3016x4021), din care se taie o fereastră peisaj pe toată lățimea sursei,
+și asta e o abatere măsurată, nu o preferință: păstrându-i proporția, fișierul ar fi ieșit
+1920x2560, cu 281 KB la aceeași calitate 81, adică peste plafonul de 250 KB, și ar fi avut de trei
+ori mai mulți pixeli decât cardul de 555x340 în care intră. Fereastra: rândurile 804-2815 din 4021,
+alese ca să lase afară formularul tipărit de pe coperta de sus.
 
 Variantele de 960 sunt toate PORTRET, 960x1440 (2:3), fiindcă un peisaj întins cu `object-cover` pe
 un telefon ținut vertical se mărește de peste o dată și un sfert și se înmoaie. Toate sunt decupaje
 din originalul de la aceeași adresă, sub aceeași licență, cu fereastra așezată pe subiect. La cele
-cinci surse peisaj fereastra se taie pe toată înălțimea sursei și alege lățimea: `sertare` ia mâna
+șase surse peisaj fereastra se taie pe toată înălțimea sursei și alege lățimea: `sertare` ia mâna
 și sertarul deschis din stânga cadrului, `maini` mâinile și mapa, `cutii` evantaiul de separatoare
 din mijlocul cutiei (fereastra 1912-4589 din 6016), `dulapuri` ușa din mijloc, cu eticheta și
-cartonașul ei (1706-4386 din 6042), iar `legatura` capătul cu spirale al teancului (760-2936 din
-4928). La cele două surse portret e invers, fiindcă acolo înălțimea e cea din belșug: `dosare` se
-taie pe toată înălțimea și pierde doar 335 px de lățime (fereastra 167-2848 din 3016), iar
-`rafturi` iese exact cadrul întreg, fiindcă 2686x4029 este deja 2:3.
+cartonașul ei (1706-4386 din 6042), `legatura` capătul cu spirale al teancului (760-2936 din 4928),
+iar `rafturi` șirul din stânga, cu sertarul tras afară (0-2603 din 5856) - s-a ales șirul, nu
+culoarul din mijloc, fiindcă banda pe care o arată cardul de telefon ar fi căzut acolo pe peretele
+gri și pe podea. La sursa portret e invers, fiindcă acolo înălțimea e cea din belșug: `dosare` se
+taie pe toată înălțimea și pierde doar 335 px de lățime (fereastra 167-2848 din 3016).
 
 Generate cu Pillow, calitate WebP 81, `method=6`; niciun fișier nu trece de 250 KB, cel mai greu
-este `dosare-1920.webp` cu 158 KB.
+este `rafturi-1920.webp` cu 160 KB.

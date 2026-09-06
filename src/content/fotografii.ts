@@ -31,9 +31,15 @@
 // `dosare` era cel mai intunecat al setului (luminanta 19,3 din 100, masurata pe esantion
 // 160x160 din fisierul de 1920) si a trecut la 44,3; `rafturi` purta la 1:1, in ORIGINAL,
 // lazi de vin cu textul lor comercial, titluri de reviste si un cod QR - nelizibile la 1920,
-// dar sursa insasi era de magazin. Setul masoara acum 39,0-76,7 la luminanta si 16,0-27,3 la
-// saturatie, adica niciun cadru sub 30 si niciunul peste 50. Motivele si ID-urile sunt in
-// `public/img/LICENTA.md`.
+// dar sursa insasi era de magazin.
+//
+// RUNDA A PATRA, tot pe 2026-09-06, si e a doua oara cand se schimba `rafturi`: cadrul de la
+// runda a treia (29533962) purta pe un cotor din prim-plan, gofrat, un nume de autor in
+// chirilica, lizibil la 1:1 chiar in fisierul de 1920 - nu doar in original, cum spunea nota
+// de atunci - iar alt-ul ii zicea „dosare" unor volume legate. Locul lui il ia 6549926: o sala
+// de catalog, cu doua siruri de dulapuri de lemn cu sertare mici. Setul masoara acum 39,0-76,7
+// la luminanta si 10,8-27,3 la saturatie, adica niciun cadru sub 30 si niciunul peste 50.
+// Motivele, ID-urile si metoda masuratorii sunt in `public/img/LICENTA.md`.
 //
 // `pozitie` e ancora decupajului, si e o masuratoare, nu o preferinta. Toate cifrele de mai
 // jos sunt citite din pagina CONSTRUITA, nu din CSS: `document.documentElement.clientWidth`
@@ -73,12 +79,22 @@ export type Fotografie = {
 export const FOTOGRAFII = {
   rafturi: {
     nume: "rafturi",
-    alt: "Rafturi pline cu dosare și volume vechi puse în picioare, de-a lungul unui culoar îngust care se pierde în neclaritate, fotografie ilustrativă",
-    // 50% nu e implicit, e rezultatul masuratorii: banda de detaliu (abaterea standard pe
-    // randuri de 10 px, prag 45% din maxim) acopera 0-100% din fisierul de 960, fiindca
-    // rafturile umplu cadrul de sus pana jos. Nicio fereastra de 44,7% nu castiga nimic fata
-    // de alta, deci ramane cea care nu cere explicatie.
-    pozitie: "center 50%",
+    alt: "Două șiruri lungi de dulapuri de lemn cu sertare mici, fiecare cu suportul lui de etichetă, de o parte și de alta a unui culoar central; un sertar este tras afară, cu fișele înăuntru, fotografie ilustrativă",
+    // 35%, si e o masuratoare pe cadrul NOU, nu cifra mostenita. Aici banda de detaliu
+    // (abaterea standard pe randuri) NU serveste la nimic: ea gaseste 65-90%, adica MUCHIA
+    // dintre dulapuri si podea, unde contrastul e maxim, in timp ce sertarele insele sunt o
+    // textura marunta si uniforma. S-a masurat direct subiectul - cat la suta din latimea
+    // fiecarui rand e lemn cald (rosu peste albastru cu 18 niveluri, rosu peste 90; podeaua si
+    // peretele sunt gri, deci cad afara). Lemnul umple fisierul de 960 pana la 68% din
+    // inaltime, iar sub 70% e numai podea.
+    //
+    // La 50% fereastra de 44,7% cade la 27,7-72,3% si ia 4,3 puncte de podea goala pe
+    // marginea de jos; la 35% ea cade la 19,4-64,0%, adica se opreste in dulapuri. Lemnul din
+    // fereastra, masurat din 5 in 5 puncte intre 30% si 60%: maximul e 61,6% chiar la 35%,
+    // fata de 57,0% la 50%. Sertarul tras afara, care e detaliul cadrului, sta la 37,5-41,0%
+    // din inaltime, deci intra la amandoua. Pe 1440 se serveste fisierul de 1920, care acopera
+    // 91,9% din inaltimea cardului, deci acolo mutarea aproape nu se vede.
+    pozitie: "center 35%",
   },
   cutii: {
     nume: "cutii",
