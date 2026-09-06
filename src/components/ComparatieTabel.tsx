@@ -1,37 +1,34 @@
-// RETINTUIT PENTRU REF-V (felia 1, val S1-a). S-a schimbat DOAR paleta si greutatea
-// literei, mecanic: gramatica, asezarea si marimile raman cele ale directiei
-// anterioare si se rescriu la valul S1-b. Comentariile de mai jos sunt ale acelei
-// directii, cu masuratorile ei pe fundal de noapte: se citesc ca istorie, nu ca
-// descriere a designului de acum.
 import { Fragment } from "react";
 import type { ColoanaComparatie, RandComparatie } from "@/content/comparatie";
 
-// Tabelul de comparație. RĂMÂNE tabel - e cel mai bun lucru de pe pagină și singura formă
-// în care șase întrebări cu patru răspunsuri se citesc ca răspunsuri, nu ca proză - dar e
-// scris ca o GRILĂ, nu ca `<table>`.
+// Tabelul de comparatie, asezat pe gramatica REF-V: un card mare, alb, cu raza de 16 px, pus
+// pe o sectiune de ceata; linii `linie`; capul de tabel la 14 px, greutatea 600; coloana
+// noastra marcata o singura data, cu `violet-pal`. Fara umbra - cardul se desparte de
+// sectiune prin culoarea lui de fundal, ca in `Card.tsx`.
 //
-// De ce nu un tabel HTML. Patru coloane de proză nu încap la 390 px în niciun fel: ori
-// tabelul depășește lățimea ferestrei și poarta de derapaj oprește lotul, ori se pune
-// într-un recipient care se derulează lateral, și atunci pe telefon se citește o coloană
-// pe rând, orbește, fără să se vadă cu ce compari. O grilă care se reașază rezolvă
-// amândouă: pe telefon fiecare întrebare devine un bloc cu patru răspunsuri etichetate,
-// pe ecran lat devine tabelul de care are nevoie cineva care compară.
+// RAMANE O GRILA, NU UN `<table>`, si motivul e cel masurat la felia dinainte: patru coloane
+// de proza nu incap la 390 px in niciun fel. Ori tabelul depaseste latimea ferestrei si poarta
+// de derapaj opreste lotul, ori intra intr-un recipient care se deruleaza lateral, si atunci
+// pe telefon se citeste o coloana pe rand, orbeste, fara sa se vada cu ce compari.
 //
-// CE COSTĂ ALEGEREA ASTA, scris ca să nu pară gratuită: se pierde semantica de tabel,
-// deci un cititor de ecran nu anunță „coloana 3 din 4". Prețul se plătește înapoi punând
-// numele variantei ÎN FIECARE CELULĂ: pe telefon se vede, pe ecran lat rămâne în arborele
-// de accesibilitate prin `lg:sr-only`, iar capul de tabel vizual e marcat `aria-hidden`,
-// fiindcă ar repeta același lucru a doua oară.
+// PRETUL ALEGERII, scris ca sa nu para gratuit: se pierde semantica de tabel, deci un cititor
+// de ecran nu anunta „coloana 3 din 4". Se plateste inapoi punand numele variantei IN FIECARE
+// CELULA: pe telefon se vede, pe ecran lat ramane in arborele de accesibilitate prin
+// `lg:sr-only`, iar capul de tabel vizual e marcat `aria-hidden`, fiindca ar repeta acelasi
+// lucru a doua oara.
 //
-// PE NOAPTE. Liniile sunt cele ale direcției (`border-linie-suprafata`, adică
-// `linie-noapte` pe fundalul paginii), numele variantelor urcă pe litera de afiș
-// condensată cu majuscule, iar rezumatul lor coboară în mono mic. Coloana noastră e
-// marcată o singură dată, cu linia de aramă în stânga și cu numele în aramă: e singurul
-// accent al tabelului, ca ochiul să găsească reperul fără să i se spună de două ori.
+// CE E NOU: PE TELEFON FIECARE RAND E UN CARD, si asta fara sa se randeze nimic de doua ori.
+// Grila ramane PLATA - celulele sunt copii directi ai ei, deci nu e nevoie nici de
+// `display: contents`, scos ani buni din arborele de accesibilitate de mai multe motoare,
+// nici de doua randari ascunse una cate una. Cardul se obtine din culoarea de fundal: intr-o
+// grila cu o singura coloana si fara jgheab, intrebarea si cele patru raspunsuri ale ei stau
+// lipite pe acelasi `ceata`, primul colt sus rotunjit si ultimul jos. Distanta dintre carduri
+// vine din marginea de sus a intrebarii, pusa pe toate randurile in afara de primul; de aceea
+// componenta are nevoie de indicele randului, si de aceea nu se poate scrie cu `first:`.
 //
-// Un rând incomplet OPREȘTE construcția, nu se desenează pe jumătate: o celulă lipsă
-// într-un tabel de comparație se citește ca „varianta aia nu are răspuns", ceea ce e o
-// afirmație, nu o omisiune.
+// UN RAND INCOMPLET OPRESTE CONSTRUCTIA, nu se deseneaza pe jumatate: o celula lipsa intr-un
+// tabel de comparatie se citeste ca „varianta aia nu are raspuns", ceea ce e o afirmatie, nu
+// o omisiune.
 
 type Props = {
   coloane: ColoanaComparatie[];
@@ -39,7 +36,7 @@ type Props = {
 };
 
 const GRILA =
-  "grid grid-cols-1 gap-x-6 gap-y-0 lg:grid-cols-[minmax(150px,0.95fr)_repeat(4,minmax(0,1fr))] xl:gap-x-8";
+  "grid grid-cols-1 gap-0 lg:grid-cols-[minmax(160px,1fr)_repeat(4,minmax(0,1.05fr))]";
 
 export default function ComparatieTabel({ coloane, randuri }: Props) {
   for (const rand of randuri) {
@@ -56,69 +53,83 @@ export default function ComparatieTabel({ coloane, randuri }: Props) {
     }
   }
 
+  const ultima = coloane.length - 1;
+
   return (
-    <div className={GRILA}>
-      {/* Capul de tabel: numai pe ecran lat, și numai vizual. Numele variantei ajunge la
-          cititorul de ecran din celulă, unde e legat de răspunsul lui. */}
-      <div aria-hidden className="hidden lg:block" />
-      {coloane.map((c) => (
-        <div
-          key={c.id}
-          aria-hidden
-          className={`hidden pb-5 lg:block ${
-            c.aNoastra ? "border-l-2 border-violet pl-5" : ""
-          }`}
-        >
-          <span
-            className={`font-afis block text-[19px] leading-[1.15] font-semibold ${
-              c.aNoastra ? "text-violet" : "text-cerneala"
-            }`}
+    <div className="rounded-card-mare bg-alb p-5 md:p-8 lg:p-10">
+      <div className={GRILA}>
+        {/* Capul de tabel: numai pe ecran lat, si numai vizual. Numele variantei ajunge la
+            cititorul de ecran din celula, unde e legat de raspunsul lui. */}
+        <div aria-hidden className="hidden lg:block" />
+        {coloane.map((c) => (
+          <div
+            key={c.id}
+            aria-hidden
+            className={
+              "hidden pb-5 lg:block lg:px-5 lg:pt-5 " +
+              (c.aNoastra ? "lg:rounded-t-card lg:bg-violet-pal" : "")
+            }
           >
-            {c.nume}
-          </span>
-          <span className="mt-2 block font-mono text-[12px] leading-[1.45] text-cerneala-2">
-            {c.rezumat}
-          </span>
-        </div>
-      ))}
-
-      {randuri.map((rand) => (
-        // Fragment, nu un `div` cu `display: contents`: celulele trebuie să fie copii
-        // direcți ai grilei, iar `display: contents` a fost ani buni scos din arborele
-        // de accesibilitate de mai multe motoare. Fragmentul nu produce niciun nod.
-        <Fragment key={rand.axa}>
-          <div className="border-t border-linie pt-8 pb-3 lg:pt-7 lg:pb-9">
-            <h3 className="font-afis max-w-[22ch] text-[19px] leading-[1.2] font-semibold  text-cerneala lg:text-[17.5px]">
-              {rand.axa}
-            </h3>
+            <span
+              className={
+                "block text-nota font-semibold " +
+                (c.aNoastra ? "text-violet" : "text-cerneala")
+              }
+            >
+              {c.nume}
+            </span>
+            <span className="mt-2 block text-nota text-cerneala-2">{c.rezumat}</span>
           </div>
+        ))}
 
-          {rand.celule.map((celula, i) => {
-            const c = coloane[i];
-            return (
-              <div
-                key={c.id}
-                className={`border-l-2 pb-6 pl-4 lg:pt-7 lg:pb-9 ${
-                  c.aNoastra
-                    ? "border-violet lg:border-t lg:border-l-2 lg:pl-5"
-                    : "border-linie lg:border-t lg:border-l-0 lg:pl-0"
-                }`}
-              >
-                <span className="mb-2 block font-mono text-[11px]  text-cerneala-2 lg:sr-only">
-                  {c.nume}
-                </span>
-                <p
-                  className={`text-[15.5px] leading-[1.55] lg:text-[15px] ${
-                    c.aNoastra ? "text-cerneala" : "text-cerneala-2"
-                  }`}
+        {randuri.map((rand, i) => (
+          // Fragment, nu un `div`: celulele trebuie sa fie copii directi ai grilei.
+          <Fragment key={rand.axa}>
+            <div
+              className={
+                "rounded-t-card bg-ceata px-5 pt-5 pb-3 lg:rounded-none lg:bg-transparent lg:border-t lg:border-linie lg:px-0 lg:pr-5 lg:pt-7 lg:pb-9 " +
+                (i === 0 ? "" : "mt-4 lg:mt-0")
+              }
+            >
+              <h3 className="max-w-[24ch] text-corp font-semibold text-cerneala">{rand.axa}</h3>
+            </div>
+
+            {rand.celule.map((celula, j) => {
+              const c = coloane[j];
+              // Rotunjirea se decide o singura data per capat, in JS, si se emite o singura
+              // clasa `lg:rounded-*`. Doua clase de rotunjire pe acelasi element, amandoua
+              // sub `lg:`, s-ar rezolva dupa ordinea din foaia GENERATA, nu dupa ordinea din
+              // sirul de aici - adica dupa noroc.
+              const colturiLat =
+                c.aNoastra && i === randuri.length - 1
+                  ? "lg:rounded-t-none lg:rounded-b-card "
+                  : "lg:rounded-none ";
+              return (
+                <div
+                  key={c.id}
+                  className={
+                    "bg-ceata px-5 lg:border-t lg:border-linie lg:px-5 lg:pt-7 lg:pb-9 " +
+                    (j === ultima ? "rounded-b-card pb-5 " : "pb-4 ") +
+                    (c.aNoastra ? "lg:bg-violet-pal " : "lg:bg-transparent ") +
+                    colturiLat
+                  }
                 >
-                  {celula}
-                </p>
-              </div>
-            );
-          })}
-        </Fragment>
-      ))}
+                  <span className="mb-1 block text-nota font-semibold text-cerneala lg:sr-only">
+                    {c.nume}
+                  </span>
+                  <p
+                    className={
+                      "text-nota " + (c.aNoastra ? "text-cerneala" : "text-cerneala-2")
+                    }
+                  >
+                    {celula}
+                  </p>
+                </div>
+              );
+            })}
+          </Fragment>
+        ))}
+      </div>
     </div>
   );
 }

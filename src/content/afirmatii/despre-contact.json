@@ -20,7 +20,7 @@
   {
     "id": "3s-fara-date-de-firma",
     "text": "3S nu are cod fiscal, numar de ordine in registrul comertului, sediu declarat sau telefon propriu",
-    "unde": "src/app/contact/page.tsx, src/app/despre/page.tsx",
+    "unde": "src/app/contact/page.tsx, src/app/despre/page.tsx, src/content/interior-investitia.ts",
     "stare": "confirmat",
     "sursa": "config/entitate.ro.json: campurile sunt marcate `de completat`, ceea ce, dupa nota din acelasi fisier, inseamna ca datele NU exista inca; afirmatie negativa, verificabila prin absenta",
     "confirmat_de": "Ketu, 2026-09-05",

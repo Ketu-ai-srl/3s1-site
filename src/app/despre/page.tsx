@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AntetPagina from "@/components/AntetPagina";
+import BandaCTA from "@/components/BandaCTA";
+import BandaIncredere from "@/components/BandaIncredere";
 import BlocDovada from "@/components/BlocDovada";
-import Buton from "@/components/Buton";
-import CardSegment from "@/components/CardSegment";
-import DespreVerb from "@/components/DespreVerb";
-import Ecran from "@/components/Ecran";
+import Card from "@/components/Card";
+import InvestitieRandFoto from "@/components/InvestitieRandFoto";
 import ListaBifa from "@/components/ListaBifa";
-import SectiuneRegistru from "@/components/SectiuneRegistru";
 import {
   ARATAM,
   CONSTRUIT,
@@ -18,34 +17,53 @@ import {
   STAREA_DE_AZI,
 } from "@/content/despre";
 import { FOTOGRAFII } from "@/content/fotografii";
+import { DESPRE_INTERIOR as DI } from "@/content/interior-investitia";
 
-// Pagina „despre”, scrisă pe dos față de obicei: începe cu ce lipsește, nu cu ce avem.
+// Pagina „despre", pe gramatica paginii interioare REF-V (val S1-b), scrisa pe dos fata de
+// obicei: incepe cu impartirea dintre cele doua firme, nu cu ce avem.
 //
-// Aranjarea are un motiv, altfel pagina ar minți prin ea. O firmă care se înființează acum
-// și care se sprijină pe depozitul firmei-mamă are DOUĂ vechimi diferite, iar cititorul care
-// le confundă semnează cu impresia greșită despre cine îi ține hârtia.
+// DE CE ANTETUL SI NU `Ecran`. Sarcina lasa alegerea deschisa, si raspunsul e masurat, nu de
+// gust. `Ecran` are DOUA limbaje: `ton="erou"`, adica banda violeta a paginii de start, si
+// restul, care da chiar antetul alb - iar `AntetPagina` e chiar `Ecran` cu firul de navigare
+// si cu datele structurate `BreadcrumbList` deasupra. Deci alegerea reala nu e intre doua
+// desene, ci intre a pastra sau a pierde firul de navigare si `BreadcrumbList`: eroul violet
+// e al paginii de start si ramane unic pe site (REF-V §4, punctul 1). Pagina pastreaza
+// `AntetPagina`, ca celelalte 21 de pagini interioare.
 //
-// ÎMPĂRȚIREA ARE DOUĂ ECRANE, NU DOUĂ COLOANE. Erau două liste alăturate, de aceeași
-// greutate, iar ochiul le citea ca pe două jumătăți ale aceluiași lucru - exact confuzia pe
-// care secțiunea există ca să o desfacă. Pe ecrane separate nu se pot citi deodată: mai
-// întâi ADRIA, cu depozitul ei fotografiat, apoi 3S, pe negru gol. Diferența de tratament nu
-// este decor - ADRIA are un depozit care se poate arăta, 3S are deocamdată numai muncă
-// începută, iar pagina arată exact atât.
+// CE S-A SCHIMBAT LA MIJLOCUL PAGINII. Impartirea dintre ADRIA si 3S statea in doua `Ecran`
+// de mijloc de pagina, adica in doua ANTETURI puse una sub alta: fiecare cu rezerva lui de
+// 96 px pentru bara fixa de sus, care la mijlocul paginii nu are ce sa rezerve. Acum sunt
+// doua randuri text/imagine, forma pe care REF-V o da sectiunilor de mijloc.
 //
-// Canonical auto-referențial, ca pe celelalte pagini: fără el, ruta ar moșteni canonical-ul
-// layout-ului, ar arăta către pagina de start și ar ieși din index.
+// ASIMETRIA CELOR DOUA RANDURI RAMANE, si e continut, nu decor: ADRIA are un depozit care se
+// poate arata, deci randul ei are fotografie si e urmat imediat de banda inchisa cu cele cinci
+// lucruri mostenite; 3S are munca neinceputa, deci randul ei e proza goala, fara fotografie si
+// fara lista. Cele doua randuri nu au voie sa se citeasca drept doua jumatati ale aceluiasi
+// lucru - asta desface chiar confuzia pentru care exista sectiunea.
+//
+// CELE CINCI FAPTE MOSTENITE SUNT SCRISE O SINGURA DATA. Stateau intr-o lista cu bife langa
+// randul ADRIEI; acum stau pe banda inchisa, care e locul lor in gramatica REF-V. Nu stau in
+// amandoua: doua sectiuni cu acelasi continut pe aceeasi pagina inseamna ca a doua nu se mai
+// citeste. Textele vin verbatim din `MOSTENIT` (`src/content/despre.ts`, inghetat in valul
+// asta); din fisierul feliei vine numai eticheta fiecarui rand, iar `tests/interior-felie4`
+// masoara ca sunt tot atatea etichete cate randuri.
+//
+// Canonical auto-referential, ca pe celelalte pagini: fara el, ruta ar mosteni canonical-ul
+// layout-ului, ar arata catre pagina de start si ar iesi din index.
 export const metadata: Metadata = {
   title: DESPRE.titluMeta,
   description: DESPRE.descriereMeta,
   alternates: { canonical: "/despre" },
 };
 
+const LEGATURA = "text-violet underline decoration-violet-2 underline-offset-[3px]";
+
 export default function Despre() {
   return (
     <main id="continut">
       <AntetPagina
         adresa="/despre"
-        imagine={FOTOGRAFII.dulapuri}
+        imagine={FOTOGRAFII.rafturi}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Despre noi" }]}
         eticheta={DESPRE.eticheta}
         titlu={
@@ -59,141 +77,161 @@ export default function Despre() {
         actiune={{ href: "/contact", text: "Scrieți-ne" }}
       />
 
-      <SectiuneRegistru
-        id="starea"
-        dens
-        cota="I"
-        eticheta="Starea de azi"
-        titlu="3S nu are încă personalitate juridică, și asta se vede în pagină."
-        lead="Dosarul de înmatriculare este în lucru. Până se încheie, firma nu are cod fiscal, număr de registru, sediu declarat sau telefon, iar acolo unde ar trebui să fie, site-ul scrie că lipsesc. Datele firmei-mamă nu se pun în locul lor: ar fi o afirmație falsă despre altă persoană juridică."
-      >
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-          {STAREA_DE_AZI.map((f) => (
-            <CardSegment key={f.titlu} titlu={f.titlu}>
-              {f.text}
-            </CardSegment>
-          ))}
+      <section id="impartirea" className="bg-alb">
+        <div className="mx-auto w-full max-w-vitrina px-4 py-20 md:px-8 md:py-24">
+          {/* Sectiunea are titlu de nivel `h2`, si nu din simetrie: fara el, primul titlu de
+              dupa `h1` ar fi `h3`-ul randului, adica o saritura de nivel - poarta S-03 o
+              masoara pe HTML-ul construit si a raportat-o pe drept. */}
+          <div className="mb-12 text-center">
+            <span className="mb-4 block text-nota font-semibold text-violet">
+              {DI.impartireaEticheta}
+            </span>
+            <h2 className="mx-auto max-w-[22ch] text-titlu-2 text-cerneala">
+              {DI.impartireaTitlu}
+            </h2>
+            <p className="mx-auto mt-5 max-w-[62ch] text-corp text-cerneala-2">
+              {DI.impartireaLead}
+            </p>
+          </div>
+
+          <InvestitieRandFoto
+            titlu={DI.adriaTitlu}
+            text="Vechimea, autorizațiile și depozitul aparțin firmei-mamă, deci o afirmație despre ele se verifică la ea, nu la noi. Cele cinci lucruri care vin de acolo sunt scrise pe banda de mai jos."
+            imagine={FOTOGRAFII.maini}
+          />
+
+          <div className="mt-20 md:mt-24">
+            <InvestitieRandFoto
+              titlu={DI.treiSTitlu}
+              text="Ce urmează este muncă nouă și nu are în spate niciun an de funcționare. Riscul ei ni-l asumăm noi, nu firma-mamă."
+            >
+              <p className="max-w-[62ch] text-corp text-cerneala-2">{CONSTRUIT}</p>
+            </InvestitieRandFoto>
+          </div>
         </div>
+      </section>
 
-        <BlocDovada className="mt-10">
-          <strong className="font-semibold text-cerneala">De ce citiți asta aici:</strong>{" "}
-          starea juridică a unui furnizor se află oricum, la prima verificare de dosar. Scrisă
-          de noi, costă o secțiune. Descoperită de dumneavoastră după trei discuții, costă
-          discuțiile.
-        </BlocDovada>
-      </SectiuneRegistru>
+      {/* Faptele mostenite, verbatim din `MOSTENIT`. Eticheta fiecaruia vine din fisierul
+          feliei; textul NU se copiaza nicaieri, deci nu are cum sa divearga de continut. */}
+      <div id="mostenit">
+        <BandaIncredere
+          eticheta={DI.bandaEticheta}
+          titlu={DI.bandaTitlu}
+          elemente={MOSTENIT.map((text, i) => ({
+            titlu: DI.bandaEtichete[i],
+            text,
+          }))}
+        />
+      </div>
 
-      <Ecran
-        id="adria"
-        imagine={FOTOGRAFII.maini}
-        eticheta="Împărțirea · Firma-mamă"
-        titlu={
-          <>
-            ADRIA ține
-            <br />
-            hârtia. Din 2019.
-          </>
-        }
-        text="Vechimea, autorizațiile și depozitul aparțin firmei-mamă, deci o afirmație despre ele se verifică la ea, nu la noi."
-        actiune={{ href: "/arhivare-fizica", text: "Depozitul și preluarea" }}
-      >
-        <div className="mt-8 max-w-[560px]">
-          <ListaBifa titlu="ADRIA Servicii Arhivare SRL" elemente={MOSTENIT} />
+      <section id="starea" className="bg-ceata">
+        <div className="mx-auto w-full max-w-vitrina px-4 py-20 md:px-8 md:py-24">
+          <div className="mb-12 text-center">
+            <span className="mb-4 block text-nota font-semibold text-violet">
+              {DI.stareaEticheta}
+            </span>
+            <h2 className="mx-auto max-w-[22ch] text-titlu-2 text-cerneala">
+              {DI.stareaTitlu}
+            </h2>
+            <p className="mx-auto mt-5 max-w-[62ch] text-corp text-cerneala-2">
+              {DI.stareaLead}
+            </p>
+          </div>
+
+          <ul className="m-0 grid list-none gap-6 p-0 md:grid-cols-3">
+            {STAREA_DE_AZI.map((f) => (
+              <li key={f.titlu}>
+                <Card titlu={f.titlu} fundal="ceata" mare>
+                  {f.text}
+                </Card>
+              </li>
+            ))}
+          </ul>
+
+          <BlocDovada className="mt-10">
+            <strong className="font-semibold text-cerneala">De ce citiți asta aici:</strong>{" "}
+            starea juridică a unui furnizor se află oricum, la prima verificare de dosar.
+            Scrisă de noi, costă o secțiune. Descoperită de dumneavoastră după trei discuții,
+            costă discuțiile.
+          </BlocDovada>
         </div>
-      </Ecran>
+      </section>
 
-      {/* AL DOILEA ECRAN NU E GEAMANUL PRIMULUI, si diferenta o cere continutul. Pana pe
-          2026-09-06 aveau aceeasi geometrie pana la ultimul element: eticheta mono de arama,
-          titlu pe doua randuri, linie pe doua randuri, lista cu EXACT cinci elemente si un
-          buton incadrat, amandoua de 800 px. Despartirea in doua ecrane exista tocmai ca
-          ochiul sa nu le citeasca drept doua jumatati ale aceluiasi lucru, iar simetria
-          perfecta o desfacea: se citeau ca un sablon aplicat de doua ori.
+      <section id="numele" className="bg-alb">
+        <div className="mx-auto w-full max-w-vitrina px-4 py-20 md:px-8 md:py-24">
+          <div className="mb-12 text-center">
+            <span className="mb-4 block text-nota font-semibold text-violet">
+              {DI.numeleEticheta}
+            </span>
+            <h2 className="mx-auto max-w-[22ch] text-titlu-2 text-cerneala">
+              {DI.numeleTitlu}
+            </h2>
+            <p className="mx-auto mt-5 max-w-[62ch] text-corp text-cerneala-2">
+              {DI.numeleLead}
+            </p>
+          </div>
 
-          ADRIA are dovezi care se pot CERE, deci lista ramane - fiecare rand numeste un
-          lucru care se arata inainte de semnatura - si butonul duce la pagina care le
-          descrie. 3S are munca NEINCEPUTA: nimic de cerut, nimic de aratat, deci proza
-          scurta, fara lista si fara buton. Butonul de aici ducea la /cum-functioneaza, care
-          sta oricum in bara de sus. Cele cinci randuri de dinainte n-au disparut: sunt in
-          proza de mai jos, cu aceleasi cuvinte. */}
-      <Ecran
-        id="trei-s"
-        ton="plin"
-        eticheta="Împărțirea · Firma nouă"
-        titlu={
-          <>
-            3S construiește
-            <br />
-            răspunsul. Din anul acesta.
-          </>
-        }
-        text="Ce urmează este muncă nouă și nu are în spate niciun an de funcționare. Riscul ei ni-l asumăm noi, nu firma-mamă."
-      >
-        <p className="font-vitrina mt-6 max-w-[52ch] text-[16px] leading-[1.6] text-hartie-veche-2">
-          {CONSTRUIT}
-        </p>
-      </Ecran>
-
-      <SectiuneRegistru
-        id="numele"
-        cota="II"
-        eticheta="Numele"
-        titlu="Scan, Store, Solve: trei verbe, în ordinea în care se întâmplă."
-        lead="Cele trei verbe sunt lucrurile care se fac cu un document, de la cutia din subsol până la răspunsul de pe telefon. Fiecare are în spate un furnizor cu nume, iar împărțirea de mai sus spune care pe care."
-      >
-        {NUMELE.map((f) => (
-          <DespreVerb key={f.titlu} verb={f.titlu}>
-            {f.text}
-          </DespreVerb>
-        ))}
-      </SectiuneRegistru>
-
-      <SectiuneRegistru
-        id="limite"
-        ton="inchis"
-        cota="III"
-        eticheta="Limite"
-        titlu="Ce nu putem susține, scris de noi, primii."
-        lead="Într-o achiziție publică, afirmația nesusținută costă mai mult decât tăcerea. Prima listă adună lucrurile care lipsesc de pe site fiindcă nu le putem dovedi; a doua este ce punem în loc."
-      >
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <ListaBifa titlu="Ce nu scriem pe site" elemente={NESCRIS} />
-          <ListaBifa titlu="Ce vă arătăm în schimb" elemente={ARATAM} />
+          <ul className="m-0 grid list-none gap-6 p-0 md:grid-cols-3">
+            {NUMELE.map((f) => (
+              <li key={f.titlu}>
+                <Card titlu={f.titlu} mare>
+                  {f.text}
+                </Card>
+              </li>
+            ))}
+          </ul>
         </div>
-      </SectiuneRegistru>
+      </section>
 
-      <SectiuneRegistru
-        id="discutie"
-        cota="IV"
-        eticheta="Pasul următor"
-        titlu="Dacă v-a rămas o întrebare, scrieți-ne-o pe ea."
-      >
-        <p className="mb-10 max-w-[62ch] text-[clamp(1.05rem,1.3vw,1.2rem)] leading-[1.5] text-hartie-veche-2">
-          Pagina de contact spune pe ce drum ajunge un mesaj la noi și pe care încă nu ajunge.
-          Sunt trei rânduri și se citesc în jumătate de minut, înainte să vă apucați să
-          scrieți.
-        </p>
+      <section id="limite" className="bg-ceata">
+        <div className="mx-auto w-full max-w-vitrina px-4 py-20 md:px-8 md:py-24">
+          <div className="mb-12 text-center">
+            <span className="mb-4 block text-nota font-semibold text-violet">
+              {DI.limiteEticheta}
+            </span>
+            <h2 className="mx-auto max-w-[22ch] text-titlu-2 text-cerneala">
+              {DI.limiteTitlu}
+            </h2>
+            <p className="mx-auto mt-5 max-w-[62ch] text-corp text-cerneala-2">
+              {DI.limiteLead}
+            </p>
+          </div>
 
-        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
-          <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
-            Pagina de contact
-          </Buton>
-          <Buton href="/solutii" fel="text" marime="mare">
-            Fișele pe domenii
-          </Buton>
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <ListaBifa titlu="Ce nu scriem pe site" elemente={NESCRIS} />
+            <ListaBifa titlu="Ce vă arătăm în schimb" elemente={ARATAM} />
+          </div>
+
+          <p className="mx-auto mt-12 max-w-[62ch] text-center text-corp text-cerneala-2">
+            Termenele de păstrare, cu actul normativ din care provin, stau în{" "}
+            <Link href="/instrumente/termene-de-pastrare" className={LEGATURA}>
+              instrumentul de termene
+            </Link>
+            . Sunt un punct de plecare, nu un aviz: confirmarea lor de către un arhivist
+            autorizat se face înainte de publicare.
+          </p>
         </div>
+      </section>
 
-        <p className="mt-8 max-w-[62ch] text-[15.5px] leading-[1.5] text-hartie-veche-3">
-          Termenele de păstrare, cu actul normativ din care provin, stau în{" "}
-          <Link
-            href="/instrumente/termene-de-pastrare"
-            className="text-arama-clar underline underline-offset-[3px]"
-          >
-            instrumentul de termene
-          </Link>
-          . Sunt un punct de plecare, nu un aviz: confirmarea lor de către un arhivist
-          autorizat se face înainte de publicare.
-        </p>
-      </SectiuneRegistru>
+      <div id="discutie">
+        <BandaCTA
+          titlu="Dacă v-a rămas o întrebare, scrieți-ne-o pe ea."
+          text="Pagina de contact spune pe ce drum ajunge un mesaj la noi și pe care încă nu ajunge. Sunt trei rânduri și se citesc în jumătate de minut, înainte să vă apucați să scrieți."
+          actiune={{ href: "/contact", text: "Pagina de contact" }}
+          nota={
+            <>
+              Fișele pe domenii spun ce diferă la un birou notarial față de o primărie:{" "}
+              <Link
+                href="/solutii"
+                className="text-alb underline decoration-violet-clar underline-offset-[3px]"
+              >
+                domenii
+              </Link>
+              .
+            </>
+          }
+        />
+      </div>
     </main>
   );
 }
