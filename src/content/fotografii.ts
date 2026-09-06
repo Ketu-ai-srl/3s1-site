@@ -83,7 +83,13 @@ export const FOTOGRAFII = {
   },
   legatura: {
     nume: "legatura",
-    alt: "Cotoare de bibliorafturi roșii aliniate pe raft, cu etichete de cotă, fotografie ilustrativă",
+    // Alt-ul spunea „etichete de cotă" - marcaj de arhiva - dar ce se vede in fisier, citit la
+    // 1:1, e eticheta COMERCIALA a bibliorafturilor: „Code: 7290", „7280" si codul de bare EAN
+    // 8699433929716, adica bibliorafturi noi, cu ambalajul de magazin inca pe cotor. Textul
+    // afirma un depozit in operare acolo unde fotografia arata marfa, exact registrul pe care
+    // regula de adevar il apara, si tocmai cititorul cu cititor de ecran primea afirmatia in
+    // locul imaginii. Descrie acum ce e in cadru.
+    alt: "Cotoare de bibliorafturi roșii noi, aliniate pe un raft, cu inele metalice pentru degete și eticheta comercială încă în buzunarul de pe cotor, fotografie ilustrativă",
     pozitie: "center 50%",
   },
 } as const satisfies Record<string, Fotografie>;
