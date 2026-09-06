@@ -26,12 +26,25 @@ de acum cadrele lui. Cheile au rămas neschimbate - `rafturi`, `cutii`, `dosare`
 `sertare`, `maini`, `legatura` - deci nicio pagină nu s-a atins; s-au schimbat fișierele și textele
 alternative din `src/content/fotografii.ts`.
 
-<!-- Dovada, măsurată pe 2026-09-06 pe arborele acestei felii, cu control pozitiv:
-       comm -12 <(sha256sum public/img/*.webp | cut -c1-64 | sort) \
-                <(sha256sum ../3s-site/public/img/*.webp | cut -c1-64 | sort) | wc -l
-     -> 0 sume comune din 14 fișiere de fiecare parte.
-     Controlul pozitiv, aceeași comandă cu celălalt site contra lui însuși, dă 14 - adică
-     măsurătoarea chiar ar fi văzut coincidențele dacă existau. -->
+<!-- Dovada unicității, măsurată pe 2026-09-06 pe arborele acestei felii.
+
+     `ALT` e rădăcina celuilalt site, oriunde e clonată local - de aceea nu e scrisă aici o
+     cale fixă. Comanda tipărește și câte sume s-au citit de fiecare parte, fiindcă varianta
+     scurtă MINTE: pe o cale greșită `sha256sum` eșuează pe stderr, `comm` primește o listă
+     goală, conducta tipărește chiar `0` și iese cu cod 0 - adică exact răspunsul „bun", fără
+     să se fi comparat nimic. Reprodus pe 2026-09-06: cod=0, ieșire 0, deci vechea formă de
+     aici dădea cifra promisă fără să compare nimic. Un rând care nu arată 14 de fiecare parte
+     invalidează cifra de dedesubt.
+
+       ALT=../celalalt-site
+       sha256sum public/img/*.webp | cut -c1-64 | sort > /tmp/aici.txt
+       ( cd "$ALT" && sha256sum public/img/*.webp | cut -c1-64 | sort ) > /tmp/acolo.txt
+       wc -l < /tmp/aici.txt ; wc -l < /tmp/acolo.txt  # trebuie 14 și 14
+       comm -12 /tmp/aici.txt /tmp/acolo.txt | wc -l   # sume comune
+
+     Măsurat pe 2026-09-06: 14 fișiere aici, 14 dincolo, 0 sume comune. Control pozitiv,
+     aceeași comandă cu celălalt site contra lui însuși: 14 din 14 - adică măsurătoarea chiar
+     ar fi văzut coincidențele dacă existau. -->
 
 ## Cele două mărimi
 
