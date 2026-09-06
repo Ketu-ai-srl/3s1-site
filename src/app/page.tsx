@@ -66,10 +66,26 @@ export default function Acasa() {
 
           `<picture>`, nu `<img>` simplu: pana la runda a treia cardurile astea serveau
           fisierul de 1920 si pe telefon, adica exact ce spunea registrul ca NU se intampla, iar
-          fisierul peisaj se si intindea in cardul de 171x120 al telefonului. MASURAT pe pagina
-          construita, la clientWidth 390: cele cinci imagini incarcate de `/` - patru carduri
-          aici plus fila deschisa - cantareau 556.180 octeti si cantaresc 399.054, adica 153 KB
-          si 28% mai putin, iar `currentSrc` al fiecareia se termina in `-960.webp`.
+          fisierul peisaj se si intindea in cardul de 171x120 al telefonului.
+
+          MASURAT pe pagina construita, cu `performance.getEntriesByType('resource')` si cu
+          `currentSrc`, la `document.documentElement.clientWidth` = 390: `/` cere PATRU fisiere,
+          270.338 octeti - `rafturi-960` 83.420, `dosare-960` 99.750, `cutii-960` 62.996,
+          `sertare-960` 24.172 - si fiecare imagine incarcata are `currentSrc` terminat in
+          `-960.webp`.
+
+          PATRU FISIERE, nu sapte imagini, si diferenta nu e un amanunt: pagina are sapte
+          elemente `<img>`, dar `dosare` si `cutii` apar de cate DOUA ori fiecare (o data in
+          cardurile de aici, o data in file), iar `maini`, din fila a treia, e ascunsa si
+          `loading="lazy"`, deci nu se cere niciodata. O suma peste elementele `<img>` numara
+          `dosare` de doua ori si adauga un fisier care nu pleaca pe retea - asa iesise cifra
+          din runda a treia, si de aia se numara CERERI, nu etichete.
+
+          Cat se economiseste, si de ce cifra asta e masurata de doua ori, nu calculata: inainte
+          de `<picture>` acelasi patru chei veneau ca `-1920` la ORICE latime, iar la clientWidth
+          1440 chiar asta cere pagina si azi - masurat acolo, aceleasi patru fisiere fac 443.568
+          octeti. Deci telefonul primeste 270.338 in loc de 443.568: cu 173.230 octeti mai putin,
+          adica 169 KB si 39,1%.
 
           Ancora decupajului se citeste din `FOTOGRAFII`, nu se scrie a treia oara aici:
           `CARDURI_EROU` isi tine deja alt-ul, iar o a treia copie a pozitiei ar diverge la
