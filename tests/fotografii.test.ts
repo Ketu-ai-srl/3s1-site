@@ -8,22 +8,35 @@ import { FOTOGRAFII } from '../src/content/fotografii'
  *
  * CE CLASA DE DEFECT INCHID. Site-ul a pornit ca o copie a primului si a mostenit cele sapte
  * cadre ale lui, identice la octet. Regula noua a fabricii e ca fiecare site are cadrele lui,
- * cu cheile NESCHIMBATE - cheia e contractul cu paginile, fisierul e al site-ului. O schimbare
- * de set are exact patru moduri de a esua tacut, si niciunul nu e prins de portile de azi:
+ * cu cheile NESCHIMBATE - cheia e contractul cu paginile, fisierul e al site-ului. Modurile de
+ * a esua tacut, pe care nu le prinde nicio poarta de azi:
  *   1. o cheie ramane in registru fara fisier pe disc (pagina cere un 404),
  *   2. un fisier ramane pe disc fara cheie in registru (cadrul vechi supravietuieste in repo),
  *   3. marimile nu mai sunt cele cerute - `-1920` cu alta latime, `-960` peisaj in loc de
  *      portret, adica exact inmuierea pe telefon pentru care exista a doua marime,
- *   4. `LICENTA.md` ramane cu adresele vechi, deci provenienta scrisa nu mai e a fisierelor.
+ *   4. `LICENTA.md` ramane fara rand pentru o cheie, sau cu un rand care nu duce la nicio
+ *      fotografie Pexels, sau cu aceeasi adresa la doua chei (copiere de rand),
+ *   5. `src/content/start.ts`, care isi tine propriile alt-uri pentru aceleasi chei, ramane cu
+ *      descrierea cadrului VECHI - un alt rescris intr-un singur loc.
  * Plus regula de adevar a textului alternativ: descrie ce se vede, se termina cu mentiunea
  * ilustrativa si NU afirma ca ar fi depozitul nostru.
  *
- * CE NU FACE. Nu masoara unicitatea fata de alt site: dovada aceea e a fabricii (sume sha256
- * comparate intre depozite), iar o proba care ar purta sumele altui site le-ar transforma in
- * fixturi care se invechesc la prima recompresie de acolo.
+ * CE NU INCHIDE, MASURAT. Punctul 4 verifica FORMA randului din `LICENTA.md`, nu provenienta:
+ * un ID de fotografie inlocuit cu unul inventat trece verde. Masurat pe 2026-09-06: cu trei
+ * ID-uri fabricate in `LICENTA.md` (7303393 -> 1000000, 6169026 -> 1000001, 33686677 ->
+ * 1000002) proba a ramas verde pe toate cazurile. Ca sa cada mutantul asta ar trebui
+ * re-descarcate originalele si comparate cu fisierele, adica retea intr-o proba de unitate;
+ * provenienta se masoara o data, la schimbarea setului, in afara probei (semnatura 32x32 gri a
+ * fiecarui `-1920` fata de toate sursele: cea mai apropiata trebuie sa fie sursa declarata).
+ * Verificarea de aici prinde randul lipsa, randul fara adresa si adresa copiata la doua chei.
  *
- * Fisier NOU, cum cere regula valului: `tests/directia.test.ts` si `praguri-regresie.json`
- * sunt partajate si inghetate.
+ * CE NU FACE. Nu masoara unicitatea fata de alt site: dovada aceea e a fabricii (sume sha256
+ * comparate intre depozite, comanda in `public/img/LICENTA.md`), iar o proba care ar purta
+ * sumele altui site le-ar transforma in fixturi care se invechesc la prima recompresie de
+ * acolo.
+ *
+ * Fisier NOU, cum cere regula valului: `praguri-regresie.json` e partajat, iar din
+ * `tests/directia.test.ts` s-a corectat doar o NOTA devenita falsa, nicio verificare.
  */
 
 const RADACINA = join(__dirname, '..')
@@ -81,6 +94,28 @@ function cheiFaraFisier(chei: readonly string[], fisiere: ReadonlySet<string>): 
   return lipsa
 }
 
+/**
+ * Perechile `nume` / `alt` scrise de mana intr-un fisier de continut. Se citeste linie cu
+ * linie, nu cu un tipar peste tot fisierul, fiindca intre `nume:` si `alt:` pot sta comentarii
+ * si alte campuri, iar un tipar lacom ar lega numele unui card de alt-ul urmatorului.
+ */
+function perechiNumeAlt(text: string): { nume: string; alt: string }[] {
+  const randuri = text.split('\n')
+  const perechi: { nume: string; alt: string }[] = []
+  for (let i = 0; i < randuri.length; i++) {
+    const n = randuri[i].match(/^\s*nume:\s*"([a-z]+)",\s*$/)
+    if (!n) continue
+    for (let j = i + 1; j < Math.min(i + 8, randuri.length); j++) {
+      const a = randuri[j].match(/^\s*alt:\s*"(.*)",\s*$/)
+      if (a) {
+        perechi.push({ nume: n[1], alt: a[1] })
+        break
+      }
+    }
+  }
+  return perechi
+}
+
 const FISIERE_WEBP = readdirSync(DOSAR_IMG).filter((f) => f.endsWith('.webp'))
 
 describe('setul de fotografii al site-ului', () => {
@@ -128,17 +163,51 @@ describe('setul de fotografii al site-ului', () => {
     }
   })
 
-  it('LICENTA.md numeste fiecare cheie cu o adresa Pexels', () => {
+  it('LICENTA.md numeste fiecare cheie cu o adresa Pexels, si nu de doua ori aceeasi', () => {
+    // LIMITA, masurata: verificarea e pe FORMA randului, nu pe provenienta. Un ID inlocuit cu
+    // unul inventat trece verde - masurat cu trei ID-uri fabricate, proba a ramas verde. Ce
+    // prinde: randul lipsa, randul fara adresa Pexels si acelasi ID pus la doua chei, care e
+    // modul real in care se strica tabelul cand se schimba un singur cadru prin copiere de
+    // rand. Provenienta se masoara in afara probei, la schimbarea setului.
     const licenta = readFileSync(join(DOSAR_IMG, 'LICENTA.md'), 'utf8')
     const randuri = licenta.split('\n')
+    const idPerCheie = new Map<string, string>()
     for (const cheie of CHEI) {
       const rand = randuri.find((l) => l.includes('| ' + cheie + '-*.webp'))
       expect(rand, 'LICENTA.md nu are rand pentru ' + cheie).toBeTruthy()
-      expect(rand, 'randul lui ' + cheie + ' nu duce la o fotografie Pexels').toMatch(
-        /https:\/\/www\.pexels\.com\/photo\/\d+\//,
+      const potrivire = (rand as string).match(/https:\/\/www\.pexels\.com\/photo\/(\d+)\//)
+      expect(potrivire, 'randul lui ' + cheie + ' nu duce la o fotografie Pexels').toBeTruthy()
+      idPerCheie.set(cheie, (potrivire as RegExpMatchArray)[1])
+    }
+    const idUri = [...idPerCheie.values()]
+    expect(new Set(idUri).size, 'doua chei trimit la aceeasi fotografie: ' + idUri.join(', ')).toBe(
+      idUri.length,
+    )
+    expect(licenta, 'LICENTA.md nu mai numeste licenta Pexels').toContain('pexels.com/license/')
+  })
+
+  it('alt-urile paginii de start sunt cuvant cu cuvant cele din registru', () => {
+    // `src/content/start.ts` isi tine propriile alt-uri pentru aceleasi chei, fiindca pagina de
+    // start isi tine textele acolo. Doua descrieri ale ACELUIASI cadru diverg la prima editare,
+    // si pana acum nimic nu le compara: verificarea din `directia.test.ts` cere doar ca fiecare
+    // alt din start.ts sa contina „ilustrativ", deci un alt rescris intr-un singur loc trecea
+    // verde. Asta e chiar clasa de defect pe care registrul spune ca o inchide, deci se masoara.
+    const start = readFileSync(join(RADACINA, 'src', 'content', 'start.ts'), 'utf8')
+    const perechi = perechiNumeAlt(start)
+    // Martorul extractorului: numarate independent, direct pe randurile `nume:`. Fara asta,
+    // comparatia ar trece pe o lista goala daca tiparul nu mai potriveste - adica proba ar fi
+    // verde tocmai cand nu mai citeste nimic. Pragul de jos e o podea, nu o cifra fixa: azi
+    // sunt 7 perechi pe 5 chei (`legatura` si `dulapuri` nu apar pe pagina de start), iar o
+    // pagina care adauga un card nu are de ce sa inroseasca proba.
+    const cateNume = (start.match(/^\s*nume:\s*"/gm) || []).length
+    expect(cateNume, 'start.ts nu mai declara nicio fotografie').toBeGreaterThan(3)
+    expect(perechi.length, 'extractorul a pierdut perechi nume/alt').toBe(cateNume)
+    for (const { nume, alt } of perechi) {
+      expect(CHEI as readonly string[], 'start.ts foloseste o cheie din afara registrului: ' + nume).toContain(nume)
+      expect(alt, 'alt-ul lui ' + nume + ' din start.ts a divergit de registru').toBe(
+        FOTOGRAFII[nume as keyof typeof FOTOGRAFII].alt,
       )
     }
-    expect(licenta, 'LICENTA.md nu mai numeste licenta Pexels').toContain('pexels.com/license/')
   })
 
   it('textul alternativ descrie o fotografie ilustrativa, nu depozitul nostru', () => {
