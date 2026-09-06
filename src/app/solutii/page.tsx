@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import AntetPagina from "@/components/AntetPagina";
 import BandaCTA from "@/components/BandaCTA";
-import BandaIncredere from "@/components/BandaIncredere";
 import BlocDovada from "@/components/BlocDovada";
 import FisaDomeniu from "@/components/FisaDomeniu";
+import SegmentBandaReguli from "@/components/SegmentBandaReguli";
 import SegmentIncredere from "@/components/SegmentIncredere";
 import SegmentRandTextImagine from "@/components/SegmentRandTextImagine";
 import SegmentSectiune from "@/components/SegmentSectiune";
@@ -40,16 +40,20 @@ const TITLU_RUPT = HUB.h1.split("\n").flatMap((rand, i) =>
 export default function Solutii() {
   return (
     <main id="continut">
-      {/* Hub-ul se deschide TIPOGRAFIC, fara fotografie, si nu din lipsa: e singura pagina a
-          carei fotografie nu ar avea ce domeniu sa numeasca. Directia da ecranul tipografic ca
-          varianta egala cu cel cu fotografie. */}
+      {/* Antetul are fotografie, ca celelalte zece pagini interioare ale feliei: DIRECTIA.md,
+          la „Cum se construieste o pagina interioara", cere fotografia intr-un card cu raza de
+          16 px in dreapta titlului, si nu prevede o varianta fara. Cadrul e `rafturi`, cel mai
+          larg din registru - un perete de rafturi nu numeste niciun domeniu, iar hub-ul nu are
+          voie sa numeasca unul singur. Nu se ciocneste cu randul text / imagine de mai jos,
+          care foloseste `dosare`. */}
       <AntetPagina
         adresa="/solutii"
+        imagine={FOTOGRAFII.rafturi}
         fir={[{ text: "Pagina de start", href: "/" }, { text: HUB.titluMeta }]}
         eticheta={HUB.eticheta}
         titlu={TITLU_RUPT}
         lead={HUB.lead}
-        actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
+        actiune={{ href: "/#discutie", text: HUB_INTERIOR.butonCta }}
         secundar={{ href: "/cum-functioneaza", text: "Vedeți cum funcționează" }}
       />
 
@@ -80,7 +84,10 @@ export default function Solutii() {
         </ul>
       </SegmentSectiune>
 
-      <BandaIncredere
+      {/* Banda inchisa a hub-ului sta pe `SegmentBandaReguli`, nu pe `BandaIncredere`: aceea
+          aseaza elementele pe patru coloane, iar `INDIFERENT_DE_DOMENIU` are trei fapte, deci
+          al patrulea traseu ramanea gol - 308 px de banda goala la 1440. */}
+      <SegmentBandaReguli
         eticheta={HUB_INTERIOR.banda.eticheta}
         titlu={HUB_INTERIOR.banda.titlu}
         elemente={INDIFERENT_DE_DOMENIU}

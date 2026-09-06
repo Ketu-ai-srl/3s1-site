@@ -90,6 +90,13 @@ export const SEGMENT = {
     eticheta: "Întrebări",
     lead: "Apar în prima discuție sau în chestionarul de securitate. Le punem noi primii, ca să nu pierdeți o săptămână pe corespondență.",
   },
+
+  // Eticheta butonului de antet. E scurta DIN MASURATOARE: forma lunga, „Programati o
+  // discutie de 30 de minute", are 36 de caractere si se rupe pe doua randuri la 390 px,
+  // ducand butonul la 72 px inaltime in loc de 48 cati cere REF-V.md §3. Cu textul de mai
+  // jos butonul intra pe un rand si masoara 48. Cererea nu se schimba, doar numarul de
+  // cuvinte: ora si durata raman scrise in el.
+  butonCta: "Discuție de 30 de minute",
 };
 
 export const HUB_INTERIOR = {
@@ -129,6 +136,10 @@ export const HUB_INTERIOR = {
     text: "Treizeci de minute în care ne uităm peste umăr la ce aveți azi: câți metri liniari, ce se cere cel mai des și ce vă cere controlul. Plecați cu o estimare a volumului și cu un calendar de preluare scris, nu cu o ofertă trimisă a doua zi pe email.",
     buton: "Cereți estimarea de volum",
   },
+
+  // Aceeasi eticheta scurta ca pe fisele de domeniu, din acelasi motiv masurat: pe un rand
+  // la 390 px, deci buton de 48 px.
+  butonCta: "Discuție de 30 de minute",
 };
 
 export const MECANISM_INTERIOR = {

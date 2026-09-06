@@ -97,7 +97,7 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
         eticheta={segment.eticheta}
         titlu={segment.h1}
         lead={segment.lead}
-        actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
+        actiune={{ href: "/#discutie", text: SEGMENT.butonCta }}
         secundar={{ href: "/solutii", text: "Vedeți toate domeniile" }}
       />
 
