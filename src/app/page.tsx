@@ -1,157 +1,178 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BandaCTA from "@/components/BandaCTA";
+import BandaIncredere from "@/components/BandaIncredere";
+import Card from "@/components/Card";
 import Ecran from "@/components/Ecran";
-import StampilaCitare from "@/components/StampilaCitare";
+import TabPastila from "@/components/TabPastila";
 import { SEGMENTE } from "@/content/segmente";
+import {
+  CARDURI_EROU,
+  CARDURI_MICI,
+  CARD_MARE,
+  DOMENII,
+  ETAPE,
+  EROU,
+  INCHEIERE,
+  INCREDERE,
+  INTREBARE,
+} from "@/content/start";
 
-// Pagina de start e VITRINA, nu documentatia. Sase ecrane, fiecare cu un singur lucru de
-// spus, sub 300 de cuvinte in total. Tot ce era aici inainte - verificatorul de termene,
-// cele opt randuri de raspundere, formularul - traieste pe paginile interioare, unde omul
-// ajunge fiindca vrea detaliul. Aici ajunge fiindca nu stie inca daca il vrea.
+// Pagina de start, pe gramatica REF-V: erou violet cu un rand de carduri-imagine care ies
+// din banda, banda alba de intrebare, doua carduri, file-pastila pentru cele trei etape,
+// grila de domenii pe ceata, banda inchisa de incredere, banda CTA violeta, subsol.
 //
-// Fiecare afirmatie de mai jos e deja in registrul din `src/content/afirmatii/`. Nu s-a
-// adaugat niciuna noua; s-au scos multe.
+// EROUL NU ARE FOTOGRAFIE. E o regula a referintei, nu o economie: prima banda e culoare,
+// iar fotografiile intra abia sub ea, in carduri cu raza 16 px. Asa nu mai exista text peste
+// imagine nicaieri pe site, deci nici voal de calibrat, nici contrast pe care axe il lasa
+// „needs review" si il scoate din verdict.
+//
+// ANCORELE `scan`, `store`, `solve`, `domenii` si `discutie` raman, cu aceleasi nume:
+// `/harta-site` face legaturi catre ele, iar o ancora fara tinta e legatura moarta pe o
+// pagina care exista tocmai ca sa arate drumurile. Primele trei sunt chiar butoanele
+// file-lor, deci `/#store` deschide fila Store, nu doar deruleaza langa ea.
+//
+// Textele NOI sunt in `src/content/start.ts`. Numele si rezumatele domeniilor se citesc din
+// `segmente.ts`, unde le rescrie felia de text, sub aceleasi chei.
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
 const CU_FISA = SEGMENTE.filter((s) => s.pagina !== null);
-// Un singur cuvant per domeniu, la marimea asta de litera: "Agentii imobiliare si
-// administrare de imobile" rupe pe doua randuri la orice latime, iar lista e ritm, nu text.
-// Numele complet ramane pe fisa domeniului si in subsol.
-const UN_CUVANT: Record<string, string> = {
-  notari: "Notari",
-  primarii: "Primării",
-  contabilitate: "Contabilitate",
-  avocatura: "Avocatură",
-  constructii: "Construcții",
-  logistica: "Logistică",
-  imobiliare: "Imobiliare",
-};
 
 export default function Acasa() {
   return (
     <main id="continut">
       <Ecran
         nivel="h1"
-        imagine={{
-          nume: "rafturi",
-          alt: "Rafturi metalice de arhivă cu cutii numerotate, fotografie ilustrativă",
-          pozitie: "center 40%",
-        }}
-        eticheta="Arhivare fizică · Digitizare · Căutare cu sursă"
+        ton="erou"
+        eticheta={EROU.eticheta}
         titlu={
           <>
-            Când vine controlul,
+            {EROU.titluRand1}
             <br />
-            dosarul e deja pe masă.
+            {EROU.titluRand2}
           </>
         }
-        text="Hârtia stă într-un depozit din Argeș. Întrebarea o puneți în română, de pe telefon. Răspunsul vine cu documentul și pagina din care a fost scos."
-        actiune={{ href: "/contact", text: "Discuție de 30 de minute" }}
+        text={EROU.text}
+        actiune={EROU.buton}
+        dovada={EROU.garantie}
       />
 
-      <Ecran
-        id="scan"
-        imagine={{
-          nume: "dosare",
-          alt: "Dosare de arhivă legate cu sfoară, fotografie ilustrativă",
-          pozitie: "center 55%",
-        }}
-        eticheta="Scan"
-        titlu={
-          <>
-            Ce se cere des
-            <br />
-            se scanează.
-          </>
-        }
-        text="Nu digitizăm tot. Digitizăm ce se caută, iar originalul rămâne pe raft, cu cotă, și se întoarce când îl cereți pe hârtie."
-        actiune={{ href: "/cum-functioneaza", text: "Cum funcționează" }}
-      />
-
-      <Ecran
-        id="store"
-        imagine={{
-          nume: "cutii",
-          alt: "Cutii de arhivă cu cote numerotate pe raft, fotografie ilustrativă",
-          pozitie: "center 45%",
-        }}
-        eticheta="Store"
-        titlu={
-          <>
-            Fiecare cutie are o cotă.
-            <br />
-            Fiecare cotă, un raft.
-          </>
-        }
-        text="Depozit la Golești, județul Argeș. Preluare cu proces-verbal și inventar. Puteți vedea depozitul înainte să semnați."
-        actiune={{ href: "/arhivare-fizica", text: "Arhivare fizică" }}
-      />
-
-      <Ecran
-        id="solve"
-        ton="plin"
-        eticheta="Solve"
-        titlu="Răspunsul vine cu pagina."
-        text="Fără sursă, răspunsul nu se afișează. Fiecare frază se poate deschide la documentul și pagina din care a fost scoasă."
-        actiune={{ href: "/instrumente/termene-de-pastrare", text: "Termene de păstrare" }}
-      >
-        <StampilaCitare
-          intrebare="Când expiră contractul de salubritate?"
-          raspuns="Contractul a fost semnat la 14 martie 2019, pe o durată de 8 ani. Expiră la 13 martie 2027 și se prelungește numai prin act adițional."
-          sursa={{ document: "Contract 214/2019", pagina: "pag. 4", articol: "art. 7.2" }}
-        />
-      </Ecran>
-
-      <section id="domenii" className="bg-noapte">
-        <div className="mx-auto max-w-[1400px] px-6 py-24 md:px-10 md:py-36">
-          <p className="mb-5 font-mono text-[12px] tracking-[0.22em] uppercase text-arama-clar">
-            Domenii
-          </p>
-          <h2 className="font-afis max-w-[24ch] text-titlu-2 font-bold tracking-[-0.01em] uppercase text-hartie-veche">
-            Aceeași arhivă.
-            <br />
-            Altă întrebare.
-          </h2>
-          <ul className="mt-12 grid list-none gap-x-10 gap-y-0 p-0 md:grid-cols-2 lg:grid-cols-3">
-            {CU_FISA.map((s) => (
-              <li key={s.slug} className="border-b border-linie-noapte">
-                <Link
-                  href={"/solutii/" + s.slug}
-                  className="group flex items-baseline justify-between py-5 font-afis text-[clamp(1.5rem,2.4vw,2.1rem)] font-semibold tracking-[0.04em] uppercase text-hartie-veche-2 no-underline transition-colors duration-200 hover:text-hartie-veche"
-                >
-                  {UN_CUVANT[s.slug] ?? s.nume}
-                  <span aria-hidden="true" className="text-arama-clar transition-transform duration-200 group-hover:translate-x-1">
-                    →
-                  </span>
-                </Link>
+      {/* Randul de carduri-imagine iese din banda eroului si intra peste sectiunea alba:
+          marginea negativa il urca, `relative` il tine deasupra. E singurul loc in care
+          fotografiile se vad pe pagina de start, si stau in carduri cu raza 16 px. */}
+      <section className="bg-alb">
+        <div className="mx-auto w-full max-w-vitrina px-4 md:px-8">
+          <ul className="relative m-0 -mt-16 grid list-none grid-cols-2 gap-4 p-0 md:-mt-20 md:grid-cols-4 md:gap-6">
+            {CARDURI_EROU.map((c) => (
+              <li key={c.nume} className="overflow-hidden rounded-card-mare bg-alb">
+                <img
+                  src={"/img/" + c.nume + "-1920.webp"}
+                  alt={c.alt}
+                  className="h-[120px] w-full object-cover md:h-[180px]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="block px-4 py-3 text-nota font-semibold text-cerneala">
+                  {c.eticheta}
+                </span>
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="mx-auto w-full max-w-vitrina px-4 py-20 text-center md:px-8 md:py-24">
+          <h2 className="mx-auto max-w-[20ch] text-titlu-2 text-cerneala">
+            {INTREBARE.titluNegru}{" "}
+            <span className="text-violet">{INTREBARE.titluViolet}</span>
+          </h2>
+          <p className="mx-auto mt-5 max-w-[62ch] text-corp text-cerneala-2">{INTREBARE.text}</p>
+        </div>
+      </section>
+
+      <section className="bg-alb">
+        <div className="mx-auto w-full max-w-vitrina px-4 pb-20 md:px-8 md:pb-24">
+          <div className="grid gap-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+            {/* Cardul mare, cu gradientul violet al referintei. Albul pe el sta intre
+                6,20:1 si 4,05:1, deci textul mic sta pe capatul INCHIS, in stanga-sus, iar
+                marimile de aici (24 px titlu, 16 px corp) sunt peste pragul de text mic. */}
+            <div className="card-violet flex flex-col justify-between rounded-card-mare p-8">
+              <div>
+                <span className="inline-block rounded-pastila bg-alb px-3 py-1 text-[13px] font-semibold text-violet">
+                  {CARD_MARE.eticheta}
+                </span>
+                <h3 className="mt-5 max-w-[16ch] text-titlu-3 text-alb">{CARD_MARE.titlu}</h3>
+                <p className="mt-4 max-w-[42ch] text-corp text-alb">{CARD_MARE.text}</p>
+              </div>
+              <Link
+                href={CARD_MARE.buton.href}
+                className="mt-8 inline-flex items-center justify-center self-start rounded-buton bg-alb px-8 py-3 text-corp font-semibold text-cerneala no-underline transition-colors duration-200 hover:bg-violet-pal"
+              >
+                {CARD_MARE.buton.text}
+              </Link>
+            </div>
+
+            <div className="grid gap-6">
+              {CARDURI_MICI.map((c) => (
+                <Card key={c.href} titlu={c.titlu} eticheta={c.eticheta} href={c.href} mare>
+                  {c.text}
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-alb">
+        <div className="mx-auto w-full max-w-vitrina px-4 pb-20 md:px-8 md:pb-24">
+          <div className="mb-10 text-center">
+            <h2 className="mx-auto max-w-[20ch] text-titlu-2 text-cerneala">{ETAPE.titlu}</h2>
+            <p className="mx-auto mt-5 max-w-[62ch] text-corp text-cerneala-2">{ETAPE.text}</p>
+          </div>
+          <TabPastila file={ETAPE.file} ancore />
+        </div>
+      </section>
+
+      <section id="domenii" className="bg-ceata">
+        <div className="mx-auto w-full max-w-vitrina px-4 py-20 md:px-8 md:py-24">
+          <span className="mb-4 block text-nota font-semibold text-violet">{DOMENII.eticheta}</span>
+          <h2 className="max-w-[20ch] text-titlu-2 text-cerneala">{DOMENII.titlu}</h2>
+          <p className="mt-5 max-w-[62ch] text-corp text-cerneala-2">{DOMENII.text}</p>
+
+          <ul className="m-0 mt-12 grid list-none gap-6 p-0 md:grid-cols-2">
+            {CU_FISA.map((s) => (
+              <li key={s.slug}>
+                <Card titlu={s.nume} href={"/solutii/" + s.slug} fundal="ceata">
+                  {s.rezumat}
+                </Card>
+              </li>
+            ))}
+          </ul>
+
           <Link
-            href="/solutii"
-            className="mt-10 inline-flex items-center gap-3 border border-hartie-veche px-6 py-3.5 font-afis text-[15px] font-semibold tracking-[0.14em] uppercase text-hartie-veche no-underline transition-colors duration-200 hover:border-arama-clar hover:text-arama-clar"
+            href={DOMENII.buton.href}
+            className="mt-10 inline-flex items-center justify-center rounded-buton bg-violet px-8 py-3 text-corp font-semibold text-alb no-underline transition-colors duration-200 hover:bg-violet-2"
           >
-            Toate domeniile <span aria-hidden="true">→</span>
+            {DOMENII.buton.text}
           </Link>
         </div>
       </section>
 
-      <Ecran
-        id="discutie"
-        ton="plin"
-        eticheta="Pasul următor"
-        titlu={
-          <>
-            Treizeci de minute.
-            <br />
-            Fără ofertă a doua zi.
-          </>
-        }
-        text="Ne uităm împreună la ce aveți: câți metri liniari, ce se cere des, ce termene se aplică. Plecați cu o estimare de volum și un calendar de preluare scris."
-        actiune={{ href: "/contact", text: "Contact" }}
+      <BandaIncredere
+        eticheta={INCREDERE.eticheta}
+        titlu={INCREDERE.titlu}
+        elemente={INCREDERE.elemente}
       />
+
+      <div id="discutie">
+        <BandaCTA
+          titlu={INCHEIERE.titlu}
+          text={INCHEIERE.text}
+          actiune={INCHEIERE.buton}
+          nota={INCHEIERE.nota}
+        />
+      </div>
     </main>
   );
 }
