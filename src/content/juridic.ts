@@ -107,7 +107,7 @@ export const TERMENI: PaginaJuridica = {
   sectiuni: [
     {
       id: "cine-raspunde",
-      titlu: "Cine răspunde de site-ul acesta.",
+      titlu: "Cine răspunde de site-ul acesta",
       blocuri: [
         {
           fel: "paragraf",
@@ -211,7 +211,7 @@ export const TERMENI: PaginaJuridica = {
     },
     {
       id: "ce-va-cerem",
-      titlu: "Ce vă cerem când folosiți site-ul.",
+      titlu: "Ce vă cerem când folosiți site-ul",
       blocuri: [
         {
           fel: "lista",
@@ -346,7 +346,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
   sectiuni: [
     {
       id: "cine-prelucreaza",
-      titlu: "Cine prelucrează datele.",
+      titlu: "Cine prelucrează datele",
       blocuri: [
         {
           fel: "paragraf",
@@ -366,7 +366,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
     },
     {
       id: "ce-date",
-      titlu: "Ce date primim și de unde.",
+      titlu: "Ce date primim și de unde",
       blocuri: [
         {
           fel: "paragraf",
@@ -404,7 +404,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
     },
     {
       id: "temeiul",
-      titlu: "Pentru ce le folosim și în ce temei.",
+      titlu: "Pentru ce le folosim și în ce temei",
       blocuri: [
         {
           fel: "paragraf",
@@ -429,7 +429,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
     },
     {
       id: "cat-pastram",
-      titlu: "Cât timp le păstrăm.",
+      titlu: "Cât timp le păstrăm",
       blocuri: [
         {
           fel: "paragraf",
@@ -447,7 +447,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
     },
     {
       id: "cui-le-dam",
-      titlu: "Cui ajung mai departe.",
+      titlu: "Cui ajung mai departe",
       blocuri: [
         {
           fel: "paragraf",
@@ -471,7 +471,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
     },
     {
       id: "drepturi",
-      titlu: "Ce drepturi aveți și cum le exercitați.",
+      titlu: "Ce drepturi aveți și cum le exercitați",
       blocuri: [
         {
           fel: "paragraf",
@@ -579,7 +579,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
     },
     {
       id: "limite",
-      titlu: "Ce nu putem încă scrie aici.",
+      titlu: "Ce nu putem încă scrie aici",
       blocuri: [
         {
           fel: "paragraf",
@@ -632,7 +632,7 @@ export const COOKIES: PaginaJuridica = {
   sectiuni: [
     {
       id: "ce-stocam",
-      titlu: "Ce este stocat azi în browserul dumneavoastră.",
+      titlu: "Ce este stocat azi în browserul dumneavoastră",
       blocuri: [
         {
           fel: "randuri",
@@ -668,7 +668,7 @@ export const COOKIES: PaginaJuridica = {
     },
     {
       id: "de-ce-fara-caseta",
-      titlu: "De ce nu vă cerem acordul.",
+      titlu: "De ce nu vă cerem acordul",
       blocuri: [
         {
           fel: "paragraf",
@@ -693,7 +693,7 @@ export const COOKIES: PaginaJuridica = {
     },
     {
       id: "cum-verificam",
-      titlu: "Cum verificăm afirmația, la fiecare livrare.",
+      titlu: "Cum verificăm afirmația, la fiecare livrare",
       blocuri: [
         {
           fel: "paragraf",
@@ -748,7 +748,7 @@ export const COOKIES: PaginaJuridica = {
     },
     {
       id: "daca-adaugam",
-      titlu: "Ce se schimbă dacă adăugăm vreodată ceva.",
+      titlu: "Ce se schimbă dacă adăugăm vreodată ceva",
       blocuri: [
         {
           fel: "paragraf",
