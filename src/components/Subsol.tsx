@@ -1,25 +1,18 @@
 // Subsolul, randat din `src/app/layout.tsx`, deci prezent pe fiecare pagina.
 //
-// E UN RAND, nu o harta. Varianta dinaintea feliei 25 avea 979 px pe ecran lat si 1.625 px
-// pe telefon - aproape doua ecrane - cu 29 de legaturi si 119 cuvinte: fiecare ruta din
-// manifest, fiecare ancora a paginii de start, trei coloane cu titlu. Referinta data de
-// owner are 74 px si sase legaturi. Un subsol care repeta tot site-ul nu ajuta pe nimeni
-// sa gaseasca ceva; pentru asta exista `/harta-site`, care e chiar una dintre legaturi.
+// REF-V: pe `ceata`, coloane de legaturi de 14 px cu titlu de coloana la 600, randul cu
+// sigla si adresa de posta electronica, si un rand juridic de 12 px la baza.
 //
-// Ce ramane: sigla, sase legaturi (domeniile, mecanismul, contactul, cele doua texte
-// juridice de baza si harta), adresa de posta electronica - singurul canal direct, fiindca
-// site-ul nu afiseaza telefon - linia de atribuire catre ADRIA, care e afirmatia de
-// vechime scrisa corect, si blocul de identificare cerut de lege, cand e complet.
+// COLOANELE SE COMPUN DIN MANIFEST, dupa cale, nu se scriu de mana: o cale care ar disparea
+// din `RUTE` ar disparea si de aici, in loc sa ramana o legatura moarta pe toate cele 22 de
+// pagini - subsolul sta in layout, deci un rand gresit aici e gresit peste tot. Grupurile
+// sunt trei, si sunt intrebarile pe care si le pune cineva in subsol: „ce faceti",
+// „cine sunteti", „ce semnez".
 //
-// Legaturile se iau din `RUTE`, dupa cale, nu se scriu de mana: o cale care ar disparea
-// din manifest ar disparea si de aici, in loc sa ramana o legatura moarta. Ancorele
-// paginii de start (`SECTIUNI_ACASA`) nu mai apar in subsol.
-//
-// Aici a stat "Pagină verificată la <data>", pe fiecare pagina a site-ului. S-a scos, si
-// merita spus de ce, ca sa nu se intoarca: nimeni nu verificase nimic. Odata ce subsolul a
-// trecut in layout, sigiliul a ajuns si pe pagini pe care nu le citise nimeni niciodata -
-// o afirmatie despre propria noastra rigoare, nesustinuta, tiparita peste tot. O data fara
-// verb e un sigiliu; o data cu verb e o informatie.
+// Nu se repeta tot site-ul. Pentru asta exista `/harta-site`, care e chiar una dintre
+// legaturi. Aici a stat si „Pagină verificată la <data>", si nu se intoarce: nimeni nu
+// verificase nimic, iar odata ce subsolul a trecut in layout, sigiliul a ajuns si pe
+// pagini pe care nu le citise nimeni. O data fara verb e un sigiliu, nu o informatie.
 
 import Link from "next/link";
 import {
@@ -30,19 +23,23 @@ import {
 } from "@/content/entitate";
 import { RUTE } from "@/content/rute";
 
-const CAI_IN_SUBSOL = [
-  "/solutii",
-  "/cum-functioneaza",
-  "/contact",
-  "/termeni",
-  "/confidentialitate",
-  "/harta-site",
+const GRUPURI: Array<{ titlu: string; cai: string[] }> = [
+  {
+    titlu: "Ce facem",
+    cai: ["/solutii", "/arhivare-fizica", "/cum-functioneaza", "/instrumente/termene-de-pastrare"],
+  },
+  { titlu: "Firma", cai: ["/despre", "/contact", "/investitia", "/comparatie"] },
+  { titlu: "Documente", cai: ["/termeni", "/confidentialitate", "/cookies", "/securitate"] },
 ];
 
-const LEGATURI = CAI_IN_SUBSOL.flatMap((cale) => RUTE.filter((r) => r.cale === cale));
+const CAI_JURIDICE = ["/accesibilitate", "/harta-site"];
+
+function legaturi(cai: string[]) {
+  return cai.flatMap((cale) => RUTE.filter((r) => r.cale === cale));
+}
 
 const LEGATURA =
-  "font-afis text-[14px] font-semibold tracking-[0.12em] uppercase text-hartie-veche-2 no-underline transition-colors duration-200 hover:text-hartie-veche";
+  "text-nota text-cerneala-2 no-underline transition-colors duration-200 hover:text-cerneala";
 
 /**
  * Blocul de identificare a comerciantului, cerut de Legea 365/2002 art. 5 alin. (1).
@@ -55,19 +52,18 @@ const LEGATURA =
  *
  * Telefonul apare aici fiindca il cere art. 5 alin. (1) lit. c). Nu contrazice decizia
  * comerciala de a nu folosi telefonul drept canal de contact: una e datul de identificare
- * al firmei, alta e canalul prin care se primesc cererile, care ramane formularul si posta
- * electronica.
+ * al firmei, alta e canalul prin care se primesc cererile.
  */
 function Identificare() {
   if (!identitateCompleta()) {
     return null;
   }
   return (
-    <dl className="mt-6 grid gap-x-8 gap-y-1.5 border-t border-linie-noapte pt-6 text-[14px] sm:grid-cols-2 lg:grid-cols-3">
+    <dl className="mt-8 grid gap-x-8 gap-y-1.5 border-t border-linie pt-6 text-nota sm:grid-cols-2 lg:grid-cols-3">
       {CAMPURI_IDENTITATE.map((camp) => (
         <div key={camp} className="flex flex-wrap gap-x-2">
-          <dt className="text-hartie-veche-3">{ETICHETE[camp]}:</dt>
-          <dd className="m-0 text-hartie-veche">{entitate[camp]}</dd>
+          <dt className="text-cerneala-2">{ETICHETE[camp]}:</dt>
+          <dd className="m-0 text-cerneala">{entitate[camp]}</dd>
         </div>
       ))}
     </dl>
@@ -76,36 +72,55 @@ function Identificare() {
 
 export default function Subsol() {
   return (
-    <footer className="border-t border-linie-noapte bg-noapte">
-      <div className="mx-auto w-full max-w-vitrina px-6 py-8 md:px-10">
-        <div className="flex flex-wrap items-center gap-x-10 gap-y-5">
-          <Link href="/" className="flex items-baseline gap-3 no-underline">
-            <span className="font-afis text-[26px] leading-none font-bold tracking-[0.02em] text-hartie-veche">
-              3S
-            </span>
-            <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-hartie-veche-3">
-              Scan · Store · Solve
-            </span>
-          </Link>
-
-          <nav aria-label="Subsol" className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            {LEGATURI.map((r) => (
-              <Link key={r.cale} href={r.cale} title={r.descriere} className={LEGATURA}>
-                {r.scurt}
-              </Link>
-            ))}
-            <a href="mailto:contact@3s.ro" className={LEGATURA}>
+    <footer className="bg-ceata">
+      <div className="mx-auto w-full max-w-vitrina px-4 py-16 md:px-8">
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
+          <div>
+            <Link href="/" className="flex items-baseline gap-2 no-underline text-cerneala">
+              <span className="text-[22px] leading-none font-semibold tracking-[-0.01em]">3S</span>
+              <span className="text-nota text-cerneala-2">Scan · Store · Solve</span>
+            </Link>
+            <p className="mt-4 max-w-[38ch] text-nota text-cerneala-2">
+              3S este proiectul ADRIA Servicii Arhivare SRL, Golești, județul Argeș, firma-mamă
+              care arhivează documente din 2019. Contract în limba română, sub lege română.
+            </p>
+            <a
+              href="mailto:contact@3s.ro"
+              className="mt-4 inline-block text-corp font-semibold text-violet no-underline"
+            >
               contact@3s.ro
             </a>
-          </nav>
+          </div>
+
+          {GRUPURI.map((grup) => (
+            <nav key={grup.titlu} aria-label={grup.titlu}>
+              <h2 className="mb-4 text-nota font-semibold text-cerneala">{grup.titlu}</h2>
+              <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
+                {legaturi(grup.cai).map((r) => (
+                  <li key={r.cale}>
+                    <Link href={r.cale} title={r.descriere} className={LEGATURA}>
+                      {r.scurt}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
-        <p className="mt-6 max-w-[80ch] text-[14px] leading-[1.55] text-hartie-veche-2">
-          3S este proiectul ADRIA Servicii Arhivare SRL, Golești, județul Argeș, firma-mamă
-          care arhivează documente din 2019. Contract în limba română, sub lege română.
-        </p>
-
         <Identificare />
+
+        {/* Randul juridic: 12 px, cel mai mic text de pe site, si sta pe `ceata` - deci se
+            scrie cu `cerneala-2` (6,48:1), niciodata cu `cerneala-3`, care pe ceata da
+            3,97:1 si pica pragul de 4,5:1 pentru text mic. */}
+        <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-linie pt-6 text-[12px] text-cerneala-2">
+          <span>© {new Date().getFullYear()} ADRIA Servicii Arhivare SRL</span>
+          {legaturi(CAI_JURIDICE).map((r) => (
+            <Link key={r.cale} href={r.cale} className="text-cerneala-2 no-underline hover:text-cerneala">
+              {r.scurt}
+            </Link>
+          ))}
+        </div>
       </div>
     </footer>
   );
