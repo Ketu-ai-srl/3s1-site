@@ -16,10 +16,10 @@ import type { ReactNode } from "react";
 //                cadru, nici contrast nemasurabil de axe.
 //
 // FOTOGRAFIA e mica si are colturi. Nu se mai intinde pe tot ecranul, si nu mai poarta voal.
-// Campurile `filtru` si `voalBanda` din registrul de fotografii sunt acceptate de tipuri, ca
-// paginile altor felii sa compileze, dar NU se mai aplica: cifrele lor au fost masurate
-// contra unei pagini de noapte cu saturatia 0,044, iar acea referinta nu mai exista. Se
-// remasoara la valul care rescrie paginile interioare, sau se scot atunci.
+// Campurile `filtru` si `voalBanda` erau acceptate aici doar ca paginile altor felii sa
+// compileze, cu nota ca „se scot atunci" - adica la valul care rescrie paginile interioare.
+// Valul acela a aterizat, deci s-au scos, si de aici si din registru: erau cifre masurate
+// contra unei pagini de noapte cu saturatia 0,044, iar acea referinta nu mai exista.
 //
 // INALTIMEA. Bara de sus e FIXA si are 56 px, deci fiecare forma isi pune singura rezerva:
 // 96 px la antetul alb (56 plus o rasuflare de 40), mai mult la erou, unde textul trebuie sa
@@ -31,10 +31,6 @@ type Imagine = {
   alt: string;
   /** unde sa se ancoreze decupajul cand cardul are alta proportie decat fotografia */
   pozitie?: string;
-  /** acceptat pentru compatibilitate, NU se aplica: vezi nota de mai sus */
-  filtru?: string;
-  /** acceptat pentru compatibilitate, NU se aplica: nu mai exista voal */
-  voalBanda?: number;
 };
 
 type Legatura = { href: string; text: string };

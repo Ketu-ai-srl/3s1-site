@@ -444,8 +444,13 @@ describe('gramatica paginilor', () => {
     for (const clasa of ['.voal', '.voal-banda', '.voal-bara']) {
       expect(CSS, 'a ramas definit ' + clasa).not.toContain(clasa + ' {')
     }
-    // `voalBanda` ramane acceptat de tipuri, ca paginile altor felii sa compileze, si de
-    // aceea tiparul il scoate din cautare: ce nu are voie sa existe e CLASA de voal.
+    // Tiparul scoate `voalBanda` din cautare din motiv ISTORIC: pana la felia 6 registrul de
+    // fotografii mai purta campul cu numele asta, si o cautare dupa „voal" l-ar fi prins pe el
+    // in loc de clasa de voal. Felia 6 l-a scos si din registru, si din tipul `Imagine` al lui
+    // `Ecran.tsx` (commit 347dd2f), deci azi lookahead-ul nu mai exclude nimic real: masurat pe
+    // 2026-09-06, `voalBanda` apare doar in comentarii si in tiparul de aici, in niciun camp de
+    // cod. Ramane fiindca nu schimba verdictul si fiindca fisierul e partajat intre felii; ce
+    // nu are voie sa existe e CLASA de voal.
     const ecran = faraComentarii(readFileSync(join(COMPONENTE, 'Ecran.tsx'), 'utf8'))
     expect(ecran, 'Ecran inca pune un voal').not.toMatch(/voal(?!Banda)/)
     expect(ecran, 'fotografia nu mai sta in card cu raza de 16 px').toMatch(/rounded-card-mare/)

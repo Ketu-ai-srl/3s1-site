@@ -56,10 +56,12 @@ export default function Investitia() {
       <AntetPagina
         adresa="/investitia"
         // Cadrul e `dulapuri` dintr-un motiv masurat, nu de gust: /accesibilitate deschidea cu
-        // `dosare` pe aceeasi ancora, si cele doua benzi ieseau identice la octet. Cadrul
-        // `dulapuri` arata sertare de fisier cu etichete de interval (vezi `alt`-ul lui in
-        // fotografii.ts; `sertare` e alt cadru, peretele numerotat de pe /contact), si ele spun
-        // oricum mai bine ce masoara pagina asta.
+        // `dosare` pe aceeasi ancora, si cele doua benzi ieseau identice la octet. Argumentul
+        // s-a verificat din nou dupa ce cadrul s-a schimbat in runda a cincea a feliei 6:
+        // `dulapuri` nu mai arata fisete metalice cu usi numerotate, ci un perete de dulapuri
+        // de lemn cu sertare mici de catalog (vezi `alt`-ul lui in fotografii.ts; `sertare` e
+        // alt cadru, mainile care trag un sertar) - si spune la fel de bine, daca nu mai bine,
+        // ce masoara pagina asta: un fond impartit in unitati numarabile.
         imagine={FOTOGRAFII.dulapuri}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Investiția" }]}
         eticheta={I.eticheta}

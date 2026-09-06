@@ -43,9 +43,11 @@ export default function Solutii() {
       {/* Antetul are fotografie, ca celelalte zece pagini interioare ale feliei: DIRECTIA.md,
           la „Cum se construieste o pagina interioara", cere fotografia intr-un card cu raza de
           16 px in dreapta titlului, si nu prevede o varianta fara. Cadrul e `rafturi`, cel mai
-          larg din registru - un perete de rafturi nu numeste niciun domeniu, iar hub-ul nu are
-          voie sa numeasca unul singur. Nu se ciocneste cu randul text / imagine de mai jos,
-          care foloseste `dosare`. */}
+          general din registru - o sala de depozitare, fara niciun obiect care sa trimita la o
+          meserie anume, iar hub-ul nu are voie sa numeasca unul singur. Criteriul a supravietuit
+          schimbarii cadrului in runda a patra: cel vechi era un perete de rafturi, cel de acum
+          doua siruri de dulapuri cu sertare, si amandoua nu numesc niciun domeniu. Nu se
+          ciocneste cu randul text / imagine de mai jos, care foloseste `dosare`. */}
       <AntetPagina
         adresa="/solutii"
         imagine={FOTOGRAFII.rafturi}
