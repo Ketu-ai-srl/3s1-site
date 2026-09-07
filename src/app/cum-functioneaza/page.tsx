@@ -99,18 +99,18 @@ export default function CumFunctioneaza() {
       </SegmentSectiune>
 
       <SegmentSectiune
-        id="digitizare"
+        id="digitalizare"
         ton="ceata"
-        eticheta={M.digitizare.eticheta}
-        titlu={M.digitizare.titlu}
-        lead={M.digitizare.lead}
+        eticheta={M.digitalizare.eticheta}
+        titlu={M.digitalizare.titlu}
+        lead={M.digitalizare.lead}
       >
         {/* Amandoua listele poarta bifa, si asta e corect aici: nu e „ce avem" contra „ce nu
             avem", ci doua drumuri legitime, alese impreuna. Lista cu liniuta e rezervata
             lucrurilor care LIPSESC. */}
         <div className="grid gap-6 md:grid-cols-2">
           <div className="rounded-card-mare bg-alb p-8">
-            <ListaBifa titlu={M.listaDigitizat} elemente={C.digitizat} />
+            <ListaBifa titlu={M.listaDigitalizat} elemente={C.digitalizat} />
           </div>
           <div className="rounded-card-mare bg-alb p-8">
             <ListaBifa titlu={M.listaPeHartie} elemente={C.peHartie} />
@@ -118,7 +118,7 @@ export default function CumFunctioneaza() {
         </div>
 
         <div className="mx-auto mt-12 max-w-[46rem]">
-          <BlocDovada eticheta={M.etichetaNotaDigitizare}>{C.notaDigitizare}</BlocDovada>
+          <BlocDovada eticheta={M.etichetaNotaDigitalizare}>{C.notaDigitalizare}</BlocDovada>
         </div>
       </SegmentSectiune>
 

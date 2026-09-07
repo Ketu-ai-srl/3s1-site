@@ -46,7 +46,7 @@ export type Fisa = {
 export const CUM_FUNCTIONEAZA = {
   titluMeta: "Cum funcționează, pas cu pas",
   descriereMeta:
-    "Mecanismul întreg: preluarea cu proces-verbal, inventarul pe cote, ce se digitizează și ce nu, căutarea cu pagina citată și ce primiți dacă plecați.",
+    "Mecanismul întreg: preluarea cu proces-verbal, inventarul pe cote, ce se digitalizează și ce nu, căutarea cu pagina citată și ce primiți dacă plecați.",
   eticheta: "Mecanismul serviciului",
   h1: "Șase etape între cutia din subsol și răspunsul de pe ecran.",
   // Linia ecranului de deschidere: sub 40 de cuvinte, regula directiei. Ce spunea fraza
@@ -69,7 +69,7 @@ export const CUM_FUNCTIONEAZA = {
     {
       titlu: "Scanăm ce se cere des, nu tot fondul.",
       text: "Lista se face împreună, înainte de prima cutie deschisă: ce intră la scanat, în ce ordine, ce rămâne pe raft. Scanăm la o rezoluție care rezistă la recunoașterea automată a textului, apoi verificăm rezultatul pe diacritice. Acolo se pierd cele mai multe căutări în română.",
-      urma: "Lista de digitizare, convenită în scris înainte de scanare, cu ordinea loturilor.",
+      urma: "Lista de digitalizare, convenită în scris înainte de scanare, cu ordinea loturilor.",
     },
     {
       titlu: "Întrebați în română și primiți pagina.",
@@ -88,7 +88,7 @@ export const CUM_FUNCTIONEAZA = {
     },
   ] as Etapa[],
 
-  digitizat: [
+  digitalizat: [
     "Documentele cerute des la ghișeu sau în control, oricât de vechi ar fi",
     "Fondul care se caută după mai multe chei deodată: nume, dată, număr de înregistrare",
     "Registrele de intrare și opisurile vechi, fiindcă din ele pornește orice căutare",
@@ -102,8 +102,8 @@ export const CUM_FUNCTIONEAZA = {
     "Documentele pe care le folosiți numai în original, unde o copie nu vă ajută la nimic",
   ],
 
-  notaDigitizare:
-    "Digitizarea integrală este varianta cea mai scumpă și rar cea mai utilă. Nu o refuzăm dacă o cereți, dar nu o propunem ca implicit: pornim de la ce se caută, iar restul rămâne pe raft și vine la cerere. Ce influențează costul vă arătăm punct cu punct la prima discuție. Preț pe pagină sau pe metru liniar nu publicăm, fiindcă ar fi o cifră ruptă de fondul dumneavoastră.",
+  notaDigitalizare:
+    "Digitalizarea integrală este varianta cea mai scumpă și rar cea mai utilă. Nu o refuzăm dacă o cereți, dar nu o propunem ca implicit: pornim de la ce se caută, iar restul rămâne pe raft și vine la cerere. Ce influențează costul vă arătăm punct cu punct la prima discuție. Preț pe pagină sau pe metru liniar nu publicăm, fiindcă ar fi o cifră ruptă de fondul dumneavoastră.",
 
   lant: [
     {
@@ -171,7 +171,7 @@ export const CUM_FUNCTIONEAZA = {
 
   incheiere: {
     titlu: "Prima discuție durează treizeci de minute și nu mută nicio cutie.",
-    text: "Ne uităm împreună la arhiva dumneavoastră așa cum arată azi: câți metri liniari, ce se cere cel mai des, ce vă cere controlul, ce a rămas neinventariat. Plecați cu estimarea volumului, cu ordinea în care s-ar digitiza și cu un calendar de preluare scris.",
+    text: "Ne uităm împreună la arhiva dumneavoastră așa cum arată azi: câți metri liniari, ce se cere cel mai des, ce vă cere controlul, ce a rămas neinventariat. Plecați cu estimarea volumului, cu ordinea în care s-ar digitaliza și cu un calendar de preluare scris.",
   },
 };
 

@@ -145,7 +145,7 @@ export const HUB_INTERIOR = {
 export const MECANISM_INTERIOR = {
   navigare: [
     { ancora: "etape", eticheta: "Cele șase etape" },
-    { ancora: "digitizare", eticheta: "Ce se scanează" },
+    { ancora: "digitalizare", eticheta: "Ce se scanează" },
     { ancora: "cautare", eticheta: "Căutarea" },
     { ancora: "dovada", eticheta: "Dovada" },
     { ancora: "hartia", eticheta: "Întrebări" },
@@ -163,15 +163,15 @@ export const MECANISM_INTERIOR = {
     legatura: { href: "/arhivare-fizica", text: "Vedeți partea fizică" },
   },
 
-  digitizare: {
+  digitalizare: {
     eticheta: "Ce se scanează",
-    titlu: "Se digitizează ce se caută, în ordinea în care se caută.",
+    titlu: "Se digitalizează ce se caută, în ordinea în care se caută.",
     lead: "Împărțirea de mai jos este punctul de plecare al discuției, nu o regulă fixă. Lista finală o hotărâți dumneavoastră, iar ea intră în contract înainte să se deschidă prima cutie.",
   } as CapSectiune,
 
-  listaDigitizat: "Ce intră la scanat, de obicei",
+  listaDigitalizat: "Ce intră la scanat, de obicei",
   listaPeHartie: "Ce rămâne pe hârtie, cel puțin la început",
-  etichetaNotaDigitizare: "Ce nu propunem din start",
+  etichetaNotaDigitalizare: "Ce nu propunem din start",
 
   cautare: {
     eticheta: "Căutarea",

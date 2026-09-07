@@ -31,7 +31,7 @@ export type CardMic = {
 };
 
 export const EROU = {
-  eticheta: "Arhivare fizică, digitizare, căutare cu sursă",
+  eticheta: "Arhivare fizică, digitalizare, căutare cu sursă",
   titluRand1: "Hârtia stă la depozit.",
   titluRand2: "Răspunsul vine pe telefon.",
   text: "Documentele rămân pe raft, cu cotă și inventar. Întrebarea o puneți în română, iar răspunsul vine cu documentul și pagina din care a fost scos.",
@@ -66,7 +66,7 @@ export const CARDURI_EROU: CardImagine[] = [
   {
     nume: "dosare",
     alt: "Teanc de dosare vechi de carton maro și crem, cu file îngălbenite ieșind dintre coperțile uzate, prim-plan, fotografie ilustrativă",
-    eticheta: "Digitizare",
+    eticheta: "Digitalizare",
   },
   {
     nume: "sertare",
@@ -110,7 +110,7 @@ export const ETAPE = {
     {
       cheie: "scan",
       eticheta: "Scan",
-      titlu: "Se digitizează ce se caută.",
+      titlu: "Se digitalizează ce se caută.",
       text: "Nu se scanează tot. Se scanează ce se cere des, iar originalul rămâne pe raft, cu cotă, și se aduce pe hârtie atunci când este cerut.",
       legatura: { href: "/cum-functioneaza", text: "Cum funcționează" },
       // `pozitie` e copia celei din `src/content/fotografii.ts`, pentru aceeasi cheie, si o
